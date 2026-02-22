@@ -346,6 +346,8 @@ install_standalone_packages() {
         print_info "oh-my-posh is already installed."
     else
         print_info "Downloading and installing oh-my-posh..."
+        # Add oh-my-posh to PATH for current session
+        export PATH="$HOME/.local/bin:$PATH"
         curl -fsSL https://ohmyposh.dev/install.sh | bash -s
     fi
     
