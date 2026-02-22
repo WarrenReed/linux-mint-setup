@@ -71,7 +71,10 @@ readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 readonly OMP_THEME_PATH="~/.cache/oh-my-posh/themes/atomic.omp.json"
 readonly PIA_FALLBACK_VERSION="3.7-08412"
 
-# Helper functions
+################################################################################
+# Helper Functions
+################################################################################
+
 print_section() {
     echo -e "\n${GREEN}==== $1 ====${NC}\n"
 }
