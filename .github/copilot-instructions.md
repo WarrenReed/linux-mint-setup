@@ -32,6 +32,7 @@ This is a Linux Mint 22 bootstrap script repository for initial system setup and
 
 - Script organized into functions with clear separation of concerns
 - Main execution flow controlled by `main()` function
+- **Function order MUST match main() execution sequence** - this improves readability and maintainability
 - Logical sections: prerequisites, repository setup, package installation, standalone tools, configuration
 - Keep applications sorted alphabetically in both documentation and code
 - Add all repositories first, then run `apt update` once (after adding repos)
@@ -167,5 +168,9 @@ This is a Linux Mint 22 bootstrap script repository for initial system setup and
    - Ensure curl uses `-fsSL` flags
 7. Add post-installation configuration if needed:
    - Add function to Configuration section (e.g., `configure_docker()`, `configure_fish()`)
+   - Place function in execution order matching `main()` function calls
    - Implement idempotency checks
-8. Keep all sections alphabetically sorted (documentation, package names, function order where logical)
+8. If adding new functions:
+   - Place function definition in the order it's called in `main()` for readability
+   - Follow the existing pattern: Prerequisites → Repository Setup → Package Installation → Configuration
+9. Keep all sections alphabetically sorted (documentation, package names)

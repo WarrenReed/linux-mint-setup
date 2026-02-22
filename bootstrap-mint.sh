@@ -481,10 +481,11 @@ configure_fish() {
         print_info "Fish is now your default shell. Reboot for the change to take effect."
     fi
     
-    # Configure oh-my-posh
+    # Ensure Fish config directory exists
     print_info "Creating Fish config directory..."
     mkdir -p ~/.config/fish
     
+    # Configure oh-my-posh
     local fish_config=~/.config/fish/config.fish
     local omp_line="oh-my-posh init fish --config ${OMP_THEME_PATH} | source"
     
@@ -495,6 +496,16 @@ configure_fish() {
         echo "# oh-my-posh prompt theme" >> "$fish_config"
         echo "$omp_line" >> "$fish_config"
         print_info "Fish is now configured to use oh-my-posh."
+    fi
+    
+    # Configure Aspire CLI
+    if [ -f "$fish_config" ] && grep -qF "fish_add_path \$HOME/.aspire/bin" "$fish_config"; then
+        print_info "Aspire CLI is already configured in Fish config."
+    else
+        print_info "Setting up Aspire CLI path..."
+        echo "" >> "$fish_config"
+        echo "fish_add_path \$HOME/.aspire/bin" >> "$fish_config"
+        print_info "Aspire CLI is now configured in Fish shell."
     fi
     
     # Configure fnm
