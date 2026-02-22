@@ -100,6 +100,18 @@ install_deb_package() {
     fi
 }
 
+install_flatpak_app() {
+    local app_id=$1
+    local display_name=$2
+    
+    if flatpak list | grep -q "$app_id"; then
+        print_info "$display_name is already installed."
+    else
+        print_info "Installing $display_name..."
+        flatpak install -y flathub "$app_id"
+    fi
+}
+
 ################################################################################
 # Core Setup Functions
 ################################################################################
@@ -434,29 +446,9 @@ install_standalone_packages() {
 install_flatpak_apps() {
     print_section "Installing Flatpak Applications"
     
-    # Install Azure Storage Explorer
-    if flatpak list | grep -q "com.microsoft.AzureStorageExplorer"; then
-        print_info "Azure Storage Explorer is already installed."
-    else
-        print_info "Installing Azure Storage Explorer..."
-        flatpak install -y flathub com.microsoft.AzureStorageExplorer
-    fi
-    
-    # Install Discord
-    if flatpak list | grep -q "com.discordapp.Discord"; then
-        print_info "Discord is already installed."
-    else
-        print_info "Installing Discord..."
-        flatpak install -y flathub com.discordapp.Discord
-    fi
-    
-    # Install Slack
-    if flatpak list | grep -q "com.slack.Slack"; then
-        print_info "Slack is already installed."
-    else
-        print_info "Installing Slack..."
-        flatpak install -y flathub com.slack.Slack
-    fi
+    install_flatpak_app "com.microsoft.AzureStorageExplorer" "Azure Storage Explorer"
+    install_flatpak_app "com.discordapp.Discord" "Discord"
+    install_flatpak_app "com.slack.Slack" "Slack"
 }
 
 configure_fish() {
