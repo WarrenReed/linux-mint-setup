@@ -504,8 +504,12 @@ configure_fish() {
     fi
     
     # Trust .NET development certificates
-    print_info "Trusting .NET HTTPS development certificates..."
-    dotnet dev-certs https --trust
+    if dotnet dev-certs https --check --trust &> /dev/null; then
+        print_info ".NET HTTPS development certificate is already trusted."
+    else
+        print_info "Trusting .NET HTTPS development certificates..."
+        dotnet dev-certs https --trust
+    fi
 }
 
 configure_bash() {
