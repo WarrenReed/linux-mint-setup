@@ -84,6 +84,22 @@ print_error() {
     echo -e "${RED}[ERROR]${NC} $1" >&2
 }
 
+install_deb_package() {
+    local package_name=$1
+    local display_name=$2
+    local download_url=$3
+    
+    if dpkg-query -s "$package_name" &> /dev/null; then
+        print_info "$display_name is already installed."
+    else
+        print_info "Downloading and installing $display_name..."
+        local temp_deb=$(mktemp --suffix=.deb)
+        curl -fsSL -o "$temp_deb" "$download_url"
+        sudo apt install -y "$temp_deb"
+        rm -f "$temp_deb"
+    fi
+}
+
 ################################################################################
 # Core Setup Functions
 ################################################################################
@@ -236,8 +252,12 @@ install_apt_packages() {
         microsoft-azurevpnclient
     
     print_info "Installing development tools..."
+    
+    # Install VS Code (downloads .deb which adds repository automatically)
+    install_deb_package "code" "VS Code" \
+        "https://update.code.visualstudio.com/latest/linux-deb-x64/stable"
+    
     sudo apt install -y \
-        code \
         fish \
         git \
         powershell
@@ -245,15 +265,8 @@ install_apt_packages() {
     print_info "Installing applications..."
     
     # Install Google Chrome (downloads .deb which adds repository automatically)
-    if dpkg-query -s google-chrome-stable &> /dev/null; then
-        print_info "Google Chrome is already installed."
-    else
-        print_info "Downloading and installing Google Chrome..."
-        local temp_deb=$(mktemp --suffix=.deb)
-        curl -fsSL -o "$temp_deb" https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-        sudo apt install -y "$temp_deb"
-        rm -f "$temp_deb"
-    fi
+    install_deb_package "google-chrome-stable" "Google Chrome" \
+        "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
     
     sudo apt install -y \
         remotedesktopmanager \
