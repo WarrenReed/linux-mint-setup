@@ -32,9 +32,10 @@ Automated bootstrap script for setting up a fresh Linux Mint 22 installation wit
 
 ### Shell & Terminal
 
+- **Bash** - Default shell (configured with oh-my-posh)
 - **Fish Shell** - Modern, user-friendly shell
 - **PowerShell** - Cross-platform automation and configuration tool
-- **oh-my-posh** - Cross-platform prompt theme engine (configured with atomic theme)
+- **oh-my-posh** - Cross-platform prompt theme engine
 - **Meslo Nerd Font** - Patched font for terminal icons and glyphs
 
 ## Prerequisites
@@ -65,7 +66,8 @@ After the script completes:
    - Fish as your default shell
 
 2. Open a new terminal to see:
-   - Fish shell prompt with oh-my-posh theme
+   - Bash prompt with oh-my-posh theme (if using bash)
+   - Fish shell prompt with oh-my-posh theme (if using fish)
    - Meslo Nerd Font rendering (in GNOME Terminal)
 
 3. Start PowerShell (`pwsh`) to see oh-my-posh theme
@@ -118,6 +120,7 @@ This is personal tooling. Use at your own risk.
 
 - Linux Mint 22 is based on **Ubuntu 24.04 LTS (noble)**
 - APT preferences configured to prefer Ubuntu packages over Microsoft .NET packages where conflicts exist
+- Bash configuration stored in `~/.bashrc`
 - Fish shell configuration stored in `~/.config/fish/config.fish`
 - PowerShell profile stored in `~/.config/powershell/Microsoft.PowerShell_profile.ps1`
 - oh-my-posh theme: configurable via `OMP_THEME_PATH` variable (default: atomic)

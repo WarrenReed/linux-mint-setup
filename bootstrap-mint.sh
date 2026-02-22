@@ -34,7 +34,8 @@
 # Usage: bash bootstrap-mint.sh
 # Prerequisites: Fresh Linux Mint installation with internet connection
 # Note: Script will request sudo privileges when needed
-# Post-install: Fish shell is configured with oh-my-posh and fnm
+# Post-install: Bash is configured with oh-my-posh
+#               Fish shell is configured with oh-my-posh and fnm
 #               PowerShell is configured with oh-my-posh
 #               GNOME Terminal is configured to use Meslo Nerd Font
 #               oh-my-posh theme: configurable via OMP_THEME_PATH variable
@@ -414,6 +415,7 @@ configure_fish() {
         print_info "oh-my-posh is already configured in Fish config."
     else
         print_info "Setting up oh-my-posh theme..."
+        echo "# oh-my-posh prompt theme" >> "$fish_config"
         echo "$omp_line" >> "$fish_config"
         print_info "Fish is now configured to use oh-my-posh."
     fi
@@ -429,6 +431,23 @@ configure_fish() {
     else
         printf 'set -gx PATH "$HOME/.local/share/fnm" $PATH\nfnm env --use-on-cd --shell fish | source\n' > "$fnm_config"
         print_info "fnm is now configured in Fish shell."
+    fi
+}
+
+configure_bash() {
+    print_section "Configuring Bash"
+    
+    local bashrc=~/.bashrc
+    local omp_line="eval \"\$(oh-my-posh init bash --config ${OMP_THEME_PATH})\""
+    
+    if [ -f "$bashrc" ] && grep -qF "oh-my-posh init bash" "$bashrc"; then
+        print_info "oh-my-posh is already configured in .bashrc."
+    else
+        print_info "Setting up oh-my-posh theme..."
+        echo "" >> "$bashrc"
+        echo "# oh-my-posh prompt theme" >> "$bashrc"
+        echo "$omp_line" >> "$bashrc"
+        print_info "Bash is now configured to use oh-my-posh."
     fi
 }
 
@@ -499,6 +518,7 @@ main() {
     
     # Configuration
     configure_docker
+    configure_bash
     configure_fish
     configure_powershell
     configure_terminal
