@@ -277,11 +277,11 @@ install_apt_packages() {
     
     print_info "Installing development tools..."
     
-    # Install VS Code (downloads .deb which adds repository automatically)
-    install_deb_package "code" "VS Code" \
-        "https://update.code.visualstudio.com/latest/linux-deb-x64/stable"
+    # Prevent VS Code from managing its own repository (we manage it via repos.json)
+    echo "code code/add-microsoft-repo boolean false" | sudo debconf-set-selections
     
     sudo apt install -y \
+        code \
         fish \
         git \
         powershell

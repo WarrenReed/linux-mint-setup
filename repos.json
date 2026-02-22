@@ -62,6 +62,16 @@
       "suites": "${UBUNTU_DISTRO}",
       "components": "main",
       "architectures": "amd64"
+    },
+    {
+      "name": "Visual Studio Code",
+      "key": "microsoft",
+      "filename": "vscode.sources",
+      "types": "deb",
+      "uris": "https://packages.microsoft.com/repos/code",
+      "suites": "stable",
+      "components": "main",
+      "architectures": "amd64 arm64 armhf"
     }
   ]
 }

@@ -121,6 +121,16 @@ This is a Linux Mint 22 bootstrap script repository for initial system setup and
 - Check if PPA is already added before running add-apt-repository for idempotency
 - Example: `grep -qr "^deb .*ppa.launchpad.net/fish-shell/release-4" /etc/apt/sources.list.d/`
 
+### Debconf Configuration
+
+- Use debconf to pre-configure packages before installation
+- Prevents packages from making unwanted changes during installation
+- Example use case: Prevent VS Code from managing its own repository
+- Set debconf values before `apt install` command:
+  - `echo "code code/add-microsoft-repo boolean false" | sudo debconf-set-selections`
+- Use when package installer would conflict with centralized repository management
+- Ensures idempotent behavior when repos already managed via `repos.json`
+
 ### Standalone Installations
 
 - Some tools install via download scripts (e.g., fnm, Aspire CLI, oh-my-posh)
@@ -159,7 +169,9 @@ This is a Linux Mint 22 bootstrap script repository for initial system setup and
      - Reference existing key name if multiple repos share same key
      - Use `${UBUNTU_DISTRO}` variable in suites if distribution-specific
    - **For PPA repos:** Add function call to `add_ppa_repositories()` with idempotency check
-4. If APT package: Add to the appropriate grouped `apt install` command in alphabetical order in `install_apt_packages()` (groups: .NET, Docker, Virtualization, Azure, Development, Applications, Libraries)
+4. If APT package: 
+   - Add to the appropriate grouped `apt install` command in alphabetical order in `install_apt_packages()` (groups: .NET, Docker, Virtualization, Azure, Development, Applications, Libraries)
+   - If package attempts to manage its own repository, add debconf setting before installation to prevent conflicts
 5. If Flatpak app: Add to `install_flatpak_apps()` with idempotency check
 6. If standalone script:
    - Add installation to `install_standalone_packages()` function
