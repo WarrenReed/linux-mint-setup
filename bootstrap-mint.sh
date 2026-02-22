@@ -556,8 +556,9 @@ configure_terminal() {
         return
     fi
     
-    # Check if gsettings schema exists
-    if ! gsettings list-schemas | grep -q "org.gnome.Terminal.ProfilesList"; then
+    # Check if gsettings schema exists (pipefail-safe)
+    local schemas=$(gsettings list-schemas 2>/dev/null || true)
+    if ! echo "$schemas" | grep -q "org.gnome.Terminal.ProfilesList"; then
         print_info "GNOME Terminal gsettings schema not found. Skipping terminal configuration."
         return
     fi
