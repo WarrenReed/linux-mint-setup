@@ -112,6 +112,15 @@ install_flatpak_app() {
     fi
 }
 
+install_dotnet_tool() {
+    local tool_id=$1
+    local display_name=$2
+    
+    print_section "Installing $display_name"
+    print_info "Installing/updating $display_name as .NET global tool..."
+    dotnet tool update -g "$tool_id"
+}
+
 ################################################################################
 # Core Setup Functions
 ################################################################################
@@ -405,29 +414,15 @@ install_standalone_packages() {
         rm -f "$temp_installer"
     fi
     
-    # Install NSwag CLI (.NET global tool)
-    print_section "Installing NSwag CLI"
-    print_info "Installing/updating NSwag CLI as .NET global tool..."
-    dotnet tool update -g NSwag.ConsoleCore
-    
-    # Install linux-dev-certs (.NET global tool)
-    print_section "Installing linux-dev-certs"
-    print_info "Installing/updating linux-dev-certs as .NET global tool..."
-    dotnet tool update -g linux-dev-certs
+    # Install .NET global tools
+    install_dotnet_tool "NSwag.ConsoleCore" "NSwag CLI"
+    install_dotnet_tool "linux-dev-certs" "linux-dev-certs"
+    install_dotnet_tool "Microsoft.Artifacts.CredentialProvider.NuGet.Tool" "Azure Artifacts Credential Provider"
+    install_dotnet_tool "git-credential-manager" "Git Credential Manager"
     
     # Configure HTTPS development certificates
     print_info "Configuring HTTPS development certificates..."
     dotnet linux-dev-certs install
-    
-    # Install Azure Artifacts Credential Provider (.NET global tool)
-    print_section "Installing Azure Artifacts Credential Provider"
-    print_info "Installing/updating Azure Artifacts Credential Provider as .NET global tool..."
-    dotnet tool update -g Microsoft.Artifacts.CredentialProvider.NuGet.Tool
-    
-    # Install Git Credential Manager (.NET global tool)
-    print_section "Installing Git Credential Manager"
-    print_info "Installing/updating Git Credential Manager as .NET global tool..."
-    dotnet tool update -g git-credential-manager
     
     # Configure Git Credential Manager
     print_info "Configuring Git Credential Manager..."
