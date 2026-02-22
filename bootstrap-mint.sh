@@ -612,8 +612,6 @@ main() {
     # Package Installation
     install_apt_packages
     install_flatpak_apps
-    
-    # Standalone Packages
     install_standalone_packages
     
     # Configuration
