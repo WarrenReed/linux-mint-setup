@@ -20,7 +20,6 @@
 #   - Git and development tools
 #   - Google Chrome
 #   - KVM/QEMU with virt-manager
-#   - linux-dev-certs
 #   - Meslo Nerd Font
 #   - .NET SDK 10.0
 #   - Node.js 22
@@ -36,11 +35,12 @@
 # Prerequisites: Fresh Linux Mint installation with internet connection
 # Note: Script will request sudo privileges when needed
 # Post-install: Bash is configured with oh-my-posh
-#               Fish shell is configured with oh-my-posh and fnm
+#               Fish shell is configured with oh-my-posh, fnm, and SSL_CERT_DIR
 #               PowerShell is configured with oh-my-posh
 #               GNOME Terminal is configured to use Meslo Nerd Font
 #               oh-my-posh theme: configurable via OMP_THEME_PATH variable
 #               Hosts file configured with: 127.0.0.1 sql-server
+#               .NET development certificates trusted
 ################################################################################
 
 set -e          # Exit immediately if a command exits with a non-zero status
@@ -295,10 +295,6 @@ install_apt_packages() {
     sudo apt install -y \
         remotedesktopmanager \
         steam-installer
-    
-    print_info "Installing libraries..."
-    sudo apt install -y \
-        libnss3-tools
 }
 
 configure_docker() {
@@ -419,13 +415,8 @@ install_standalone_packages() {
     
     # Install .NET global tools
     install_dotnet_tool "NSwag.ConsoleCore" "NSwag CLI"
-    install_dotnet_tool "linux-dev-certs" "linux-dev-certs"
     install_dotnet_tool "Microsoft.Artifacts.CredentialProvider.NuGet.Tool" "Azure Artifacts Credential Provider"
     install_dotnet_tool "git-credential-manager" "Git Credential Manager"
-    
-    # Configure HTTPS development certificates
-    print_info "Configuring HTTPS development certificates..."
-    dotnet linux-dev-certs install
     
     # Configure Git Credential Manager
     print_info "Configuring Git Credential Manager..."
@@ -499,6 +490,22 @@ configure_fish() {
         printf 'set -gx PATH "$HOME/.local/share/fnm" $PATH\nfnm env --use-on-cd --shell fish | source\n' > "$fnm_config"
         print_info "fnm is now configured in Fish shell."
     fi
+    
+    # Configure SSL_CERT_DIR for .NET development
+    print_info "Configuring SSL_CERT_DIR in Fish shell..."
+    local ssl_config=~/.config/fish/conf.d/ssl_cert_dir.fish
+    local ssl_line='set -gx SSL_CERT_DIR /etc/ssl/certs:$HOME/.aspnet/dev-certs/trust'
+    
+    if [ -f "$ssl_config" ] && grep -qF "$ssl_line" "$ssl_config"; then
+        print_info "SSL_CERT_DIR is already configured in Fish."
+    else
+        echo "$ssl_line" > "$ssl_config"
+        print_info "SSL_CERT_DIR is now configured in Fish shell."
+    fi
+    
+    # Trust .NET development certificates
+    print_info "Trusting .NET HTTPS development certificates..."
+    dotnet dev-certs https --trust
 }
 
 configure_bash() {
