@@ -9,10 +9,6 @@
       "url": "https://download.docker.com/linux/ubuntu/gpg"
     },
     {
-      "name": "google-chrome",
-      "url": "https://dl.google.com/linux/linux_signing_key.pub"
-    },
-    {
       "name": "microsoft",
       "url": "https://packages.microsoft.com/keys/microsoft.asc"
     }
@@ -35,16 +31,6 @@
       "uris": "https://download.docker.com/linux/ubuntu",
       "suites": "${UBUNTU_DISTRO}",
       "components": "stable",
-      "architectures": "amd64"
-    },
-    {
-      "name": "Google Chrome",
-      "key": "google-chrome",
-      "filename": "google-chrome.sources",
-      "types": "deb",
-      "uris": "https://dl.google.com/linux/chrome/deb/",
-      "suites": "stable",
-      "components": "main",
       "architectures": "amd64"
     },
     {

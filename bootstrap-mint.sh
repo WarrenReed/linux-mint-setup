@@ -243,8 +243,19 @@ install_apt_packages() {
         powershell
     
     print_info "Installing applications..."
+    
+    # Install Google Chrome (downloads .deb which adds repository automatically)
+    if dpkg-query -s google-chrome-stable &> /dev/null; then
+        print_info "Google Chrome is already installed."
+    else
+        print_info "Downloading and installing Google Chrome..."
+        local temp_deb=$(mktemp --suffix=.deb)
+        curl -fsSL -o "$temp_deb" https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+        sudo apt install -y "$temp_deb"
+        rm -f "$temp_deb"
+    fi
+    
     sudo apt install -y \
-        google-chrome-stable \
         remotedesktopmanager \
         steam-installer
     
