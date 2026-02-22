@@ -285,7 +285,7 @@ install_standalone_packages() {
     
     # Install Meslo Nerd Font
     print_section "Installing Meslo Nerd Font"
-    if fc-list | grep -qi "MesloLGM Nerd Font"; then
+    if [ -d ~/.local/share/fonts/meslolgm-nerd-font ] || [ -d ~/.local/share/fonts/meslolgm-nerd-font-mono ]; then
         print_info "Meslo Nerd Font is already installed."
     else
         print_info "Installing Meslo Nerd Font..."
