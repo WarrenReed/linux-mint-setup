@@ -297,42 +297,12 @@ install_apt_packages() {
         steam-installer
 }
 
-configure_docker() {
-    print_section "Configuring Docker"
+install_flatpak_apps() {
+    print_section "Installing Flatpak Applications"
     
-    if groups $USER | grep -q '\bdocker\b'; then
-        print_info "User is already in docker group."
-    else
-        print_info "Adding current user to docker group..."
-        sudo usermod -aG docker $USER
-        print_info "You'll need to log out and back in for docker group membership to take effect."
-    fi
-}
-
-configure_virtualization() {
-    print_section "Configuring Virtualization"
-    
-    local groups_added=false
-    
-    if groups $USER | grep -q '\blibvirt\b'; then
-        print_info "User is already in libvirt group."
-    else
-        print_info "Adding current user to libvirt group..."
-        sudo usermod -aG libvirt $USER
-        groups_added=true
-    fi
-    
-    if groups $USER | grep -q '\bkvm\b'; then
-        print_info "User is already in kvm group."
-    else
-        print_info "Adding current user to kvm group..."
-        sudo usermod -aG kvm $USER
-        groups_added=true
-    fi
-    
-    if [ "$groups_added" = true ]; then
-        print_info "You'll need to log out and back in for virtualization group membership to take effect."
-    fi
+    install_flatpak_app "com.microsoft.AzureStorageExplorer" "Azure Storage Explorer"
+    install_flatpak_app "com.discordapp.Discord" "Discord"
+    install_flatpak_app "com.slack.Slack" "Slack"
 }
 
 install_standalone_packages() {
@@ -432,12 +402,59 @@ install_standalone_packages() {
     fi
 }
 
-install_flatpak_apps() {
-    print_section "Installing Flatpak Applications"
+configure_docker() {
+    print_section "Configuring Docker"
     
-    install_flatpak_app "com.microsoft.AzureStorageExplorer" "Azure Storage Explorer"
-    install_flatpak_app "com.discordapp.Discord" "Discord"
-    install_flatpak_app "com.slack.Slack" "Slack"
+    if groups $USER | grep -q '\bdocker\b'; then
+        print_info "User is already in docker group."
+    else
+        print_info "Adding current user to docker group..."
+        sudo usermod -aG docker $USER
+        print_info "You'll need to log out and back in for docker group membership to take effect."
+    fi
+}
+
+configure_virtualization() {
+    print_section "Configuring Virtualization"
+    
+    local groups_added=false
+    
+    if groups $USER | grep -q '\blibvirt\b'; then
+        print_info "User is already in libvirt group."
+    else
+        print_info "Adding current user to libvirt group..."
+        sudo usermod -aG libvirt $USER
+        groups_added=true
+    fi
+    
+    if groups $USER | grep -q '\bkvm\b'; then
+        print_info "User is already in kvm group."
+    else
+        print_info "Adding current user to kvm group..."
+        sudo usermod -aG kvm $USER
+        groups_added=true
+    fi
+    
+    if [ "$groups_added" = true ]; then
+        print_info "You'll need to log out and back in for virtualization group membership to take effect."
+    fi
+}
+
+configure_bash() {
+    print_section "Configuring Bash"
+    
+    local bashrc=~/.bashrc
+    local omp_line="eval \"\$(oh-my-posh init bash --config ${OMP_THEME_PATH})\""
+    
+    if [ -f "$bashrc" ] && grep -qF "oh-my-posh init bash" "$bashrc"; then
+        print_info "oh-my-posh is already configured in .bashrc."
+    else
+        print_info "Setting up oh-my-posh theme..."
+        echo "" >> "$bashrc"
+        echo "# oh-my-posh prompt theme" >> "$bashrc"
+        echo "$omp_line" >> "$bashrc"
+        print_info "Bash is now configured to use oh-my-posh."
+    fi
 }
 
 configure_fish() {
@@ -509,23 +526,6 @@ configure_fish() {
     else
         print_info "Trusting .NET HTTPS development certificates..."
         dotnet dev-certs https --trust
-    fi
-}
-
-configure_bash() {
-    print_section "Configuring Bash"
-    
-    local bashrc=~/.bashrc
-    local omp_line="eval \"\$(oh-my-posh init bash --config ${OMP_THEME_PATH})\""
-    
-    if [ -f "$bashrc" ] && grep -qF "oh-my-posh init bash" "$bashrc"; then
-        print_info "oh-my-posh is already configured in .bashrc."
-    else
-        print_info "Setting up oh-my-posh theme..."
-        echo "" >> "$bashrc"
-        echo "# oh-my-posh prompt theme" >> "$bashrc"
-        echo "$omp_line" >> "$bashrc"
-        print_info "Bash is now configured to use oh-my-posh."
     fi
 }
 
