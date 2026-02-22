@@ -36,10 +36,10 @@ This is a Linux Mint 22 bootstrap script repository for initial system setup and
 - Keep applications sorted alphabetically in both documentation and code
 - Add all repositories first, then run `apt update` once (after adding repos)
 - Initial `apt update` runs in `install_required_utilities()` for fresh package lists
-- Install all packages in a single `apt install` command with alphabetically sorted package names
+- Group related packages in separate `apt install` commands with alphabetically sorted package names
 - Use helper functions for consistent output formatting (`print_section`, `print_info`, `print_error`)
 - Package manager separation:
-  - `install_apt_packages()` - APT repository packages
+  - `install_apt_packages()` - APT repository packages (grouped by category: .NET, Docker, Virtualization, Azure, Development, Applications, Libraries)
   - `install_flatpak_apps()` - Flatpak applications
   - `install_standalone_packages()` - Direct download installers (fnm, Aspire, oh-my-posh, PIA)
 
@@ -133,11 +133,11 @@ This is a Linux Mint 22 bootstrap script repository for initial system setup and
 ### Post-Installation Configuration
 
 - Configure installed applications after package installation
-- Common configurations: user groups (docker), shell setup and integrations (fish)
+- Common configurations: user groups (docker, virtualization), shell setup and integrations (fish)
 - Group changes require logout/login to take effect
 - Inform users of required logout/login steps
 - Always implement idempotency checks (verify existing state before making changes)
-- Configuration functions: `configure_docker()`, `configure_fish()`, `configure_terminal()`
+- Configuration functions: `configure_docker()`, `configure_virtualization()`, `configure_bash()`, `configure_fish()`, `configure_powershell()`, `configure_terminal()`, `configure_hosts()`
 
 ## When Adding New Applications
 
@@ -158,7 +158,7 @@ This is a Linux Mint 22 bootstrap script repository for initial system setup and
      - Reference existing key name if multiple repos share same key
      - Use `${UBUNTU_DISTRO}` variable in suites if distribution-specific
    - **For PPA repos:** Add function call to `add_ppa_repositories()` with idempotency check
-4. If APT package: Add to the single `apt install` command in alphabetical order in `install_apt_packages()`
+4. If APT package: Add to the appropriate grouped `apt install` command in alphabetical order in `install_apt_packages()` (groups: .NET, Docker, Virtualization, Azure, Development, Applications, Libraries)
 5. If Flatpak app: Add to `install_flatpak_apps()` with idempotency check
 6. If standalone script:
    - Add installation to `install_standalone_packages()` function

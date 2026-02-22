@@ -19,6 +19,7 @@
 #   - Git Credential Manager
 #   - Git and development tools
 #   - Google Chrome
+#   - KVM/QEMU with virt-manager
 #   - linux-dev-certs
 #   - Meslo Nerd Font
 #   - .NET SDK 10.0
@@ -207,24 +208,49 @@ update_apt_cache() {
 
 install_apt_packages() {
     print_section "Installing APT Packages"
+    
+    print_info "Installing .NET packages..."
     sudo apt install -y \
         aspnetcore-runtime-8.0 \
-        azure-cli \
-        code \
+        dotnet-sdk-10.0
+    
+    print_info "Installing Docker packages..."
+    sudo apt install -y \
         containerd.io \
         docker-buildx-plugin \
         docker-ce \
         docker-ce-cli \
-        docker-compose-plugin \
-        dotnet-sdk-10.0 \
+        docker-compose-plugin
+    
+    print_info "Installing virtualization packages..."
+    sudo apt install -y \
+        bridge-utils \
+        libvirt-clients \
+        libvirt-daemon-system \
+        qemu-kvm \
+        virt-manager
+    
+    print_info "Installing Azure tools..."
+    sudo apt install -y \
+        azure-cli \
+        microsoft-azurevpnclient
+    
+    print_info "Installing development tools..."
+    sudo apt install -y \
+        code \
         fish \
         git \
+        powershell
+    
+    print_info "Installing applications..."
+    sudo apt install -y \
         google-chrome-stable \
-        libnss3-tools \
-        microsoft-azurevpnclient \
-        powershell \
         remotedesktopmanager \
         steam-installer
+    
+    print_info "Installing libraries..."
+    sudo apt install -y \
+        libnss3-tools
 }
 
 configure_docker() {
@@ -236,6 +262,32 @@ configure_docker() {
         print_info "Adding current user to docker group..."
         sudo usermod -aG docker $USER
         print_info "You'll need to log out and back in for docker group membership to take effect."
+    fi
+}
+
+configure_virtualization() {
+    print_section "Configuring Virtualization"
+    
+    local groups_added=false
+    
+    if groups $USER | grep -q '\blibvirt\b'; then
+        print_info "User is already in libvirt group."
+    else
+        print_info "Adding current user to libvirt group..."
+        sudo usermod -aG libvirt $USER
+        groups_added=true
+    fi
+    
+    if groups $USER | grep -q '\bkvm\b'; then
+        print_info "User is already in kvm group."
+    else
+        print_info "Adding current user to kvm group..."
+        sudo usermod -aG kvm $USER
+        groups_added=true
+    fi
+    
+    if [ "$groups_added" = true ]; then
+        print_info "You'll need to log out and back in for virtualization group membership to take effect."
     fi
 }
 
@@ -537,6 +589,7 @@ main() {
     
     # Configuration
     configure_docker
+    configure_virtualization
     configure_bash
     configure_fish
     configure_powershell

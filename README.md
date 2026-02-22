@@ -16,6 +16,7 @@ Automated bootstrap script for setting up a fresh Linux Mint 22 installation wit
 - **Docker Engine** - Container platform (including docker-compose, buildx)
 - **Git** - Version control system
 - **Git Credential Manager** - Secure Git credential helper for multi-factor authentication
+- **KVM/QEMU with virt-manager** - Hardware virtualization for running virtual machines
 - **linux-dev-certs** - HTTPS development certificates for ASP.NET Core on Linux
 - **Node.js 22** - JavaScript runtime (installed via fnm - Fast Node Manager)
 - **NSwag CLI** - OpenAPI/Swagger toolchain for .NET (command-line interface)
@@ -63,6 +64,7 @@ After the script completes:
 
 1. **Log out and back in** for the following changes to take effect:
    - Docker group membership (required to run docker without sudo)
+   - Virtualization group membership (libvirt and kvm - required to run VMs without sudo)
    - Fish as your default shell
 
 2. Open a new terminal to see:
@@ -111,6 +113,11 @@ The script follows shell scripting best practices:
 **Docker permission denied**
 
 - Log out and back in for docker group membership to take effect
+
+**Virtualization permission denied / Unable to connect to libvirt**
+
+- Log out and back in for libvirt and kvm group membership to take effect
+- Verify virtualization is enabled in BIOS/UEFI settings
 
 ## License
 
