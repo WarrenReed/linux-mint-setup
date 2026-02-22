@@ -1,0 +1,91 @@
+{
+  "keys": [
+    {
+      "name": "devolutions-rdm",
+      "url": "https://dl.cloudsmith.io/public/devolutions/rdm/gpg.FE7407ECB26FD2FE.key"
+    },
+    {
+      "name": "docker",
+      "url": "https://download.docker.com/linux/ubuntu/gpg"
+    },
+    {
+      "name": "google-chrome",
+      "url": "https://dl.google.com/linux/linux_signing_key.pub"
+    },
+    {
+      "name": "microsoft",
+      "url": "https://packages.microsoft.com/keys/microsoft.asc"
+    }
+  ],
+  "repositories": [
+    {
+      "name": "Devolutions Remote Desktop Manager",
+      "key": "devolutions-rdm",
+      "filename": "devolutions-rdm.sources",
+      "types": "deb",
+      "uris": "https://dl.cloudsmith.io/public/devolutions/rdm/deb/ubuntu",
+      "suites": "${UBUNTU_DISTRO}",
+      "components": "main"
+    },
+    {
+      "name": "Docker",
+      "key": "docker",
+      "filename": "docker.sources",
+      "types": "deb",
+      "uris": "https://download.docker.com/linux/ubuntu",
+      "suites": "${UBUNTU_DISTRO}",
+      "components": "stable",
+      "architectures": "amd64"
+    },
+    {
+      "name": "Google Chrome",
+      "key": "google-chrome",
+      "filename": "google-chrome.sources",
+      "types": "deb",
+      "uris": "https://dl.google.com/linux/chrome/deb/",
+      "suites": "stable",
+      "components": "main",
+      "architectures": "amd64"
+    },
+    {
+      "name": "Microsoft Production (Jammy)",
+      "key": "microsoft",
+      "filename": "microsoft-jammy-prod.sources",
+      "types": "deb",
+      "uris": "https://packages.microsoft.com/ubuntu/22.04/prod",
+      "suites": "jammy",
+      "components": "main",
+      "architectures": "amd64"
+    },
+    {
+      "name": "Microsoft Production (Noble)",
+      "key": "microsoft",
+      "filename": "microsoft-noble-prod.sources",
+      "types": "deb",
+      "uris": "https://packages.microsoft.com/ubuntu/24.04/prod",
+      "suites": "noble",
+      "components": "main",
+      "architectures": "amd64 arm64 armhf"
+    },
+    {
+      "name": "Azure CLI",
+      "key": "microsoft",
+      "filename": "azure-cli.sources",
+      "types": "deb",
+      "uris": "https://packages.microsoft.com/repos/azure-cli/",
+      "suites": "${UBUNTU_DISTRO}",
+      "components": "main",
+      "architectures": "amd64"
+    },
+    {
+      "name": "Visual Studio Code",
+      "key": "microsoft",
+      "filename": "vscode.sources",
+      "types": "deb",
+      "uris": "https://packages.microsoft.com/repos/code",
+      "suites": "stable",
+      "components": "main",
+      "architectures": "amd64 arm64 armhf"
+    }
+  ]
+}
