@@ -39,6 +39,7 @@
 #               PowerShell is configured with oh-my-posh
 #               GNOME Terminal is configured to use Meslo Nerd Font
 #               oh-my-posh theme: configurable via OMP_THEME_PATH variable
+#               Hosts file configured with: 127.0.0.1 sql-server
 ################################################################################
 
 set -e          # Exit immediately if a command exits with a non-zero status
@@ -491,6 +492,24 @@ configure_terminal() {
     print_info "GNOME Terminal is now configured to use Meslo Nerd Font."
 }
 
+configure_hosts() {
+    print_section "Configuring Hosts File"
+    
+    local hosts_file="/etc/hosts"
+    
+    if grep -qF "sql-server" "$hosts_file"; then
+        print_info "sql-server entry already exists in hosts file."
+    else
+        print_info "Adding sql-server to hosts file..."
+        {
+            echo ""
+            echo "# SQL Server container orchestrated by Aspire"
+            echo -e "127.0.0.1\tsql-server"
+        } | sudo tee -a "$hosts_file" > /dev/null
+        print_info "sql-server entry added to hosts file."
+    fi
+}
+
 ################################################################################
 # Main Execution
 ################################################################################
@@ -522,6 +541,7 @@ main() {
     configure_fish
     configure_powershell
     configure_terminal
+    configure_hosts
     
     # Completion
     print_section "Installation Complete!"

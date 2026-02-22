@@ -125,3 +125,4 @@ This is personal tooling. Use at your own risk.
 - PowerShell profile stored in `~/.config/powershell/Microsoft.PowerShell_profile.ps1`
 - oh-my-posh theme: configurable via `OMP_THEME_PATH` variable (default: atomic)
 - oh-my-posh theme cache: `~/.cache/oh-my-posh/themes/`
+- Hosts file configured with entry: `127.0.0.1 sql-server` (for SQL Server container orchestrated by Aspire)
