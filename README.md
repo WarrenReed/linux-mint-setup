@@ -17,7 +17,6 @@ Automated bootstrap script for setting up a fresh Linux Mint 22 installation wit
 - **Git** - Version control system
 - **Git Credential Manager** - Secure Git credential helper for multi-factor authentication
 - **KVM/QEMU with virt-manager** - Hardware virtualization for running virtual machines
-- **linux-dev-certs** - HTTPS development certificates for ASP.NET Core on Linux
 - **Node.js 22** - JavaScript runtime (installed via fnm - Fast Node Manager)
 - **NSwag CLI** - OpenAPI/Swagger toolchain for .NET (command-line interface)
 - **Visual Studio Code** - Code editor
@@ -33,8 +32,8 @@ Automated bootstrap script for setting up a fresh Linux Mint 22 installation wit
 
 ### Shell & Terminal
 
-- **Bash** - Default shell (configured with oh-my-posh)
-- **Fish Shell** - Modern, user-friendly shell
+- **Bash** - Pre-installed shell (configured with oh-my-posh)
+- **Fish Shell** - Modern, user-friendly shell (set as default)
 - **PowerShell** - Cross-platform automation and configuration tool
 - **oh-my-posh** - Cross-platform prompt theme engine
 - **Meslo Nerd Font** - Patched font for terminal icons and glyphs
@@ -51,8 +50,8 @@ Automated bootstrap script for setting up a fresh Linux Mint 22 installation wit
 Clone the repository and run the script:
 
 ```bash
-git clone <your-repository-url>
-cd bootstrap-mint
+git clone https://github.com/WarrenReed/bootstrap-linux-mint.git
+cd bootstrap-linux-mint
 bash bootstrap-mint.sh
 ```
 
@@ -67,12 +66,11 @@ After the script completes:
    - Virtualization group membership (libvirt and kvm - required to run VMs without sudo)
    - Fish as your default shell
 
-2. Open a new terminal to see:
-   - Bash prompt with oh-my-posh theme (if using bash)
-   - Fish shell prompt with oh-my-posh theme (if using fish)
-   - Meslo Nerd Font rendering (in GNOME Terminal)
-
-3. Start PowerShell (`pwsh`) to see oh-my-posh theme
+2. Open a new terminal:
+   - Fish shell prompt with oh-my-posh theme will appear (now the default shell)
+   - Meslo Nerd Font will render icons and glyphs (in GNOME Terminal)
+   - Run `bash` to see Bash prompt with oh-my-posh theme
+   - Run `pwsh` to see PowerShell prompt with oh-my-posh theme
 
 ## Configuration Files
 
@@ -132,4 +130,5 @@ This is personal tooling. Use at your own risk.
 - PowerShell profile stored in `~/.config/powershell/Microsoft.PowerShell_profile.ps1`
 - oh-my-posh theme: configurable via `OMP_THEME_PATH` variable (default: atomic)
 - oh-my-posh theme cache: `~/.cache/oh-my-posh/themes/`
+- .NET HTTPS development certificates trusted via `dotnet dev-certs https --trust`
 - Hosts file configured with entry: `127.0.0.1 sql-server` (for SQL Server container orchestrated by Aspire)
