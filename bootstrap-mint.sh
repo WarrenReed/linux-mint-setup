@@ -410,7 +410,7 @@ configure_docker() {
     else
         print_info "Adding current user to docker group..."
         sudo usermod -aG docker $USER
-        print_info "You'll need to log out and back in for docker group membership to take effect."
+        print_info "You'll need to reboot for docker group membership to take effect."
     fi
 }
 
@@ -436,7 +436,7 @@ configure_virtualization() {
     fi
     
     if [ "$groups_added" = true ]; then
-        print_info "You'll need to log out and back in for virtualization group membership to take effect."
+        print_info "You'll need to reboot for virtualization group membership to take effect."
     fi
 }
 
@@ -476,7 +476,7 @@ configure_fish() {
     else
         print_info "Setting fish as default shell..."
         chsh -s "$fish_path"
-        print_info "Fish is now your default shell. Log out and back in for the change to take effect."
+        print_info "Fish is now your default shell. Reboot for the change to take effect."
     fi
     
     # Configure oh-my-posh
@@ -627,7 +627,7 @@ main() {
     print_section "Installation Complete!"
     print_info "All packages have been successfully installed."
     echo -e "\n${GREEN}Setup finished!${NC}"
-    echo "You may need to log out and back in for some changes to take effect."
+    echo "Please reboot your system for all changes to take effect."
 }
 
 # Run main function

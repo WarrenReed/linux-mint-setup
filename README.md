@@ -62,7 +62,7 @@ The script is **idempotent** - safe to run multiple times. It checks existing in
 
 After the script completes:
 
-1. **Log out and back in** for the following changes to take effect:
+1. **Reboot** for the following changes to take effect:
    - Docker group membership (required to run docker without sudo)
    - Virtualization group membership (libvirt and kvm - required to run VMs without sudo)
    - Fish as your default shell
@@ -112,11 +112,11 @@ The script follows shell scripting best practices:
 
 **Docker permission denied**
 
-- Log out and back in for docker group membership to take effect
+- Reboot for docker group membership to take effect
 
 **Virtualization permission denied / Unable to connect to libvirt**
 
-- Log out and back in for libvirt and kvm group membership to take effect
+- Reboot for libvirt and kvm group membership to take effect
 - Verify virtualization is enabled in BIOS/UEFI settings
 
 ## License

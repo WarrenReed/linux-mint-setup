@@ -134,8 +134,8 @@ This is a Linux Mint 22 bootstrap script repository for initial system setup and
 
 - Configure installed applications after package installation
 - Common configurations: user groups (docker, virtualization), shell setup and integrations (fish)
-- Group changes require logout/login to take effect
-- Inform users of required logout/login steps
+- Group changes require reboot to take effect
+- Inform users of required reboot steps
 - Always implement idempotency checks (verify existing state before making changes)
 - Configuration functions: `configure_docker()`, `configure_virtualization()`, `configure_bash()`, `configure_fish()`, `configure_powershell()`, `configure_terminal()`, `configure_hosts()`
 
