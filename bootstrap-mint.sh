@@ -43,9 +43,7 @@
 #               .NET development certificates trusted
 ################################################################################
 
-set -e          # Exit immediately if a command exits with a non-zero status
-set -u          # Treat unset variables as an error
-set -o pipefail # Catch failures in pipes
+set -euo pipefail
 
 # Cleanup handler
 cleanup() {
@@ -55,11 +53,9 @@ cleanup() {
 
 trap cleanup EXIT
 
-# Colors for output
-readonly RED='\033[0;31m'
-readonly GREEN='\033[0;32m'
-readonly YELLOW='\033[1;33m'
-readonly NC='\033[0m' # No Color
+# Get script directory and source output utilities
+readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/output.sh"
 
 # Configuration
 # Old convention (compatible with Linux Mint UI): /etc/apt/trusted.gpg.d
@@ -67,25 +63,12 @@ readonly NC='\033[0m' # No Color
 # Note: Linux Mint 22 is based on Ubuntu 24.04 LTS (noble)
 export KEYRING_DIR="/etc/apt/trusted.gpg.d"
 export UBUNTU_DISTRO="noble"  # noble=24.04, jammy=22.04, focal=20.04
-readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 readonly OMP_THEME_PATH="~/.cache/oh-my-posh/themes/atomic.omp.json"
 readonly PIA_FALLBACK_VERSION="3.7-08412"
 
 ################################################################################
 # Helper Functions
 ################################################################################
-
-print_section() {
-    echo -e "\n${GREEN}==== $1 ====${NC}\n"
-}
-
-print_info() {
-    echo -e "${YELLOW}[INFO]${NC} $1"
-}
-
-print_error() {
-    echo -e "${RED}[ERROR]${NC} $1" >&2
-}
 
 install_deb_package() {
     local package_name=$1
@@ -130,19 +113,19 @@ install_dotnet_tool() {
 
 check_prerequisites() {
     # Check if running with sudo privileges
-    if [ "$EUID" -eq 0 ]; then
+    if [[ "$EUID" -eq 0 ]]; then
         print_error "Please do not run this script as root. It will request sudo when needed."
         exit 1
     fi
     
     # Check if repos.json exists
-    if [ ! -f "${SCRIPT_DIR}/repos.json" ]; then
+    if [[ ! -f "${SCRIPT_DIR}/repos.json" ]]; then
         print_error "repos.json not found in ${SCRIPT_DIR}"
         exit 1
     fi
     
     # Check if preferences directory exists
-    if [ ! -d "${SCRIPT_DIR}/preferences" ]; then
+    if [[ ! -d "${SCRIPT_DIR}/preferences" ]]; then
         print_error "preferences/ directory not found in ${SCRIPT_DIR}"
         exit 1
     fi
@@ -159,10 +142,10 @@ install_repository_keys() {
     declare -A installed_keys
     
     while IFS= read -r key_name; do
-        if [ -z "${installed_keys[$key_name]:-}" ]; then
+        if [[ -z "${installed_keys[$key_name]:-}" ]]; then
             local key_file="${KEYRING_DIR}/${key_name}.gpg"
             
-            if [ -f "$key_file" ]; then
+            if [[ -f "$key_file" ]]; then
                 print_info "$key_name GPG key already exists."
             else
                 local key_url=$(jq -r ".keys[] | select(.name == \"$key_name\") | .url" "${SCRIPT_DIR}/repos.json")
@@ -183,7 +166,7 @@ add_third_party_repositories() {
         local key=$(echo "$repo" | jq -r '.key')
         local sources_file="/etc/apt/sources.list.d/${filename}"
         
-        if [ -f "$sources_file" ]; then
+        if [[ -f "$sources_file" ]]; then
             print_info "$name repository already exists."
         else
             print_info "Adding $name repository..."
@@ -198,7 +181,7 @@ add_third_party_repositories() {
                 
                 # Optional architectures field
                 local arch=$(echo "$repo" | jq -r '.architectures // empty')
-                if [ -n "$arch" ]; then
+                if [[ -n "$arch" ]]; then
                     echo "Architectures: $arch"
                 fi
                 
@@ -227,12 +210,12 @@ configure_apt_preferences() {
     # Copy all preference files from preferences/ directory
     for pref_file in "${SCRIPT_DIR}/preferences/"*; do
         # Skip if no files found (glob doesn't match)
-        [ -e "$pref_file" ] || continue
+        [[ -e "$pref_file" ]] || continue
         
         local filename=$(basename "$pref_file")
         local dest_file="/etc/apt/preferences.d/${filename}"
         
-        if [ -f "$dest_file" ]; then
+        if [[ -f "$dest_file" ]]; then
             print_info "APT preferences file ${filename} already exists."
         else
             print_info "Installing APT preferences file ${filename}..."
@@ -353,7 +336,7 @@ install_standalone_packages() {
     
     # Install Meslo Nerd Font
     print_section "Installing Meslo Nerd Font"
-    if [ -d ~/.local/share/fonts/meslolgm-nerd-font ] || [ -d ~/.local/share/fonts/meslolgm-nerd-font-mono ]; then
+    if [[ -d ~/.local/share/fonts/meslolgm-nerd-font ]] || [[ -d ~/.local/share/fonts/meslolgm-nerd-font-mono ]]; then
         print_info "Meslo Nerd Font is already installed."
     else
         print_info "Installing Meslo Nerd Font..."
@@ -370,7 +353,7 @@ install_standalone_packages() {
             grep -oP 'pia-linux-\K[0-9.]+-[0-9]+(?=\.run)' | \
             head -n 1)
         
-        if [ -z "$pia_version" ]; then
+        if [[ -z "$pia_version" ]]; then
             print_error "Failed to detect latest PIA version, using fallback: ${PIA_FALLBACK_VERSION}"
             pia_version="$PIA_FALLBACK_VERSION"
         else
@@ -396,7 +379,7 @@ install_standalone_packages() {
     
     # Set credential store to secretservice for Linux desktop environment
     local current_store=$(git config --global credential.credentialStore 2>/dev/null || echo "")
-    if [ "$current_store" != "secretservice" ]; then
+    if [[ "$current_store" != "secretservice" ]]; then
         print_info "Setting credential store to secretservice (GNOME Keyring)..."
         git config --global credential.credentialStore secretservice
     else
@@ -437,7 +420,7 @@ configure_virtualization() {
         groups_added=true
     fi
     
-    if [ "$groups_added" = true ]; then
+    if [[ "$groups_added" == true ]]; then
         print_info "You'll need to reboot for virtualization group membership to take effect."
     fi
 }
@@ -448,7 +431,7 @@ configure_bash() {
     local bashrc=~/.bashrc
     local omp_line="eval \"\$(oh-my-posh init bash --config ${OMP_THEME_PATH})\""
     
-    if [ -f "$bashrc" ] && grep -qF "oh-my-posh init bash" "$bashrc"; then
+    if [[ -f "$bashrc" ]] && grep -qF "oh-my-posh init bash" "$bashrc"; then
         print_info "oh-my-posh is already configured in .bashrc."
     else
         print_info "Setting up oh-my-posh theme..."
@@ -473,7 +456,7 @@ configure_fish() {
     fi
     
     # Set fish as default shell if not already
-    if [ "$SHELL" = "$fish_path" ]; then
+    if [[ "$SHELL" == "$fish_path" ]]; then
         print_info "Fish is already your default shell."
     else
         print_info "Setting fish as default shell..."
@@ -489,7 +472,7 @@ configure_fish() {
     local fish_config=~/.config/fish/config.fish
     local omp_line="oh-my-posh init fish --config ${OMP_THEME_PATH} | source"
     
-    if [ -f "$fish_config" ] && grep -qF "$omp_line" "$fish_config"; then
+    if [[ -f "$fish_config" ]] && grep -qF "$omp_line" "$fish_config"; then
         print_info "oh-my-posh is already configured in Fish config."
     else
         print_info "Setting up oh-my-posh theme..."
@@ -499,7 +482,7 @@ configure_fish() {
     fi
     
     # Configure Aspire CLI
-    if [ -f "$fish_config" ] && grep -qF "fish_add_path \$HOME/.aspire/bin" "$fish_config"; then
+    if [[ -f "$fish_config" ]] && grep -qF "fish_add_path \$HOME/.aspire/bin" "$fish_config"; then
         print_info "Aspire CLI is already configured in Fish config."
     else
         print_info "Setting up Aspire CLI path..."
@@ -514,7 +497,7 @@ configure_fish() {
     local fnm_config=~/.config/fish/conf.d/fnm.fish
     local fnm_line='fnm env --use-on-cd --shell fish | source'
     
-    if [ -f "$fnm_config" ] && grep -qF "$fnm_line" "$fnm_config"; then
+    if [[ -f "$fnm_config" ]] && grep -qF "$fnm_line" "$fnm_config"; then
         print_info "fnm is already configured in Fish."
     else
         printf 'set -gx PATH "$HOME/.local/share/fnm" $PATH\nfnm env --use-on-cd --shell fish | source\n' > "$fnm_config"
@@ -526,7 +509,7 @@ configure_fish() {
     local ssl_config=~/.config/fish/conf.d/ssl_cert_dir.fish
     local ssl_line='set -gx SSL_CERT_DIR /etc/ssl/certs:$HOME/.aspnet/dev-certs/trust'
     
-    if [ -f "$ssl_config" ] && grep -qF "$ssl_line" "$ssl_config"; then
+    if [[ -f "$ssl_config" ]] && grep -qF "$ssl_line" "$ssl_config"; then
         print_info "SSL_CERT_DIR is already configured in Fish."
     else
         echo "$ssl_line" > "$ssl_config"
@@ -554,7 +537,7 @@ configure_powershell() {
     local pwsh_profile=~/.config/powershell/Microsoft.PowerShell_profile.ps1
     local omp_line="oh-my-posh init pwsh --config ${OMP_THEME_PATH} | Invoke-Expression"
     
-    if [ -f "$pwsh_profile" ] && grep -qF "$omp_line" "$pwsh_profile"; then
+    if [[ -f "$pwsh_profile" ]] && grep -qF "$omp_line" "$pwsh_profile"; then
         print_info "oh-my-posh is already configured in PowerShell profile."
     else
         print_info "Setting up oh-my-posh theme..."

@@ -6,6 +6,14 @@ This is a Linux Mint 22 bootstrap script repository for initial system setup and
 
 **Note:** Linux Mint 22 is based on Ubuntu 24.04 LTS (noble).
 
+## Project Files
+
+- **`bootstrap-mint.sh`** - Main installation script for setting up Linux Mint
+- **`output.sh`** - Shared output formatting utilities (colors and print functions)
+- **`reset-test-vm.sh`** - VM testing helper to reset baseline VM for testing bootstrap script
+- **`repos.json`** - Repository configuration (GPG keys and third-party repositories)
+- **`preferences/`** - APT preference files for package priority management
+
 ## ⚠️ CRITICAL REQUIREMENT
 
 **BEFORE making ANY changes to add or modify applications:**
@@ -39,6 +47,7 @@ This is a Linux Mint 22 bootstrap script repository for initial system setup and
 - Initial `apt update` runs in `install_required_utilities()` for fresh package lists
 - Group related packages in separate `apt install` commands with alphabetically sorted package names
 - Use helper functions for consistent output formatting (`print_section`, `print_info`, `print_error`)
+- Shared utilities defined in `output.sh` and sourced by all scripts
 - Package manager separation:
   - `install_apt_packages()` - APT repository packages (grouped by category: .NET, Docker, Virtualization, Azure, Development, Applications, Libraries)
   - `install_flatpak_apps()` - Flatpak applications

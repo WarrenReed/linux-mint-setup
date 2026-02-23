@@ -76,6 +76,7 @@ After the script completes:
 
 - **`repos.json`** - Repository definitions (GPG keys, sources, components)
 - **`preferences/`** - APT preference files for package priority management
+- **`output.sh`** - Shared output formatting utilities (sourced by scripts)
 - **`.github/`** - GitHub Copilot customizations and instructions
 
 ## Repository Management
@@ -96,6 +97,24 @@ The script follows shell scripting best practices:
 - ✅ Function-based organization
 - ✅ Colored output for better readability
 - ✅ Clear section headers and progress indicators
+- ✅ Shared utilities in `output.sh` for consistent formatting
+
+## Development & Testing
+
+### Testing with VMs
+
+Use `reset-test-vm.sh` to quickly reset your test environment:
+
+```bash
+./reset-test-vm.sh
+```
+
+This script:
+- Deletes the `linux-mint-baseline` VM if it exists
+- Clones `linux-mint-22.3` → `linux-mint-baseline`
+- Starts the baseline VM
+
+Requires virsh (KVM/libvirt) to be installed.
 
 ## Troubleshooting
 
