@@ -72,44 +72,93 @@ After the script completes:
    - Run `bash` to see Bash prompt with oh-my-posh theme
    - Run `pwsh` to see PowerShell prompt with oh-my-posh theme
 
-## Configuration Files
+## Configuration
 
-- **`repos.json`** - Repository definitions (GPG keys, sources, components)
-- **`preferences/`** - APT preference files for package priority management
-- **`output.sh`** - Shared output formatting utilities (sourced by scripts)
-- **`.github/`** - GitHub Copilot customizations and instructions
+### Environment Variables
 
-## Repository Management
+Customize the bootstrap script by editing `.env`:
+
+- **`KEYRING_DIR`** - APT keyring directory (default: `/etc/apt/trusted.gpg.d`)
+- **`UBUNTU_DISTRO`** - Ubuntu distribution codename (default: `noble` for 24.04)
+- **`OMP_THEME_PATH`** - oh-my-posh theme path (default: `~/.cache/oh-my-posh/themes/atomic.omp.json`)
+- **`PIA_FALLBACK_VERSION`** - PIA VPN fallback version (default: `3.7-08412`)
+
+For local overrides without modifying tracked files, create `.env.local` (gitignored).
+
+### Files & Directories
+
+- **`bootstrap-mint.sh`** - Main orchestration script
+- **`.env`** - Default configuration variables (tracked in git)
+- **`.env.local`** - Optional local overrides (gitignored, user-specific)
+- **`config/`** - Configuration data
+  - `repositories.json` - Repository definitions (GPG keys, sources, components)
+- **`assets/`** - Files deployed to the system
+  - `preferences.d/` - APT preference files for package priority management
+- **`tests/`** - Testing utilities
+  - `reset-test-vm.sh` - VM testing helper for resetting baseline VM
+- **`lib/`** - Modular library functions (sourced by bootstrap-mint.sh)
+  - `output.sh` - Shared output formatting utilities
+
+### Repository Management
 
 This script uses a **JSON-based repository configuration** system:
 
-- All third-party repositories defined in `repos.json`
+- All third-party repositories defined in `config/repositories.json`
 - Modern DEB822 `.sources` format
 - Automatic GPG key management with deduplication
-- Variable substitution for distribution codenames
+- Variable substitution for distribution codenames via `envsubst`
 
 ## Architecture
 
-The script follows shell scripting best practices:
+The script follows a **modular architecture** with phase-based organization:
 
-- ✅ Error handling with `set -euo pipefail`
-- ✅ Idempotent operations (safe to run multiple times)
-- ✅ Function-based organization
-- ✅ Colored output for better readability
-- ✅ Clear section headers and progress indicators
-- ✅ Shared utilities in `output.sh` for consistent formatting
+- **Main Script** (`bootstrap-mint.sh`) - Orchestrates the installation:
+  - Sources `.env` for configuration (and `.env.local` if present)
+  - Sources all lib modules via globstar pattern (`lib/**/*.sh`)
+  - Executes `main()` function calling all phases in sequence
+
+- **Library Modules** (`lib/`) - Pure function definitions organized by phase:
+  - `output.sh` - Shared output formatting utilities (colors and print functions)
+  - **`preinstall/`** - Pre-installation phase (runs before package installation)
+    - `prerequisites.sh` - Prerequisite checks and required utilities
+    - `add-repositories.sh` - Repository and GPG key management
+  - **`install/`** - Installation phase (package installation)
+    - `install-apt-packages.sh` - APT package installation
+    - `install-flatpak-apps.sh` - Flatpak application installation
+    - `install-standalone-packages.sh` - Standalone package installers (fnm, Node.js, Aspire, oh-my-posh, PIA)
+    - `install-dotnet-tools.sh` - .NET global tools (NSwag, Azure Artifacts CP, Git Credential Manager)
+  - **`postinstall/`** - Post-installation phase (configuration after installation)
+    - `configure-docker.sh` - Docker group configuration
+    - `configure-virtualization.sh` - KVM/libvirt group configuration
+    - `configure-bash.sh` - Bash shell configuration with oh-my-posh
+    - `configure-fish.sh` - Fish shell configuration with oh-my-posh, fnm, SSL certs
+    - `configure-git.sh` - Git and Git Credential Manager configuration
+    - `configure-powershell.sh` - PowerShell profile configuration
+    - `configure-terminal.sh` - GNOME Terminal font configuration
+    - `configure-hosts.sh` - Hosts file configuration
+
+**Design Principles**:
+
+- ✅ **Sourceable modules** - Lib files contain only function definitions, sourced by main script
+- ✅ **Error handling** - Main script uses `set -euo pipefail`, inherited by sourced functions
+- ✅ **Idempotent operations** - Safe to run multiple times, checks existing state before changes
+- ✅ **Phase-based execution** - Clear separation: preinstall → install → postinstall
+- ✅ **Configuration via .env** - Single source of truth for customizable variables
+- ✅ **Colored output** - Consistent formatting via shared utility functions
+- ✅ **Alphabetical function order** - Functions ordered to match execution sequence for readability
 
 ## Development & Testing
 
 ### Testing with VMs
 
-Use `reset-test-vm.sh` to quickly reset your test environment:
+Use the testing script to quickly reset your test environment:
 
 ```bash
-./reset-test-vm.sh
+./tests/reset-test-vm.sh
 ```
 
 This script:
+
 - Deletes the `linux-mint-baseline` VM if it exists
 - Clones `linux-mint-22.3` → `linux-mint-baseline`
 - Starts the baseline VM
@@ -123,9 +172,9 @@ Requires virsh (KVM/libvirt) to be installed.
 - Run as your normal user: `bash bootstrap-mint.sh`
 - The script will request sudo when needed
 
-**"repos.json not found"**
+**"repositories.json not found"**
 
-- Make sure you're running the script from the repository directory
+- Make sure you're running the script from the repository root directory
 
 **Docker permission denied**
 
@@ -140,14 +189,23 @@ Requires virsh (KVM/libvirt) to be installed.
 
 This is personal tooling. Use at your own risk.
 
+## Customization
+
+Edit `.env` or create `.env.local` to customize:
+
+- **APT keyring directory** - Change `KEYRING_DIR` to use `/usr/share/keyrings` (modern convention)
+- **Ubuntu distribution** - Adjust `UBUNTU_DISTRO` for different base (e.g., `jammy` for 22.04)
+- **oh-my-posh theme** - Set `OMP_THEME_PATH` to your preferred theme
+- **PIA version** - Override `PIA_FALLBACK_VERSION` if detection fails
+
 ## Notes
 
 - Linux Mint 22 is based on **Ubuntu 24.04 LTS (noble)**
 - APT preferences configured to prefer Ubuntu packages over Microsoft .NET packages where conflicts exist
-- Bash configuration stored in `~/.bashrc`
-- Fish shell configuration stored in `~/.config/fish/config.fish`
-- PowerShell profile stored in `~/.config/powershell/Microsoft.PowerShell_profile.ps1`
-- oh-my-posh theme: configurable via `OMP_THEME_PATH` variable (default: atomic)
-- oh-my-posh theme cache: `~/.cache/oh-my-posh/themes/`
+- Configuration files:
+  - Bash: `~/.bashrc`
+  - Fish: `~/.config/fish/config.fish`
+  - PowerShell: `~/.config/powershell/Microsoft.PowerShell_profile.ps1`
+  - oh-my-posh themes: `~/.cache/oh-my-posh/themes/`
 - .NET HTTPS development certificates trusted via `dotnet dev-certs https --trust`
 - Hosts file configured with entry: `127.0.0.1 sql-server` (for SQL Server container orchestrated by Aspire)

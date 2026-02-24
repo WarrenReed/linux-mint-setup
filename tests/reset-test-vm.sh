@@ -14,8 +14,8 @@
 set -euo pipefail
 
 # Get script directory and source output utilities
-readonly SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-source "$SCRIPT_DIR/output.sh"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+source "$SCRIPT_DIR/../lib/output.sh"
 
 # VM names
 readonly SOURCE_VM="linux-mint-22.3"

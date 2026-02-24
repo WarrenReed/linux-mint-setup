@@ -8,11 +8,47 @@ This is a Linux Mint 22 bootstrap script repository for initial system setup and
 
 ## Project Files
 
-- **`bootstrap-mint.sh`** - Main installation script for setting up Linux Mint
-- **`output.sh`** - Shared output formatting utilities (colors and print functions)
-- **`reset-test-vm.sh`** - VM testing helper to reset baseline VM for testing bootstrap script
-- **`repos.json`** - Repository configuration (GPG keys and third-party repositories)
-- **`preferences/`** - APT preference files for package priority management
+- **`bootstrap-mint.sh`** - Main orchestration script (sources and calls lib functions)
+- **`.env`** - Default configuration variables (tracked in git)
+- **`.env.local`** - Optional local overrides (gitignored, user-specific)
+- **`config/`** - Configuration data
+  - **`repositories.json`** - Repository configuration (GPG keys and third-party repositories)
+- **`assets/`** - Files deployed to the system
+  - **`preferences.d/`** - APT preference files for package priority management
+- **`tests/`** - Testing utilities
+  - **`reset-test-vm.sh`** - VM testing helper to reset baseline VM for testing bootstrap script
+- **`lib/`** - Modular library functions (sourced by bootstrap-mint.sh)
+  - **`output.sh`** - Shared output formatting utilities (colors and print functions)
+  - **`preinstall/`** - Pre-installation phase (runs before package installation)
+    - **`prerequisites.sh`** - Prerequisite checks and required utilities
+    - **`add-repositories.sh`** - Repository and GPG key management
+  - **`install/`** - Installation phase (package installation)
+    - **`install-apt-packages.sh`** - APT package installation
+    - **`install-flatpak-apps.sh`** - Flatpak application installation
+    - **`install-standalone-packages.sh`** - Standalone package installers (fnm, Node.js, Aspire, oh-my-posh, PIA)
+    - **`install-dotnet-tools.sh`** - .NET global tools (NSwag, Azure Artifacts CP, Git Credential Manager)
+  - **`postinstall/`** - Post-installation phase (configuration after installation)
+    - **`configure-docker.sh`** - Docker group configuration
+    - **`configure-virtualization.sh`** - KVM/libvirt group configuration
+    - **`configure-bash.sh`** - Bash shell configuration with oh-my-posh
+    - **`configure-fish.sh`** - Fish shell configuration with oh-my-posh, fnm, SSL certs
+    - **`configure-git.sh`** - Git and Git Credential Manager configuration
+    - **`configure-powershell.sh`** - PowerShell profile configuration
+    - **`configure-terminal.sh`** - GNOME Terminal font configuration
+    - **`configure-hosts.sh`** - Hosts file configuration
+
+## Configuration
+
+### Environment Variables (.env)
+
+Configuration is managed via `.env` and `.env.local` files:
+
+- **KEYRING_DIR** - APT keyring directory (default: `/etc/apt/trusted.gpg.d`)
+- **UBUNTU_DISTRO** - Ubuntu distribution codename (default: `noble` for 24.04)
+- **OMP_THEME_PATH** - oh-my-posh theme path (default: `~/.cache/oh-my-posh/themes/atomic.omp.json`)
+- **PIA_FALLBACK_VERSION** - PIA VPN fallback version (default: `3.7-08412`)
+
+The `.env` file is tracked in git with sensible defaults. Create `.env.local` (gitignored) to override specific values for your local environment.
 
 ## ⚠️ CRITICAL REQUIREMENT
 
@@ -38,8 +74,13 @@ This is a Linux Mint 22 bootstrap script repository for initial system setup and
 
 ### Organization
 
+- **Modular Architecture:** All installation and configuration logic extracted to `lib/` files
+- **Sourceable Modules:** Lib files contain only function definitions, sourced by [bootstrap-mint.sh](../bootstrap-mint.sh)
+  - Functions become available when sourced by main script
+  - No standalone execution capability (removed to prevent readonly variable conflicts)
+  - Shared utilities from [lib/output.sh](../lib/output.sh) sourced once by main script
 - Script organized into functions with clear separation of concerns
-- Main execution flow controlled by `main()` function
+- Main execution flow controlled by `main()` function in [bootstrap-mint.sh](../bootstrap-mint.sh)
 - **Function order MUST match main() execution sequence** - this improves readability and maintainability
 - Logical sections: prerequisites, repository setup, package installation, standalone tools, configuration
 - Keep applications sorted alphabetically in both documentation and code
@@ -47,15 +88,16 @@ This is a Linux Mint 22 bootstrap script repository for initial system setup and
 - Initial `apt update` runs in `install_required_utilities()` for fresh package lists
 - Group related packages in separate `apt install` commands with alphabetically sorted package names
 - Use helper functions for consistent output formatting (`print_section`, `print_info`, `print_error`)
-- Shared utilities defined in `output.sh` and sourced by all scripts
+- Shared utilities defined in [lib/output.sh](../lib/output.sh) and sourced by main script
 - Package manager separation:
-  - `install_apt_packages()` - APT repository packages (grouped by category: .NET, Docker, Virtualization, Azure, Development, Applications, Libraries)
-  - `install_flatpak_apps()` - Flatpak applications
-  - `install_standalone_packages()` - Direct download installers (fnm, Aspire, oh-my-posh, PIA)
+  - `install_apt_packages()` in [lib/install/install-apt-packages.sh](../lib/install/install-apt-packages.sh) - APT repository packages (grouped by category: .NET, Docker, Virtualization, Azure, Development, Applications, Libraries)
+  - `install_flatpak_apps()` in [lib/install/install-flatpak-apps.sh](../lib/install/install-flatpak-apps.sh) - Flatpak applications
+  - `install_standalone_packages()` in [lib/install/install-standalone-packages.sh](../lib/install/install-standalone-packages.sh) - Direct download installers (fnm, Node.js, Aspire, oh-my-posh, PIA)
+  - `install_dotnet_tools()` in [lib/install/install-dotnet-tools.sh](../lib/install/install-dotnet-tools.sh) - .NET global tools
 
 ### Output & Logging
 
-- Use colored output: GREEN for sections, YELLOW for info, RED for errors
+- Use colored output: GREEN for sections, CYAN for info, RED for errors (YELLOW reserved for warnings)
 - Provide clear section headers with `print_section`
 - Include informative messages before each operation
 - Suppress unnecessary output with `> /dev/null`
@@ -93,7 +135,7 @@ This is a Linux Mint 22 bootstrap script repository for initial system setup and
 
 ### Repository Management
 
-- **Single source of truth:** All repository configuration stored in `repos.json`
+- **Single source of truth:** All repository configuration stored in `config/repositories.json`
 - **Repository format:** DEB822 `.sources` format (modern standard)
 - **GPG keys:** Defined in `keys` array with `name` and `url` properties
 - **Repositories:** Defined in `repositories` array with metadata:
@@ -119,7 +161,7 @@ This is a Linux Mint 22 bootstrap script repository for initial system setup and
 - Pin-Priority: 1 = lowest priority (use for conflicting repositories)
 - Required when mixing Ubuntu and third-party repos with overlapping packages
 - Example: Prefer Ubuntu .NET packages over Microsoft's to avoid conflicts
-- Store preference files in `preferences/` directory in repository
+- Store preference files in `assets/preferences.d/` directory in repository
 - Script copies preferences files to `/etc/apt/preferences.d/` during setup
 
 ### PPA Repositories
@@ -138,7 +180,7 @@ This is a Linux Mint 22 bootstrap script repository for initial system setup and
 - Set debconf values before `apt install` command:
   - `echo "code code/add-microsoft-repo boolean false" | sudo debconf-set-selections`
 - Use when package installer would conflict with centralized repository management
-- Ensures idempotent behavior when repos already managed via `repos.json`
+- Ensures idempotent behavior when repos already managed via `config/repositories.json`
 
 ### Standalone Installations
 
@@ -157,7 +199,7 @@ This is a Linux Mint 22 bootstrap script repository for initial system setup and
 - Group changes require reboot to take effect
 - Inform users of required reboot steps
 - Always implement idempotency checks (verify existing state before making changes)
-- Configuration functions: `configure_docker()`, `configure_virtualization()`, `configure_bash()`, `configure_fish()`, `configure_powershell()`, `configure_terminal()`, `configure_hosts()`
+- Configuration functions: `configure_docker()`, `configure_virtualization()`, `configure_bash()`, `configure_fish()`, `configure_git()`, `configure_powershell()`, `configure_terminal()`, `configure_hosts()`
 
 ## When Adding New Applications
 
@@ -172,26 +214,30 @@ This is a Linux Mint 22 bootstrap script repository for initial system setup and
 
 2. Add to alphabetically sorted list in header documentation
 3. If repository needed:
-   - **For third-party repos with GPG keys:** Add to `repos.json`:
+   - **For third-party repos with GPG keys:** Add to [config/repositories.json](../config/repositories.json):
      - Add GPG key to `keys` array if not already present (name and url)
      - Add repository to `repositories` array with all required fields
      - Reference existing key name if multiple repos share same key
      - Use `${UBUNTU_DISTRO}` variable in suites if distribution-specific
-   - **For PPA repos:** Add function call to `add_ppa_repositories()` with idempotency check
-4. If APT package: 
-   - Add to the appropriate grouped `apt install` command in alphabetical order in `install_apt_packages()` (groups: .NET, Docker, Virtualization, Azure, Development, Applications, Libraries)
+   - **For PPA repos:** Add function call to `add_ppa_repositories()` in [lib/preinstall/add-repositories.sh](../lib/preinstall/add-repositories.sh) with idempotency check
+4. If APT package:
+   - Add to the appropriate grouped `apt install` command in alphabetical order in `install_apt_packages()` in [lib/install/install-apt-packages.sh](../lib/install/install-apt-packages.sh)
+   - Groups: .NET, Docker, Virtualization, Azure, Development, Applications, Libraries
    - If package attempts to manage its own repository, add debconf setting before installation to prevent conflicts
-5. If Flatpak app: Add to `install_flatpak_apps()` with idempotency check
-6. If standalone script:
-   - Add installation to `install_standalone_packages()` function
+5. If Flatpak app: Add to `install_flatpak_apps()` in [lib/install/install-flatpak-apps.sh](../lib/install/install-flatpak-apps.sh) with idempotency check
+6. If .NET global tool: Add to `install_dotnet_tools()` in [lib/install/install-dotnet-tools.sh](../lib/install/install-dotnet-tools.sh)
+7. If standalone script:
+   - Add installation to `install_standalone_packages()` function in [lib/install/install-standalone-packages.sh](../lib/install/install-standalone-packages.sh)
    - Add idempotency check using `command -v` or similar before installing
    - Use official installation script from vendor documentation
    - Ensure curl uses `-fsSL` flags
-7. Add post-installation configuration if needed:
-   - Add function to Configuration section (e.g., `configure_docker()`, `configure_fish()`)
-   - Place function in execution order matching `main()` function calls
+8. Add post-installation configuration if needed:
+   - Add function to appropriate lib file in `lib/postinstall/` (e.g., `configure_docker()` in [lib/postinstall/configure-docker.sh](../lib/postinstall/configure-docker.sh))
+   - Or create new lib file for new configuration type (follow hybrid pattern with BASH_SOURCE guard)
+   - Place function in execution order matching `main()` function calls in [bootstrap-mint.sh](../bootstrap-mint.sh)
    - Implement idempotency checks
-8. If adding new functions:
+   - Source the new lib file in [bootstrap-mint.sh](../bootstrap-mint.sh) if creating new file
+9. If adding new functions:
    - Place function definition in the order it's called in `main()` for readability
    - Follow the existing pattern: Prerequisites → Repository Setup → Package Installation → Configuration
-9. Keep all sections alphabetically sorted (documentation, package names)
+10. Keep all sections alphabetically sorted (documentation, package names)
