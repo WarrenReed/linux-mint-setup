@@ -147,6 +147,26 @@ center_login_prompt() {
     fi
 }
 
+configure_nemo() {
+    local current_view=$(gsettings get org.nemo.preferences default-folder-viewer)
+    
+    if [[ "$current_view" == "'list-view'" ]]; then
+        print_info "Nemo already using list view."
+    else
+        print_info "Setting Nemo to use list view..."
+        gsettings set org.nemo.preferences default-folder-viewer 'list-view'
+    fi
+    
+    # Show hidden files
+    local show_hidden=$(gsettings get org.nemo.preferences show-hidden-files)
+    if [[ "$show_hidden" == "true" ]]; then
+        print_info "Nemo already showing hidden files."
+    else
+        print_info "Setting Nemo to show hidden files..."
+        gsettings set org.nemo.preferences show-hidden-files true
+    fi
+}
+
 configure_cinnamon() {
     print_section "Configuring Cinnamon Desktop"
     
@@ -163,6 +183,7 @@ configure_cinnamon() {
     set_account_picture
     disable_startup_dialog
     center_login_prompt
+    configure_nemo
     
     print_info "Cinnamon desktop configured."
 }
