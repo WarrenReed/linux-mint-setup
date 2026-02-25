@@ -167,6 +167,76 @@ configure_nemo() {
     fi
 }
 
+pin_panel_apps() {
+    # Pin applications to the grouped-window-list applet (taskbar)
+    local potential_apps=(        
+        "nemo.desktop"
+        "google-chrome.desktop"
+        "org.gnome.Terminal.desktop"
+        "code.desktop"
+        "microsoft-azurevpnclient.desktop"
+        "com.devolutions.remotedesktopmanager.desktop"        
+        "com.microsoft.AzureStorageExplorer.desktop"
+        "virt-manager.desktop"
+        "com.slack.Slack.desktop"
+        "com.discordapp.Discord.desktop"
+        "steam.desktop"        
+    )
+    
+    # Find the grouped-window-list config file
+    local config_file=$(find ~/.config/cinnamon/spices/grouped-window-list@cinnamon.org/ -name "*.json" 2>/dev/null | head -1)
+    
+    if [[ -z "$config_file" ]] || [[ ! -f "$config_file" ]]; then
+        print_info "Grouped-window-list applet not found. Skipping panel app pinning."
+        return
+    fi
+    
+    # Build array of only installed apps
+    local pinned_apps=()
+    for app in "${potential_apps[@]}"; do
+        # Check if desktop file exists (system or flatpak)
+        if [[ -f "/usr/share/applications/$app" ]]; then
+            pinned_apps+=("$app")
+        elif [[ -f "/var/lib/flatpak/exports/share/applications/$app" ]]; then
+            # Flatpak apps need :flatpak suffix
+            pinned_apps+=("$app:flatpak")
+        fi
+    done
+    
+    if [[ ${#pinned_apps[@]} -eq 0 ]]; then
+        print_info "No installed applications found to pin."
+        return
+    fi
+    
+    # Check if already configured by comparing current pinned-apps with our target list
+    if python3 - "$config_file" "${pinned_apps[@]}" << 'EOF'
+import json, sys
+config = json.load(open(sys.argv[1]))
+current = config.get("pinned-apps", {}).get("value", [])
+target = sys.argv[2:]
+sys.exit(0 if current == target else 1)
+EOF
+    then
+        print_info "Panel apps already pinned."
+        return
+    fi
+    
+    print_info "Pinning installed applications to panel..."
+    
+    # Update the config file using Python to properly handle JSON
+    if python3 - "$config_file" "${pinned_apps[@]}" << 'EOF'
+import json, sys
+config = json.load(open(sys.argv[1]))
+config["pinned-apps"]["value"] = sys.argv[2:]
+json.dump(config, open(sys.argv[1], "w"), indent=4)
+EOF
+    then
+        print_info "Pinned ${#pinned_apps[@]} applications. Log out and back in to see changes."
+    else
+        print_error "Failed to update panel app pinning configuration."
+    fi
+}
+
 configure_cinnamon() {
     print_section "Configuring Cinnamon Desktop"
     
@@ -184,6 +254,7 @@ configure_cinnamon() {
     disable_startup_dialog
     center_login_prompt
     configure_nemo
+    pin_panel_apps
     
     print_info "Cinnamon desktop configured."
 }
