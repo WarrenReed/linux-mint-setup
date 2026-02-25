@@ -25,6 +25,7 @@ This is a Linux Mint 22 bootstrap script repository for initial system setup and
   - **`install/`** - Installation phase (package installation)
     - **`install-apt-packages.sh`** - APT package installation
     - **`install-flatpak-apps.sh`** - Flatpak application installation
+    - **`install-npm-packages.sh`** - npm global packages (Copilot CLI)
     - **`install-standalone-packages.sh`** - Standalone package installers (fnm, Node.js, Aspire, oh-my-posh, PIA)
     - **`install-dotnet-tools.sh`** - .NET global tools (NSwag, Azure Artifacts CP, Git Credential Manager)
   - **`postinstall/`** - Post-installation phase (configuration after installation)
@@ -35,6 +36,7 @@ This is a Linux Mint 22 bootstrap script repository for initial system setup and
     - **`configure-git.sh`** - Git and Git Credential Manager configuration
     - **`configure-powershell.sh`** - PowerShell profile configuration
     - **`configure-terminal.sh`** - GNOME Terminal font configuration
+    - **`configure-cinnamon.sh`** - Cinnamon desktop configuration (theme, settings)
     - **`configure-hosts.sh`** - Hosts file configuration
 
 ## Configuration
@@ -92,6 +94,7 @@ The `.env` file is tracked in git with sensible defaults. Create `.env.local` (g
 - Package manager separation:
   - `install_apt_packages()` in [lib/install/install-apt-packages.sh](../lib/install/install-apt-packages.sh) - APT repository packages (grouped by category: .NET, Docker, Virtualization, Azure, Development, Applications, Libraries)
   - `install_flatpak_apps()` in [lib/install/install-flatpak-apps.sh](../lib/install/install-flatpak-apps.sh) - Flatpak applications
+  - `install_npm_packages()` in [lib/install/install-npm-packages.sh](../lib/install/install-npm-packages.sh) - npm global packages (Copilot CLI)
   - `install_standalone_packages()` in [lib/install/install-standalone-packages.sh](../lib/install/install-standalone-packages.sh) - Direct download installers (fnm, Node.js, Aspire, oh-my-posh, PIA)
   - `install_dotnet_tools()` in [lib/install/install-dotnet-tools.sh](../lib/install/install-dotnet-tools.sh) - .NET global tools
 
@@ -199,7 +202,7 @@ The `.env` file is tracked in git with sensible defaults. Create `.env.local` (g
 - Group changes require reboot to take effect
 - Inform users of required reboot steps
 - Always implement idempotency checks (verify existing state before making changes)
-- Configuration functions: `configure_docker()`, `configure_virtualization()`, `configure_bash()`, `configure_fish()`, `configure_git()`, `configure_powershell()`, `configure_terminal()`, `configure_hosts()`
+- Configuration functions: `configure_docker()`, `configure_virtualization()`, `configure_bash()`, `configure_fish()`, `configure_git()`, `configure_powershell()`, `configure_terminal()`, `configure_cinnamon()`, `configure_hosts()`
 
 ## When Adding New Applications
 
@@ -225,19 +228,22 @@ The `.env` file is tracked in git with sensible defaults. Create `.env.local` (g
    - Groups: .NET, Docker, Virtualization, Azure, Development, Applications, Libraries
    - If package attempts to manage its own repository, add debconf setting before installation to prevent conflicts
 5. If Flatpak app: Add to `install_flatpak_apps()` in [lib/install/install-flatpak-apps.sh](../lib/install/install-flatpak-apps.sh) with idempotency check
-6. If .NET global tool: Add to `install_dotnet_tools()` in [lib/install/install-dotnet-tools.sh](../lib/install/install-dotnet-tools.sh)
-7. If standalone script:
+6. If npm package: Add to `install_npm_packages()` in [lib/install/install-npm-packages.sh](../lib/install/install-npm-packages.sh) with idempotency check
+7. If .NET global tool: Add to `install_dotnet_tools()` in [lib/install/install-dotnet-tools.sh](../lib/install/install-dotnet-tools.sh)
+8. If standalone script:
    - Add installation to `install_standalone_packages()` function in [lib/install/install-standalone-packages.sh](../lib/install/install-standalone-packages.sh)
    - Add idempotency check using `command -v` or similar before installing
    - Use official installation script from vendor documentation
    - Ensure curl uses `-fsSL` flags
-8. Add post-installation configuration if needed:
+9. Add post-installation configuration if needed:
    - Add function to appropriate lib file in `lib/postinstall/` (e.g., `configure_docker()` in [lib/postinstall/configure-docker.sh](../lib/postinstall/configure-docker.sh))
    - Or create new lib file for new configuration type (follow hybrid pattern with BASH_SOURCE guard)
    - Place function in execution order matching `main()` function calls in [bootstrap-mint.sh](../bootstrap-mint.sh)
    - Implement idempotency checks
    - Source the new lib file in [bootstrap-mint.sh](../bootstrap-mint.sh) if creating new file
-9. If adding new functions:
-   - Place function definition in the order it's called in `main()` for readability
-   - Follow the existing pattern: Prerequisites → Repository Setup → Package Installation → Configuration
+10. If adding new functions:
+
+- Place function definition in the order it's called in `main()` for readability
+- Follow the existing pattern: Prerequisites → Repository Setup → Package Installation → Configuration
+
 10. Keep all sections alphabetically sorted (documentation, package names)

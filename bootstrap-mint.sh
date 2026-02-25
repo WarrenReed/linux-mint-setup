@@ -18,6 +18,7 @@
 #   - Fish Shell
 #   - Git Credential Manager
 #   - Git and development tools
+#   - GitHub Copilot CLI
 #   - Google Chrome
 #   - KVM/QEMU with virt-manager
 #   - Meslo Nerd Font
@@ -40,6 +41,7 @@
 #               GNOME Terminal is configured to use Meslo Nerd Font
 #               oh-my-posh theme: configurable via OMP_THEME_PATH variable
 #               Hosts file configured with: 127.0.0.1 sql-server
+#               Cinnamon desktop configured (dark theme, centered panel, slideshow, centered login)
 #               .NET development certificates trusted
 ################################################################################
 
@@ -100,6 +102,7 @@ main() {
     install_dotnet_tools
     install_flatpak_apps
     install_standalone_packages
+    install_npm_packages
     
     # Postinstall Phase
     configure_bash
@@ -107,6 +110,7 @@ main() {
     configure_fish
     configure_git
     configure_hosts
+    configure_cinnamon
     configure_powershell
     configure_terminal
     configure_virtualization

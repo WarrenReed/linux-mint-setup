@@ -16,6 +16,7 @@ Automated bootstrap script for setting up a fresh Linux Mint 22 installation wit
 - **Docker Engine** - Container platform (including docker-compose, buildx)
 - **Git** - Version control system
 - **Git Credential Manager** - Secure Git credential helper for multi-factor authentication
+- **GitHub Copilot CLI** - AI-powered command-line assistant
 - **KVM/QEMU with virt-manager** - Hardware virtualization for running virtual machines
 - **Node.js 22** - JavaScript runtime (installed via fnm - Fast Node Manager)
 - **NSwag CLI** - OpenAPI/Swagger toolchain for .NET (command-line interface)
@@ -125,6 +126,7 @@ The script follows a **modular architecture** with phase-based organization:
   - **`install/`** - Installation phase (package installation)
     - `install-apt-packages.sh` - APT package installation
     - `install-flatpak-apps.sh` - Flatpak application installation
+    - `install-npm-packages.sh` - npm global packages (Copilot CLI)
     - `install-standalone-packages.sh` - Standalone package installers (fnm, Node.js, Aspire, oh-my-posh, PIA)
     - `install-dotnet-tools.sh` - .NET global tools (NSwag, Azure Artifacts CP, Git Credential Manager)
   - **`postinstall/`** - Post-installation phase (configuration after installation)
@@ -135,6 +137,7 @@ The script follows a **modular architecture** with phase-based organization:
     - `configure-git.sh` - Git and Git Credential Manager configuration
     - `configure-powershell.sh` - PowerShell profile configuration
     - `configure-terminal.sh` - GNOME Terminal font configuration
+    - `configure-cinnamon.sh` - Cinnamon desktop configuration (theme, settings)
     - `configure-hosts.sh` - Hosts file configuration
 
 **Design Principles**:
