@@ -95,6 +95,7 @@ For local overrides without modifying tracked files, create `.env.local` (gitign
   - `repositories.json` - Repository definitions (GPG keys, sources, components)
 - **`assets/`** - Files deployed to the system
   - `preferences.d/` - APT preference files for package priority management
+  - `etc/default/grub.d/` - GRUB bootloader configuration files
 - **`tests/`** - Testing utilities
   - `reset-test-vm.sh` - VM testing helper for resetting baseline VM
 - **`lib/`** - Modular library functions (sourced by bootstrap-mint.sh)
@@ -135,6 +136,7 @@ The script follows a **modular architecture** with phase-based organization:
     - `configure-bash.sh` - Bash shell configuration with oh-my-posh
     - `configure-fish.sh` - Fish shell configuration with oh-my-posh, fnm, SSL certs
     - `configure-git.sh` - Git and Git Credential Manager configuration
+    - `configure-grub.sh` - GRUB bootloader configuration (timeout, remember last choice)
     - `configure-powershell.sh` - PowerShell profile configuration
     - `configure-terminal.sh` - GNOME Terminal font configuration
     - `configure-cinnamon.sh` - Cinnamon desktop configuration (theme, settings)

@@ -15,6 +15,7 @@ This is a Linux Mint 22 bootstrap script repository for initial system setup and
   - **`repositories.json`** - Repository configuration (GPG keys and third-party repositories)
 - **`assets/`** - Files deployed to the system
   - **`preferences.d/`** - APT preference files for package priority management
+  - **`etc/default/grub.d/`** - GRUB bootloader configuration files
 - **`tests/`** - Testing utilities
   - **`reset-test-vm.sh`** - VM testing helper to reset baseline VM for testing bootstrap script
 - **`lib/`** - Modular library functions (sourced by bootstrap-mint.sh)
@@ -34,6 +35,7 @@ This is a Linux Mint 22 bootstrap script repository for initial system setup and
     - **`configure-bash.sh`** - Bash shell configuration with oh-my-posh
     - **`configure-fish.sh`** - Fish shell configuration with oh-my-posh, fnm, SSL certs
     - **`configure-git.sh`** - Git and Git Credential Manager configuration
+    - **`configure-grub.sh`** - GRUB bootloader configuration (timeout, remember last choice)
     - **`configure-powershell.sh`** - PowerShell profile configuration
     - **`configure-terminal.sh`** - GNOME Terminal font configuration
     - **`configure-cinnamon.sh`** - Cinnamon desktop configuration (theme, settings)
@@ -202,7 +204,7 @@ The `.env` file is tracked in git with sensible defaults. Create `.env.local` (g
 - Group changes require reboot to take effect
 - Inform users of required reboot steps
 - Always implement idempotency checks (verify existing state before making changes)
-- Configuration functions: `configure_docker()`, `configure_virtualization()`, `configure_bash()`, `configure_fish()`, `configure_git()`, `configure_powershell()`, `configure_terminal()`, `configure_cinnamon()`, `configure_hosts()`
+- Configuration functions: `configure_docker()`, `configure_virtualization()`, `configure_bash()`, `configure_fish()`, `configure_git()`, `configure_grub()`, `configure_powershell()`, `configure_terminal()`, `configure_cinnamon()`, `configure_hosts()`
 
 ## When Adding New Applications
 

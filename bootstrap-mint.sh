@@ -109,6 +109,7 @@ main() {
     configure_docker
     configure_fish
     configure_git
+    configure_grub
     configure_hosts
     configure_cinnamon
     configure_powershell
