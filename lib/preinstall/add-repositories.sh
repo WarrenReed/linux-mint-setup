@@ -78,7 +78,7 @@ configure_apt_preferences() {
     print_section "Configuring APT Preferences"
     
     # Copy all preference files from preferences.d/ directory
-    for pref_file in "${SCRIPT_DIR}/assets/preferences.d/"*; do
+    for pref_file in "${SCRIPT_DIR}/assets/etc/apt/preferences.d/"*; do
         # Skip if no files found (glob doesn't match)
         [[ -e "$pref_file" ]] || continue
         

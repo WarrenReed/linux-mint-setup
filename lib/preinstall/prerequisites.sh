@@ -22,11 +22,6 @@ check_prerequisites() {
         exit 1
     fi
     
-    # Check if preferences.d directory exists
-    if [[ ! -d "${SCRIPT_DIR}/assets/preferences.d" ]]; then
-        print_error "assets/preferences.d/ directory not found"
-        exit 1
-    fi
     
     print_info "All prerequisites satisfied"
 }
