@@ -22,6 +22,7 @@ This is a Linux Mint 22 bootstrap script repository for initial system setup and
   - **`output.sh`** - Shared output formatting utilities (colors and print functions)
   - **`preinstall/`** - Pre-installation phase (runs before package installation)
     - **`prerequisites.sh`** - Prerequisite checks and required utilities
+    - **`uninstall-apt-packages.sh`** - Remove unwanted pre-installed packages (Firefox)
     - **`add-repositories.sh`** - Repository and GPG key management
   - **`install/`** - Installation phase (package installation)
     - **`install-apt-packages.sh`** - APT package installation
@@ -86,7 +87,7 @@ The `.env` file is tracked in git with sensible defaults. Create `.env.local` (g
 - Script organized into functions with clear separation of concerns
 - Main execution flow controlled by `main()` function in [bootstrap-mint.sh](../bootstrap-mint.sh)
 - **Function order MUST match main() execution sequence** - this improves readability and maintainability
-- Logical sections: prerequisites, repository setup, package installation, standalone tools, configuration
+- Logical sections: prerequisites, uninstalling unwanted packages, repository setup, package installation, standalone tools, configuration
 - Keep applications sorted alphabetically in both documentation and code
 - Add all repositories first, then run `apt update` once (after adding repos)
 - Initial `apt update` runs in `install_required_utilities()` for fresh package lists
@@ -94,6 +95,7 @@ The `.env` file is tracked in git with sensible defaults. Create `.env.local` (g
 - Use helper functions for consistent output formatting (`print_section`, `print_info`, `print_error`)
 - Shared utilities defined in [lib/output.sh](../lib/output.sh) and sourced by main script
 - Package manager separation:
+  - `uninstall_apt_packages()` in [lib/preinstall/uninstall-apt-packages.sh](../lib/preinstall/uninstall-apt-packages.sh) - Remove unwanted pre-installed packages (Firefox)
   - `install_apt_packages()` in [lib/install/install-apt-packages.sh](../lib/install/install-apt-packages.sh) - APT repository packages (grouped by category: .NET, Docker, Virtualization, Azure, Development, Applications, Libraries)
   - `install_flatpak_apps()` in [lib/install/install-flatpak-apps.sh](../lib/install/install-flatpak-apps.sh) - Flatpak applications
   - `install_npm_packages()` in [lib/install/install-npm-packages.sh](../lib/install/install-npm-packages.sh) - npm global packages (Copilot CLI)
@@ -218,34 +220,40 @@ The `.env` file is tracked in git with sensible defaults. Create `.env.local` (g
    - **Do NOT proceed until you have verified this information**
 
 2. Add to alphabetically sorted list in header documentation
-3. If repository needed:
+3. If removing unwanted pre-installed package:
+   - Add removal to `uninstall_apt_packages()` in [lib/preinstall/uninstall-apt-packages.sh](../lib/preinstall/uninstall-apt-packages.sh)
+   - Include idempotency check (verify package is installed before attempting removal)
+   - Use `sudo apt purge -y` followed by `sudo apt autoremove -y`
+4. If repository needed:
    - **For third-party repos with GPG keys:** Add to [config/repositories.json](../config/repositories.json):
      - Add GPG key to `keys` array if not already present (name and url)
      - Add repository to `repositories` array with all required fields
      - Reference existing key name if multiple repos share same key
      - Use `${UBUNTU_DISTRO}` variable in suites if distribution-specific
    - **For PPA repos:** Add function call to `add_ppa_repositories()` in [lib/preinstall/add-repositories.sh](../lib/preinstall/add-repositories.sh) with idempotency check
-4. If APT package:
+5. If APT package:
    - Add to the appropriate grouped `apt install` command in alphabetical order in `install_apt_packages()` in [lib/install/install-apt-packages.sh](../lib/install/install-apt-packages.sh)
    - Groups: .NET, Docker, Virtualization, Azure, Development, Applications, Libraries
    - If package attempts to manage its own repository, add debconf setting before installation to prevent conflicts
-5. If Flatpak app: Add to `install_flatpak_apps()` in [lib/install/install-flatpak-apps.sh](../lib/install/install-flatpak-apps.sh) with idempotency check
-6. If npm package: Add to `install_npm_packages()` in [lib/install/install-npm-packages.sh](../lib/install/install-npm-packages.sh) with idempotency check
-7. If .NET global tool: Add to `install_dotnet_tools()` in [lib/install/install-dotnet-tools.sh](../lib/install/install-dotnet-tools.sh)
-8. If standalone script:
+6. If Flatpak app: Add to `install_flatpak_apps()` in [lib/install/install-flatpak-apps.sh](../lib/install/install-flatpak-apps.sh) with idempotency check
+7. If npm package: Add to `install_npm_packages()` in [lib/install/install-npm-packages.sh](../lib/install/install-npm-packages.sh) with idempotency check
+8. If .NET global tool: Add to `install_dotnet_tools()` in [lib/install/install-dotnet-tools.sh](../lib/install/install-dotnet-tools.sh)
+9. If standalone script:
    - Add installation to `install_standalone_packages()` function in [lib/install/install-standalone-packages.sh](../lib/install/install-standalone-packages.sh)
    - Add idempotency check using `command -v` or similar before installing
    - Use official installation script from vendor documentation
    - Ensure curl uses `-fsSL` flags
-9. Add post-installation configuration if needed:
-   - Add function to appropriate lib file in `lib/postinstall/` (e.g., `configure_docker()` in [lib/postinstall/configure-docker.sh](../lib/postinstall/configure-docker.sh))
-   - Or create new lib file for new configuration type (follow hybrid pattern with BASH_SOURCE guard)
-   - Place function in execution order matching `main()` function calls in [bootstrap-mint.sh](../bootstrap-mint.sh)
-   - Implement idempotency checks
-   - Source the new lib file in [bootstrap-mint.sh](../bootstrap-mint.sh) if creating new file
-10. If adding new functions:
+10. Add post-installation configuration if needed:
+
+- Add function to appropriate lib file in `lib/postinstall/` (e.g., `configure_docker()` in [lib/postinstall/configure-docker.sh](../lib/postinstall/configure-docker.sh))
+- Or create new lib file for new configuration type (follow hybrid pattern with BASH_SOURCE guard)
+- Place function in execution order matching `main()` function calls in [bootstrap-mint.sh](../bootstrap-mint.sh)
+- Implement idempotency checks
+- Source the new lib file in [bootstrap-mint.sh](../bootstrap-mint.sh) if creating new file
+
+11. If adding new functions:
 
 - Place function definition in the order it's called in `main()` for readability
-- Follow the existing pattern: Prerequisites → Repository Setup → Package Installation → Configuration
+- Follow the existing pattern: Prerequisites → Uninstall Unwanted Packages → Repository Setup → Package Installation → Configuration
 
-10. Keep all sections alphabetically sorted (documentation, package names)
+12. Keep all sections alphabetically sorted (documentation, package names)

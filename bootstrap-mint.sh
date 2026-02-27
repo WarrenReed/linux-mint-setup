@@ -5,7 +5,8 @@
 # 
 # Purpose: Initial setup script for bootstrapping a fresh Linux Mint installation
 # 
-# This script installs essential applications and packages including:
+# This script removes unwanted packages (Firefox) and installs essential 
+# applications and packages including:
 #   - ASP.NET Core Runtime 8.0
 #   - Aspire CLI
 #   - Azure Artifacts Credential Provider
@@ -90,6 +91,7 @@ main() {
     
     # Preinstall Phase
     check_prerequisites
+    uninstall_apt_packages
     install_required_utilities
     add_repository_keys
     add_third_party_repositories

@@ -2,6 +2,10 @@
 
 Automated bootstrap script for setting up a fresh Linux Mint 22 installation with essential development tools, applications, and configurations.
 
+## What Gets Removed
+
+- **Firefox** - Pre-installed browser (removed to avoid conflicts with other browser choices)
+
 ## What Gets Installed
 
 ### Development Tools
@@ -123,6 +127,7 @@ The script follows a **modular architecture** with phase-based organization:
   - `output.sh` - Shared output formatting utilities (colors and print functions)
   - **`preinstall/`** - Pre-installation phase (runs before package installation)
     - `prerequisites.sh` - Prerequisite checks and required utilities
+    - `uninstall-apt-packages.sh` - Remove unwanted pre-installed packages (Firefox)
     - `add-repositories.sh` - Repository and GPG key management
   - **`install/`** - Installation phase (package installation)
     - `install-apt-packages.sh` - APT package installation
