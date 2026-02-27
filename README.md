@@ -146,7 +146,7 @@ The script follows a **modular architecture** with phase-based organization:
     - `configure-grub.sh` - GRUB bootloader configuration (timeout, remember last choice)
     - `configure-powershell.sh` - PowerShell profile configuration
     - `configure-terminal.sh` - GNOME Terminal font configuration
-    - `configure-cinnamon.sh` - Cinnamon desktop configuration (theme, settings)
+    - `configure-desktop.sh` - Desktop environment configuration (Cinnamon, Nemo, login screen)
     - `configure-hosts.sh` - Hosts file configuration
 
 **Design Principles**:

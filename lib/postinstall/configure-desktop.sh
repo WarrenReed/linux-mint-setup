@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # ============================================================================
-# Cinnamon Desktop Configuration
+# Desktop Environment Configuration
 # ============================================================================
-# Configures Cinnamon desktop settings and preferences.
+# Configures desktop environment settings including Cinnamon, Nemo, and login screen.
 # Sourced by bootstrap-mint.sh
 # ============================================================================
 
@@ -246,8 +246,8 @@ EOF
     fi
 }
 
-configure_cinnamon() {
-    print_section "Configuring Cinnamon Desktop"
+configure_desktop() {
+    print_section "Configuring Desktop Environment"
     
     # Check if running Cinnamon desktop
     if [[ "${XDG_CURRENT_DESKTOP}" != *"Cinnamon"* ]] || [[ -z "${XDG_CURRENT_DESKTOP}" ]]; then
@@ -265,5 +265,5 @@ configure_cinnamon() {
     configure_nemo
     pin_panel_apps
     
-    print_info "Cinnamon desktop configured."
+    print_info "Desktop environment configured."
 }

@@ -40,7 +40,7 @@ This is a Linux Mint 22 bootstrap script repository for initial system setup and
     - **`configure-grub.sh`** - GRUB bootloader configuration (timeout, remember last choice)
     - **`configure-powershell.sh`** - PowerShell profile configuration
     - **`configure-terminal.sh`** - GNOME Terminal font configuration
-    - **`configure-cinnamon.sh`** - Cinnamon desktop configuration (theme, settings)
+    - **`configure-desktop.sh`** - Desktop environment configuration (Cinnamon, Nemo, login screen)
     - **`configure-hosts.sh`** - Hosts file configuration
 
 ## Configuration
@@ -208,7 +208,7 @@ The `.env` file is tracked in git with sensible defaults. Create `.env.local` (g
 - Group changes require reboot to take effect
 - Inform users of required reboot steps
 - Always implement idempotency checks (verify existing state before making changes)
-- Configuration functions: `configure_docker()`, `configure_virtualization()`, `configure_bash()`, `configure_fish()`, `configure_git()`, `configure_grub()`, `configure_powershell()`, `configure_terminal()`, `configure_cinnamon()`, `configure_hosts()`
+- Configuration functions: `configure_docker()`, `configure_virtualization()`, `configure_bash()`, `configure_fish()`, `configure_git()`, `configure_grub()`, `configure_powershell()`, `configure_terminal()`, `configure_desktop()`, `configure_hosts()`
 
 ## When Adding New Applications
 
