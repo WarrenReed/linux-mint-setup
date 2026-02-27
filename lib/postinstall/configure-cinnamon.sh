@@ -25,6 +25,15 @@ set_dark_theme() {
         print_info "Setting Cinnamon theme to Mint-Y-Dark-Aqua..."
         gsettings set org.cinnamon.theme name "Mint-Y-Dark-Aqua"
     fi
+    
+    # Set color scheme preference to prefer dark mode
+    local current_color_scheme=$(gsettings get org.x.apps.portal color-scheme)
+    if [[ "$current_color_scheme" == "'prefer-dark'" ]]; then
+        print_info "Color scheme already set to prefer dark mode."
+    else
+        print_info "Setting color scheme to prefer dark mode..."
+        gsettings set org.x.apps.portal color-scheme "prefer-dark"
+    fi
 }
 
 center_panel_applets() {
