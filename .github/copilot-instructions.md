@@ -30,6 +30,7 @@ This is a Linux Mint 22 bootstrap script repository for initial system setup and
     - **`install-npm-packages.sh`** - npm global packages (Copilot CLI)
     - **`install-standalone-packages.sh`** - Standalone package installers (fnm, Node.js, Aspire, oh-my-posh, PIA)
     - **`install-dotnet-tools.sh`** - .NET global tools (NSwag, Azure Artifacts CP, Git Credential Manager)
+    - **`install-docker-containers.sh`** - Docker containers (Portainer)
   - **`postinstall/`** - Post-installation phase (configuration after installation)
     - **`configure-docker.sh`** - Docker group configuration
     - **`configure-virtualization.sh`** - KVM/libvirt group configuration
@@ -101,6 +102,7 @@ The `.env` file is tracked in git with sensible defaults. Create `.env.local` (g
   - `install_npm_packages()` in [lib/install/install-npm-packages.sh](../lib/install/install-npm-packages.sh) - npm global packages (Copilot CLI)
   - `install_standalone_packages()` in [lib/install/install-standalone-packages.sh](../lib/install/install-standalone-packages.sh) - Direct download installers (fnm, Node.js, Aspire, oh-my-posh, PIA)
   - `install_dotnet_tools()` in [lib/install/install-dotnet-tools.sh](../lib/install/install-dotnet-tools.sh) - .NET global tools
+  - `install_docker_containers()` in [lib/install/install-docker-containers.sh](../lib/install/install-docker-containers.sh) - Docker containers (Portainer)
 
 ### Output & Logging
 
@@ -238,12 +240,13 @@ The `.env` file is tracked in git with sensible defaults. Create `.env.local` (g
 6. If Flatpak app: Add to `install_flatpak_apps()` in [lib/install/install-flatpak-apps.sh](../lib/install/install-flatpak-apps.sh) with idempotency check
 7. If npm package: Add to `install_npm_packages()` in [lib/install/install-npm-packages.sh](../lib/install/install-npm-packages.sh) with idempotency check
 8. If .NET global tool: Add to `install_dotnet_tools()` in [lib/install/install-dotnet-tools.sh](../lib/install/install-dotnet-tools.sh)
-9. If standalone script:
+9. If Docker container: Add to `install_docker_containers()` in [lib/install/install-docker-containers.sh](../lib/install/install-docker-containers.sh) with idempotency check (use sudo for docker commands)
+10. If standalone script:
    - Add installation to `install_standalone_packages()` function in [lib/install/install-standalone-packages.sh](../lib/install/install-standalone-packages.sh)
    - Add idempotency check using `command -v` or similar before installing
    - Use official installation script from vendor documentation
    - Ensure curl uses `-fsSL` flags
-10. Add post-installation configuration if needed:
+11. Add post-installation configuration if needed:
 
 - Add function to appropriate lib file in `lib/postinstall/` (e.g., `configure_docker()` in [lib/postinstall/configure-docker.sh](../lib/postinstall/configure-docker.sh))
 - Or create new lib file for new configuration type (follow hybrid pattern with BASH_SOURCE guard)
@@ -251,9 +254,9 @@ The `.env` file is tracked in git with sensible defaults. Create `.env.local` (g
 - Implement idempotency checks
 - Source the new lib file in [bootstrap-mint.sh](../bootstrap-mint.sh) if creating new file
 
-11. If adding new functions:
+12. If adding new functions:
 
 - Place function definition in the order it's called in `main()` for readability
 - Follow the existing pattern: Prerequisites → Uninstall Unwanted Packages → Repository Setup → Package Installation → Configuration
 
-12. Keep all sections alphabetically sorted (documentation, package names)
+13. Keep all sections alphabetically sorted (documentation, package names)

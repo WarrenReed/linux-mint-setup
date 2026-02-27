@@ -27,6 +27,7 @@
 #   - Node.js 22
 #   - NSwag CLI
 #   - oh-my-posh
+#   - Portainer
 #   - PowerShell
 #   - Private Internet Access VPN
 #   - Slack
@@ -105,6 +106,7 @@ main() {
     install_flatpak_apps
     install_standalone_packages
     install_npm_packages
+    install_docker_containers
     
     # Postinstall Phase
     configure_bash
