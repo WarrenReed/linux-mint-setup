@@ -13,7 +13,7 @@
 configure_grub() {
     print_section "Configuring GRUB Bootloader"
     
-    local source_file="assets/etc/default/grub.d/98_mintsysadm.cfg"
+    local source_file="$SCRIPT_DIR/assets/etc/default/grub.d/98_mintsysadm.cfg"
     local target_file="/etc/default/grub.d/98_mintsysadm.cfg"
     
     # Check if source file exists
