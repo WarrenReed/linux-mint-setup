@@ -43,7 +43,7 @@
 #               GNOME Terminal is configured to use Meslo Nerd Font
 #               oh-my-posh theme: configurable via OMP_THEME_PATH variable
 #               Hosts file configured with: 127.0.0.1 sql-server
-#               Desktop environment configured (dark theme, centered panel, slideshow, centered login)
+#               Desktop environment configured (dark theme, centered panel, slideshow, centered login) with Cinnamon restart
 #               .NET development certificates trusted
 ################################################################################
 
@@ -115,10 +115,10 @@ main() {
     configure_git
     configure_grub
     configure_hosts
-    configure_desktop
     configure_powershell
     configure_terminal
     configure_virtualization
+    configure_desktop
     
     # Completion
     print_section "Installation Complete!"

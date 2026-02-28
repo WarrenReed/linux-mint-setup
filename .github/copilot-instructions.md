@@ -208,7 +208,8 @@ The `.env` file is tracked in git with sensible defaults. Create `.env.local` (g
 - Group changes require reboot to take effect
 - Inform users of required reboot steps
 - Always implement idempotency checks (verify existing state before making changes)
-- Configuration functions: `configure_docker()`, `configure_virtualization()`, `configure_bash()`, `configure_fish()`, `configure_git()`, `configure_grub()`, `configure_powershell()`, `configure_terminal()`, `configure_desktop()`, `configure_hosts()`
+- **Desktop configuration runs last** and restarts Cinnamon immediately after applying changes to ensure settings load cleanly
+- Configuration functions (in execution order): `configure_bash()`, `configure_docker()`, `configure_fish()`, `configure_git()`, `configure_grub()`, `configure_hosts()`, `configure_powershell()`, `configure_terminal()`, `configure_virtualization()`, `configure_desktop()`
 
 ## When Adding New Applications
 

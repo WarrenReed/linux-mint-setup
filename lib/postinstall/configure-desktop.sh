@@ -266,4 +266,6 @@ configure_desktop() {
     pin_panel_apps
     
     print_info "Desktop environment configured."
+    print_info "Restarting Cinnamon..."
+    cinnamon --replace &
 }
