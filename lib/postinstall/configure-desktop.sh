@@ -267,5 +267,5 @@ configure_desktop() {
     
     print_info "Desktop environment configured."
     print_info "Restarting Cinnamon..."
-    cinnamon --replace &
+    cinnamon --replace >/dev/null 2>&1 &
 }
