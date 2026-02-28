@@ -4,9 +4,9 @@
 # VM Test Reset Script
 # ============================================================================
 # This script resets the test environment by:
-# 1. Deleting the linux-mint-baseline VM if it exists
-# 2. Cloning linux-mint-22.3 to create a new linux-mint-baseline VM
-# 3. Starting the linux-mint-baseline VM for testing
+# 1. Deleting the linuxmint-baseline VM if it exists
+# 2. Cloning linuxmint-22.3 to create a new linuxmint-baseline VM
+# 3. Starting the linuxmint-baseline VM for testing
 #
 # Requires virsh (KVM/libvirt) to be installed.
 # ============================================================================
@@ -18,8 +18,8 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/../lib/output.sh"
 
 # VM names
-readonly SOURCE_VM="linux-mint-22.3"
-readonly BASELINE_VM="linux-mint-baseline"
+readonly SOURCE_VM="linuxmint-22.3"
+readonly BASELINE_VM="linuxmint-baseline"
 
 # Functions
 

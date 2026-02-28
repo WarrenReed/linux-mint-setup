@@ -171,8 +171,8 @@ Use the testing script to quickly reset your test environment:
 
 This script:
 
-- Deletes the `linux-mint-baseline` VM if it exists
-- Clones `linux-mint-22.3` → `linux-mint-baseline`
+- Deletes the `linuxmint-baseline` VM if it exists
+- Clones `linuxmint-22.3` → `linuxmint-baseline`
 - Starts the baseline VM
 
 Requires virsh (KVM/libvirt) to be installed.
