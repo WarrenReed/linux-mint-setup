@@ -6,6 +6,8 @@ This is a Linux Mint 22 bootstrap script repository for initial system setup and
 
 **Note:** Linux Mint 22 is based on Ubuntu 24.04 LTS (noble).
 
+**Testing:** All testing is performed on virtual machines (VMs).
+
 ## Project Files
 
 - **`bootstrap-mint.sh`** - Main orchestration script (sources and calls lib functions)
@@ -243,10 +245,12 @@ The `.env` file is tracked in git with sensible defaults. Create `.env.local` (g
 8. If .NET global tool: Add to `install_dotnet_tools()` in [lib/install/install-dotnet-tools.sh](../lib/install/install-dotnet-tools.sh)
 9. If Docker container: Add to `install_docker_containers()` in [lib/install/install-docker-containers.sh](../lib/install/install-docker-containers.sh) with idempotency check (use sudo for docker commands)
 10. If standalone script:
-   - Add installation to `install_standalone_packages()` function in [lib/install/install-standalone-packages.sh](../lib/install/install-standalone-packages.sh)
-   - Add idempotency check using `command -v` or similar before installing
-   - Use official installation script from vendor documentation
-   - Ensure curl uses `-fsSL` flags
+
+- Add installation to `install_standalone_packages()` function in [lib/install/install-standalone-packages.sh](../lib/install/install-standalone-packages.sh)
+- Add idempotency check using `command -v` or similar before installing
+- Use official installation script from vendor documentation
+- Ensure curl uses `-fsSL` flags
+
 11. Add post-installation configuration if needed:
 
 - Add function to appropriate lib file in `lib/postinstall/` (e.g., `configure_docker()` in [lib/postinstall/configure-docker.sh](../lib/postinstall/configure-docker.sh))
