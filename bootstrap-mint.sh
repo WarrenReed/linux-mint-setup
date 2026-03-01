@@ -2,10 +2,10 @@
 
 ################################################################################
 # Linux Mint Bootstrap Script
-# 
+#
 # Purpose: Initial setup script for bootstrapping a fresh Linux Mint installation
-# 
-# This script removes unwanted packages (Firefox) and installs essential 
+#
+# This script removes unwanted packages (Firefox) and installs essential
 # applications and packages including:
 #   - ASP.NET Core Runtime 8.0
 #   - Aspire CLI
@@ -89,7 +89,7 @@ shopt -u globstar
 
 main() {
     print_section "Starting Linux Mint Setup"
-    
+
     # Preinstall Phase
     check_prerequisites
     uninstall_apt_packages
@@ -99,7 +99,7 @@ main() {
     add_ppa_repositories
     configure_apt_preferences
     update_apt_cache
-    
+
     # Install Phase
     install_apt_packages
     install_dotnet_tools
@@ -107,7 +107,7 @@ main() {
     install_standalone_packages
     install_npm_packages
     install_docker_containers
-    
+
     # Postinstall Phase
     configure_bash
     configure_docker
@@ -119,7 +119,7 @@ main() {
     configure_terminal
     configure_virtualization
     configure_desktop
-    
+
     # Completion
     print_section "Installation Complete!"
     print_info "All packages have been successfully installed."

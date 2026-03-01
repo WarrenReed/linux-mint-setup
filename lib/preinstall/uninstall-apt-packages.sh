@@ -9,7 +9,7 @@
 
 uninstall_apt_packages() {
     print_section "Uninstalling APT Packages"
-    
+
     # Check if any Firefox packages are installed (simple check for firefox or firefox-locale packages)
     if dpkg-query -s firefox &> /dev/null || dpkg-query -s firefox-locale-en &> /dev/null; then
         print_info "Removing Firefox and all related packages..."

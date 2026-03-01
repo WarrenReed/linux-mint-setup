@@ -16,7 +16,7 @@ install_standalone_packages() {
         print_info "Installing fnm..."
         curl -fsSL https://fnm.vercel.app/install | bash
     fi
-    
+
     # Install Node.js 22 via fnm
     print_section "Installing Node.js 22"
     if command -v fnm &> /dev/null && fnm list | grep -q "v22"; then
@@ -29,7 +29,7 @@ install_standalone_packages() {
         fnm install 22
         fnm default 22
     fi
-    
+
     # Install Aspire CLI
     print_section "Installing Aspire CLI"
     if command -v aspire &> /dev/null; then
@@ -49,7 +49,7 @@ install_standalone_packages() {
         export PATH="$HOME/.local/bin:$PATH"
         curl -fsSL https://ohmyposh.dev/install.sh | bash
     fi
-    
+
     # Install Meslo Nerd Font
     print_section "Installing Meslo Nerd Font"
     if [[ -d ~/.local/share/fonts/meslolgm-nerd-font ]] || [[ -d ~/.local/share/fonts/meslolgm-nerd-font-mono ]]; then
@@ -58,7 +58,7 @@ install_standalone_packages() {
         print_info "Installing Meslo Nerd Font..."
         oh-my-posh font install meslo
     fi
-    
+
     # Install Private Internet Access VPN
     print_section "Installing Private Internet Access VPN"
     if command -v piactl &> /dev/null; then
@@ -68,14 +68,14 @@ install_standalone_packages() {
         local pia_version=$(curl -fsSL "https://www.privateinternetaccess.com/download/linux-vpn" | \
             grep -oP 'pia-linux-\K[0-9.]+-[0-9]+(?=\.run)' | \
             head -n 1)
-        
+
         if [[ -z "$pia_version" ]]; then
             print_error "Failed to detect latest PIA version, using fallback: ${PIA_FALLBACK_VERSION}"
             pia_version="$PIA_FALLBACK_VERSION"
         else
             print_info "Latest version detected: $pia_version"
         fi
-        
+
         print_info "Downloading and installing Private Internet Access..."
         local temp_installer=$(mktemp)
         curl -fsSL -o "$temp_installer" "https://installers.privateinternetaccess.com/download/pia-linux-${pia_version}.run"

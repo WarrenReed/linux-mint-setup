@@ -9,7 +9,7 @@
 
 configure_docker() {
     print_section "Configuring Docker"
-    
+
     if groups $USER | grep -q '\bdocker\b'; then
         print_info "User is already in docker group."
     else

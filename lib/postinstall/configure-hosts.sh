@@ -9,9 +9,9 @@
 
 configure_hosts() {
     print_section "Configuring Hosts File"
-    
+
     local hosts_file="/etc/hosts"
-    
+
     if grep -qF "sql-server" "$hosts_file"; then
         print_info "sql-server entry already exists in hosts file."
     else

@@ -10,7 +10,7 @@
 install_flatpak_app() {
     local app_id=$1
     local display_name=$2
-    
+
     if flatpak list | grep -q "$app_id"; then
         print_info "$display_name is already installed."
     else
@@ -21,7 +21,7 @@ install_flatpak_app() {
 
 install_flatpak_apps() {
     print_section "Installing Flatpak Applications"
-    
+
     install_flatpak_app "com.microsoft.AzureStorageExplorer" "Azure Storage Explorer"
     install_flatpak_app "com.discordapp.Discord" "Discord"
     install_flatpak_app "com.slack.Slack" "Slack"

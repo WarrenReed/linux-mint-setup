@@ -11,7 +11,7 @@ install_npm_packages() {
     # Ensure fnm environment is loaded
     export PATH="$HOME/.local/share/fnm:$PATH"
     eval "$(fnm env --shell bash)"
-    
+
     # Install GitHub Copilot CLI
     print_section "Installing GitHub Copilot CLI"
     if command -v copilot &> /dev/null; then
@@ -20,7 +20,7 @@ install_npm_packages() {
         print_info "Installing GitHub Copilot CLI via npm..."
         npm install -g @github/copilot
     fi
-    
+
     # Install awesome-copilot plugin
     print_info "Installing awesome-copilot plugin..."
     if copilot plugin list 2>/dev/null | grep -q "awesome-copilot"; then

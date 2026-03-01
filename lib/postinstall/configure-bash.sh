@@ -9,10 +9,10 @@
 
 configure_bash() {
     print_section "Configuring Bash"
-    
+
     local bashrc=~/.bashrc
     local omp_line="eval \"\$(oh-my-posh init bash --config ${OMP_THEME_PATH})\""
-    
+
     if [[ -f "$bashrc" ]] && grep -qF "oh-my-posh init bash" "$bashrc"; then
         print_info "oh-my-posh is already configured in .bashrc."
     else

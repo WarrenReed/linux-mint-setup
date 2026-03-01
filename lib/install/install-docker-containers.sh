@@ -9,7 +9,7 @@
 
 install_docker_containers() {
     print_section "Installing Docker Containers"
-    
+
     # Portainer - Docker management UI
     print_info "Installing Portainer..."
     if sudo docker ps -a --format '{{.Names}}' 2>/dev/null | grep -q '^portainer$'; then
