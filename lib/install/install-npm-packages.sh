@@ -20,4 +20,12 @@ install_npm_packages() {
         print_info "Installing GitHub Copilot CLI via npm..."
         npm install -g @github/copilot
     fi
+    
+    # Install awesome-copilot plugin
+    print_info "Installing awesome-copilot plugin..."
+    if copilot plugin list 2>/dev/null | grep -q "awesome-copilot"; then
+        print_info "awesome-copilot plugin is already installed."
+    else
+        copilot plugin install awesome-copilot@awesome-copilot
+    fi
 }

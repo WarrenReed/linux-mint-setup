@@ -29,7 +29,7 @@ This is a Linux Mint 22 bootstrap script repository for initial system setup and
   - **`install/`** - Installation phase (package installation)
     - **`install-apt-packages.sh`** - APT package installation
     - **`install-flatpak-apps.sh`** - Flatpak application installation
-    - **`install-npm-packages.sh`** - npm global packages (Copilot CLI)
+    - **`install-npm-packages.sh`** - npm global packages (Copilot CLI with awesome-copilot plugin)
     - **`install-standalone-packages.sh`** - Standalone package installers (fnm, Node.js, Aspire, oh-my-posh, PIA)
     - **`install-dotnet-tools.sh`** - .NET global tools (NSwag, Azure Artifacts CP, Git Credential Manager)
     - **`install-docker-containers.sh`** - Docker containers (Portainer)
@@ -101,7 +101,7 @@ The `.env` file is tracked in git with sensible defaults. Create `.env.local` (g
   - `uninstall_apt_packages()` in [lib/preinstall/uninstall-apt-packages.sh](../lib/preinstall/uninstall-apt-packages.sh) - Remove unwanted pre-installed packages (Firefox)
   - `install_apt_packages()` in [lib/install/install-apt-packages.sh](../lib/install/install-apt-packages.sh) - APT repository packages (grouped by category: .NET, Docker, Virtualization, Azure, Development, Applications, Libraries)
   - `install_flatpak_apps()` in [lib/install/install-flatpak-apps.sh](../lib/install/install-flatpak-apps.sh) - Flatpak applications
-  - `install_npm_packages()` in [lib/install/install-npm-packages.sh](../lib/install/install-npm-packages.sh) - npm global packages (Copilot CLI)
+  - `install_npm_packages()` in [lib/install/install-npm-packages.sh](../lib/install/install-npm-packages.sh) - npm global packages (Copilot CLI with awesome-copilot plugin)
   - `install_standalone_packages()` in [lib/install/install-standalone-packages.sh](../lib/install/install-standalone-packages.sh) - Direct download installers (fnm, Node.js, Aspire, oh-my-posh, PIA)
   - `install_dotnet_tools()` in [lib/install/install-dotnet-tools.sh](../lib/install/install-dotnet-tools.sh) - .NET global tools
   - `install_docker_containers()` in [lib/install/install-docker-containers.sh](../lib/install/install-docker-containers.sh) - Docker containers (Portainer)
@@ -241,7 +241,7 @@ The `.env` file is tracked in git with sensible defaults. Create `.env.local` (g
    - Groups: .NET, Docker, Virtualization, Azure, Development, Applications, Libraries
    - If package attempts to manage its own repository, add debconf setting before installation to prevent conflicts
 6. If Flatpak app: Add to `install_flatpak_apps()` in [lib/install/install-flatpak-apps.sh](../lib/install/install-flatpak-apps.sh) with idempotency check
-7. If npm package: Add to `install_npm_packages()` in [lib/install/install-npm-packages.sh](../lib/install/install-npm-packages.sh) with idempotency check
+7. If npm package or Copilot plugin: Add to `install_npm_packages()` in [lib/install/install-npm-packages.sh](../lib/install/install-npm-packages.sh) with idempotency check
 8. If .NET global tool: Add to `install_dotnet_tools()` in [lib/install/install-dotnet-tools.sh](../lib/install/install-dotnet-tools.sh)
 9. If Docker container: Add to `install_docker_containers()` in [lib/install/install-docker-containers.sh](../lib/install/install-docker-containers.sh) with idempotency check (use sudo for docker commands)
 10. If standalone script:
