@@ -38,7 +38,7 @@ This is a Linux Mint 22 bootstrap script repository for initial system setup and
     - **`configure-virtualization.sh`** - KVM/libvirt group configuration
     - **`configure-bash.sh`** - Bash shell configuration with oh-my-posh
     - **`configure-fish.sh`** - Fish shell configuration with oh-my-posh, fnm, SSL certs
-    - **`configure-git.sh`** - Git and Git Credential Manager configuration
+    - **`configure-git.sh`** - Git configuration with conditional includes for personal/work identities and Git Credential Manager
     - **`configure-grub.sh`** - GRUB bootloader configuration (timeout, remember last choice)
     - **`configure-powershell.sh`** - PowerShell profile configuration
     - **`configure-terminal.sh`** - GNOME Terminal font configuration
@@ -55,6 +55,11 @@ Configuration is managed via `.env` and `.env.local` files:
 - **UBUNTU_DISTRO** - Ubuntu distribution codename (default: `noble` for 24.04)
 - **OMP_THEME_PATH** - oh-my-posh theme path (default: `~/.cache/oh-my-posh/themes/atomic.omp.json`)
 - **PIA_FALLBACK_VERSION** - PIA VPN fallback version (default: `3.7-08412`)
+- **GIT_NAME** - Git user name (default: `Your Name`)
+- **GIT_PERSONAL_EMAIL** - Personal git email (default: `personal@example.com`)
+- **GIT_PERSONAL_PATH** - Personal repositories directory path (default: `~/personal`)
+- **GIT_WORK_EMAIL** - Work git email (default: `work@example.com`)
+- **GIT_WORK_PATH** - Work repositories directory path (default: `~/work`)
 
 The `.env` file is tracked in git with sensible defaults. Create `.env.local` (gitignored) to override specific values for your local environment.
 
@@ -142,7 +147,12 @@ The `.env` file is tracked in git with sensible defaults. Create `.env.local` (g
 - Keep header comments clear and concise
 - List all applications being installed
 - Include usage instructions and prerequisites
+- **CRITICAL: When making changes that affect functionality, configuration, or file structure, you MUST update BOTH:**
+  - **`README.md`** - User-facing documentation (especially Configuration section)
+  - **`.github/copilot-instructions.md`** - AI assistant instructions (especially Environment Variables and relevant sections)
 - Update documentation when adding new applications
+- Keep configuration variable lists synchronized across both files
+- Document new environment variables with their defaults in both locations
 
 ### Repository Management
 

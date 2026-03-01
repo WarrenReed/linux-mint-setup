@@ -142,7 +142,7 @@ The script follows a **modular architecture** with phase-based organization:
     - `configure-virtualization.sh` - KVM/libvirt group configuration
     - `configure-bash.sh` - Bash shell configuration with oh-my-posh
     - `configure-fish.sh` - Fish shell configuration with oh-my-posh, fnm, SSL certs
-    - `configure-git.sh` - Git and Git Credential Manager configuration
+    - `configure-git.sh` - Git configuration with conditional includes for personal/work identities and Git Credential Manager
     - `configure-grub.sh` - GRUB bootloader configuration (timeout, remember last choice)
     - `configure-powershell.sh` - PowerShell profile configuration
     - `configure-terminal.sh` - GNOME Terminal font configuration
@@ -209,6 +209,11 @@ Edit `.env` or create `.env.local` to customize:
 - **Ubuntu distribution** - Adjust `UBUNTU_DISTRO` for different base (e.g., `jammy` for 22.04)
 - **oh-my-posh theme** - Set `OMP_THEME_PATH` to your preferred theme
 - **PIA version** - Override `PIA_FALLBACK_VERSION` if detection fails
+- **Git name** - Set `GIT_NAME` to your name
+- **Git personal email** - Set `GIT_PERSONAL_EMAIL` for personal repositories
+- **Git personal path** - Set `GIT_PERSONAL_PATH` to your personal repos directory (default: `~/personal`)
+- **Git work email** - Set `GIT_WORK_EMAIL` for work repositories
+- **Git work path** - Set `GIT_WORK_PATH` to your work repos directory (default: `~/work`)
 
 ## Notes
 
