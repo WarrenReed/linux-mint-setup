@@ -57,7 +57,6 @@ Configuration is managed via `.env` and `.env.local` files:
 - **PIA_FALLBACK_VERSION** - PIA VPN fallback version (default: `3.7-08412`)
 - **GIT_NAME** - Git user name (default: `Your Name`)
 - **GIT_PERSONAL_EMAIL** - Personal git email (default: `personal@example.com`)
-- **GIT_PERSONAL_PATH** - Personal repositories directory path (default: `~/personal`)
 - **GIT_WORK_EMAIL** - Work git email (default: `work@example.com`)
 - **GIT_WORK_PATH** - Work repositories directory path (default: `~/work`)
 

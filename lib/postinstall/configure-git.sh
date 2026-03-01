@@ -44,7 +44,6 @@ EOF
 
     # Add conditional include for work repositories
     print_info "Configuring conditional includes..."
-    local work_folder_expanded="${GIT_WORK_PATH/#\~/$HOME}"
 
     # Check if conditional include already exists
     if ! git config --global --get-regexp "includeIf\.gitdir:$GIT_WORK_PATH/\.path" &> /dev/null; then
@@ -52,12 +51,6 @@ EOF
         print_info "Added conditional include for $GIT_WORK_PATH/"
     else
         print_info "Conditional include already configured."
-    fi
-
-    # Create work directory if it doesn't exist
-    if [[ ! -d "$work_folder_expanded" ]]; then
-        mkdir -p "$work_folder_expanded"
-        print_info "Created work directory: $work_folder_expanded"
     fi
 }
 

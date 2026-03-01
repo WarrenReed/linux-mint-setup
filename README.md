@@ -211,7 +211,6 @@ Edit `.env` or create `.env.local` to customize:
 - **PIA version** - Override `PIA_FALLBACK_VERSION` if detection fails
 - **Git name** - Set `GIT_NAME` to your name
 - **Git personal email** - Set `GIT_PERSONAL_EMAIL` for personal repositories
-- **Git personal path** - Set `GIT_PERSONAL_PATH` to your personal repos directory (default: `~/personal`)
 - **Git work email** - Set `GIT_WORK_EMAIL` for work repositories
 - **Git work path** - Set `GIT_WORK_PATH` to your work repos directory (default: `~/work`)
 
