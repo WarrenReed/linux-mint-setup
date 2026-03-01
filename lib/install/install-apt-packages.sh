@@ -26,6 +26,7 @@ install_deb_package() {
 install_applications() {
     print_info "Installing applications..."
     sudo apt install -y \
+        pavucontrol \
         remotedesktopmanager \
         steam-installer
 }
