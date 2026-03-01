@@ -7,6 +7,18 @@
 # Sourced by bootstrap-mint.sh
 # ============================================================================
 
+add_ppa_repositories() {
+    print_section "Adding PPA Repositories"
+
+    # Check if Fish Shell PPA is already added
+    if grep -qr "^deb .*ppa.launchpad.net/fish-shell/release-4" /etc/apt/sources.list.d/ 2>/dev/null; then
+        print_info "Fish Shell PPA repository already exists."
+    else
+        print_info "Adding Fish Shell PPA repository..."
+        sudo add-apt-repository -y ppa:fish-shell/release-4
+    fi
+}
+
 add_repository_keys() {
     print_section "Adding Repository GPG Keys"
     declare -A installed_keys
@@ -60,18 +72,6 @@ add_third_party_repositories() {
             } | envsubst | sudo tee "$sources_file" > /dev/null
         fi
     done
-}
-
-add_ppa_repositories() {
-    print_section "Adding PPA Repositories"
-
-    # Check if Fish Shell PPA is already added
-    if grep -qr "^deb .*ppa.launchpad.net/fish-shell/release-4" /etc/apt/sources.list.d/ 2>/dev/null; then
-        print_info "Fish Shell PPA repository already exists."
-    else
-        print_info "Adding Fish Shell PPA repository..."
-        sudo add-apt-repository -y ppa:fish-shell/release-4
-    fi
 }
 
 configure_apt_preferences() {

@@ -7,9 +7,7 @@
 # Sourced by bootstrap-mint.sh
 # ============================================================================
 
-configure_docker() {
-    print_section "Configuring Docker"
-
+add_user_to_docker_group() {
     if groups $USER | grep -q '\bdocker\b'; then
         print_info "User is already in docker group."
     else
@@ -17,4 +15,10 @@ configure_docker() {
         sudo usermod -aG docker $USER
         print_info "You'll need to reboot for docker group membership to take effect."
     fi
+}
+
+configure_docker() {
+    print_section "Configuring Docker"
+
+    add_user_to_docker_group
 }

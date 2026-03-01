@@ -7,35 +7,6 @@
 # Sourced by bootstrap-mint.sh
 # ============================================================================
 
-set_dark_theme() {
-    # Set GTK theme (Applications)
-    local current_gtk_theme=$(gsettings get org.cinnamon.desktop.interface gtk-theme)
-    if [[ "$current_gtk_theme" == "'Mint-Y-Dark-Aqua'" ]]; then
-        print_info "GTK theme already set to Mint-Y-Dark-Aqua."
-    else
-        print_info "Setting GTK theme to Mint-Y-Dark-Aqua..."
-        gsettings set org.cinnamon.desktop.interface gtk-theme "Mint-Y-Dark-Aqua"
-    fi
-
-    # Set Cinnamon theme (Desktop)
-    local current_cinnamon_theme=$(gsettings get org.cinnamon.theme name)
-    if [[ "$current_cinnamon_theme" == "'Mint-Y-Dark-Aqua'" ]]; then
-        print_info "Cinnamon theme already set to Mint-Y-Dark-Aqua."
-    else
-        print_info "Setting Cinnamon theme to Mint-Y-Dark-Aqua..."
-        gsettings set org.cinnamon.theme name "Mint-Y-Dark-Aqua"
-    fi
-
-    # Set color scheme preference to prefer dark mode
-    local current_color_scheme=$(gsettings get org.x.apps.portal color-scheme)
-    if [[ "$current_color_scheme" == "'prefer-dark'" ]]; then
-        print_info "Color scheme already set to prefer dark mode."
-    else
-        print_info "Setting color scheme to prefer dark mode..."
-        gsettings set org.x.apps.portal color-scheme "prefer-dark"
-    fi
-}
-
 center_panel_applets() {
     local current_applets=$(gsettings get org.cinnamon enabled-applets)
 
@@ -106,6 +77,35 @@ configure_nemo() {
     fi
 }
 
+set_dark_theme() {
+    # Set GTK theme (Applications)
+    local current_gtk_theme=$(gsettings get org.cinnamon.desktop.interface gtk-theme)
+    if [[ "$current_gtk_theme" == "'Mint-Y-Dark-Aqua'" ]]; then
+        print_info "GTK theme already set to Mint-Y-Dark-Aqua."
+    else
+        print_info "Setting GTK theme to Mint-Y-Dark-Aqua..."
+        gsettings set org.cinnamon.desktop.interface gtk-theme "Mint-Y-Dark-Aqua"
+    fi
+
+    # Set Cinnamon theme (Desktop)
+    local current_cinnamon_theme=$(gsettings get org.cinnamon.theme name)
+    if [[ "$current_cinnamon_theme" == "'Mint-Y-Dark-Aqua'" ]]; then
+        print_info "Cinnamon theme already set to Mint-Y-Dark-Aqua."
+    else
+        print_info "Setting Cinnamon theme to Mint-Y-Dark-Aqua..."
+        gsettings set org.cinnamon.theme name "Mint-Y-Dark-Aqua"
+    fi
+
+    # Set color scheme preference to prefer dark mode
+    local current_color_scheme=$(gsettings get org.x.apps.portal color-scheme)
+    if [[ "$current_color_scheme" == "'prefer-dark'" ]]; then
+        print_info "Color scheme already set to prefer dark mode."
+    else
+        print_info "Setting color scheme to prefer dark mode..."
+        gsettings set org.x.apps.portal color-scheme "prefer-dark"
+    fi
+}
+
 configure_desktop() {
     print_section "Configuring Desktop Environment"
 
@@ -115,11 +115,11 @@ configure_desktop() {
         return
     fi
 
-    set_dark_theme
     center_panel_applets
     configure_background_slideshow
-    disable_desktop_volumes
     configure_nemo
+    disable_desktop_volumes
+    set_dark_theme
 
     print_info "Desktop environment configured."
 }

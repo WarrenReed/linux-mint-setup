@@ -7,9 +7,7 @@
 # Sourced by bootstrap-mint.sh
 # ============================================================================
 
-configure_hosts() {
-    print_section "Configuring Hosts File"
-
+add_sql_server_to_hosts() {
     local hosts_file="/etc/hosts"
 
     if grep -qF "sql-server" "$hosts_file"; then
@@ -23,4 +21,10 @@ configure_hosts() {
         } | sudo tee -a "$hosts_file" > /dev/null
         print_info "sql-server entry added to hosts file."
     fi
+}
+
+configure_hosts() {
+    print_section "Configuring Hosts File"
+
+    add_sql_server_to_hosts
 }

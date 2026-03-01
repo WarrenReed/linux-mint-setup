@@ -23,40 +23,21 @@ install_deb_package() {
     fi
 }
 
-install_apt_packages() {
-    print_section "Installing APT Packages"
-
-    # Install Google Chrome (downloads .deb which adds repository automatically)
-    print_info "Installing Google Chrome..."
-    install_deb_package "google-chrome-stable" "Google Chrome" \
-        "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
-
-    print_info "Installing .NET packages..."
+install_applications() {
+    print_info "Installing applications..."
     sudo apt install -y \
-        aspnetcore-runtime-8.0 \
-        dotnet-sdk-10.0
+        remotedesktopmanager \
+        steam-installer
+}
 
-    print_info "Installing Docker packages..."
-    sudo apt install -y \
-        containerd.io \
-        docker-buildx-plugin \
-        docker-ce \
-        docker-ce-cli \
-        docker-compose-plugin
-
-    print_info "Installing virtualization packages..."
-    sudo apt install -y \
-        bridge-utils \
-        libvirt-clients \
-        libvirt-daemon-system \
-        qemu-kvm \
-        virt-manager
-
+install_azure_tools() {
     print_info "Installing Azure tools..."
     sudo apt install -y \
         azure-cli \
         microsoft-azurevpnclient
+}
 
+install_development_tools() {
     print_info "Installing development tools..."
 
     # Prevent VS Code from managing its own repository (we manage it via config/repositories.json)
@@ -67,9 +48,49 @@ install_apt_packages() {
         fish \
         git \
         powershell
+}
 
-    print_info "Installing applications..."
+install_docker_packages() {
+    print_info "Installing Docker packages..."
     sudo apt install -y \
-        remotedesktopmanager \
-        steam-installer
+        containerd.io \
+        docker-buildx-plugin \
+        docker-ce \
+        docker-ce-cli \
+        docker-compose-plugin
+}
+
+install_dotnet_packages() {
+    print_info "Installing .NET packages..."
+    sudo apt install -y \
+        aspnetcore-runtime-8.0 \
+        dotnet-sdk-10.0
+}
+
+install_google_chrome() {
+    print_info "Installing Google Chrome..."
+    install_deb_package "google-chrome-stable" "Google Chrome" \
+        "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
+}
+
+install_virtualization_packages() {
+    print_info "Installing virtualization packages..."
+    sudo apt install -y \
+        bridge-utils \
+        libvirt-clients \
+        libvirt-daemon-system \
+        qemu-kvm \
+        virt-manager
+}
+
+install_apt_packages() {
+    print_section "Installing APT Packages"
+
+    install_applications
+    install_azure_tools
+    install_development_tools
+    install_docker_packages
+    install_dotnet_packages
+    install_google_chrome
+    install_virtualization_packages
 }

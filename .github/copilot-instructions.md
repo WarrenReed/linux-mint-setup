@@ -34,16 +34,18 @@ This is a Linux Mint 22 bootstrap script repository for initial system setup and
     - **`install-dotnet-tools.sh`** - .NET global tools (NSwag, Azure Artifacts CP, Git Credential Manager)
     - **`install-docker-containers.sh`** - Docker containers (Portainer)
   - **`postinstall/`** - Post-installation phase (configuration after installation)
+    - **`configure-environment.sh`** - Session environment configuration (.profile for desktop-launched apps)
+    - **`configure-bash.sh`** - Bash shell configuration with oh-my-posh and SSL_CERT_DIR
     - **`configure-docker.sh`** - Docker group configuration
-    - **`configure-virtualization.sh`** - KVM/libvirt group configuration
-    - **`configure-bash.sh`** - Bash shell configuration with oh-my-posh
-    - **`configure-fish.sh`** - Fish shell configuration with oh-my-posh, fnm, SSL certs
+    - **`configure-fish.sh`** - Fish shell configuration with oh-my-posh, fnm, SSL_CERT_DIR
+    - **`configure-dotnet.sh`** - .NET development certificate trust
     - **`configure-git.sh`** - Git configuration with conditional includes for personal/work identities and Git Credential Manager
     - **`configure-grub.sh`** - GRUB bootloader configuration (timeout, remember last choice)
+    - **`configure-hosts.sh`** - Hosts file configuration
     - **`configure-powershell.sh`** - PowerShell profile configuration
     - **`configure-terminal.sh`** - GNOME Terminal font configuration
+    - **`configure-virtualization.sh`** - KVM/libvirt group configuration
     - **`configure-desktop.sh`** - Desktop environment configuration (Cinnamon and Nemo)
-    - **`configure-hosts.sh`** - Hosts file configuration
 
 ## Configuration
 
@@ -220,7 +222,7 @@ The `.env` file is tracked in git with sensible defaults. Create `.env.local` (g
 - Inform users of required reboot steps
 - Always implement idempotency checks (verify existing state before making changes)
 - **Desktop configuration uses only gsettings** for reliability and idempotency
-- Configuration functions (in execution order): `configure_bash()`, `configure_docker()`, `configure_fish()`, `configure_git()`, `configure_grub()`, `configure_hosts()`, `configure_powershell()`, `configure_terminal()`, `configure_virtualization()`, `configure_desktop()`
+- Configuration functions (in execution order): `configure_environment()`, `configure_bash()`, `configure_docker()`, `configure_fish()`, `configure_dotnet()`, `configure_git()`, `configure_grub()`, `configure_hosts()`, `configure_powershell()`, `configure_terminal()`, `configure_virtualization()`, `configure_desktop()`
 
 ## When Adding New Applications
 

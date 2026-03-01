@@ -7,9 +7,7 @@
 # Sourced by bootstrap-mint.sh
 # ============================================================================
 
-configure_virtualization() {
-    print_section "Configuring Virtualization"
-
+add_user_to_virtualization_groups() {
     local groups_added=false
 
     if groups $USER | grep -q '\blibvirt\b'; then
@@ -31,4 +29,10 @@ configure_virtualization() {
     if [[ "$groups_added" == true ]]; then
         print_info "You'll need to reboot for virtualization group membership to take effect."
     fi
+}
+
+configure_virtualization() {
+    print_section "Configuring Virtualization"
+
+    add_user_to_virtualization_groups
 }

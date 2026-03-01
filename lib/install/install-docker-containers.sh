@@ -7,11 +7,7 @@
 # Sourced by bootstrap-mint.sh
 # ============================================================================
 
-install_docker_containers() {
-    print_section "Installing Docker Containers"
-
-    # Portainer - Docker management UI
-    print_info "Installing Portainer..."
+install_portainer() {
     if sudo docker ps -a --format '{{.Names}}' 2>/dev/null | grep -q '^portainer$'; then
         print_info "Portainer container already exists."
     else
@@ -23,4 +19,10 @@ install_docker_containers() {
             portainer/portainer-ce:latest > /dev/null 2>&1
         print_info "Portainer installed. Access at http://localhost:9000"
     fi
+}
+
+install_docker_containers() {
+    print_section "Installing Docker Containers"
+
+    install_portainer
 }

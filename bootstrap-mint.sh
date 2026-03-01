@@ -109,9 +109,11 @@ main() {
     install_docker_containers
 
     # Postinstall Phase
+    configure_environment
     configure_bash
     configure_docker
     configure_fish
+    configure_dotnet
     configure_git
     configure_grub
     configure_hosts

@@ -9,46 +9,45 @@
 
 configure_git_identity() {
     # Configure personal (default) git identity
-    print_info "Configuring personal git identity..."
     local current_name=$(git config --global user.name 2>/dev/null || echo "")
     local current_email=$(git config --global user.email 2>/dev/null || echo "")
 
     if [[ "$current_name" != "$GIT_NAME" ]]; then
+        print_info "Setting global git name..."
         git config --global user.name "$GIT_NAME"
-        print_info "Set global git name to: $GIT_NAME"
+        print_info "Global git name set."
     else
         print_info "Global git name already configured."
     fi
 
     if [[ "$current_email" != "$GIT_PERSONAL_EMAIL" ]]; then
+        print_info "Setting global git email..."
         git config --global user.email "$GIT_PERSONAL_EMAIL"
-        print_info "Set global git email to: $GIT_PERSONAL_EMAIL"
+        print_info "Global git email set."
     else
         print_info "Global git email already configured."
     fi
 
     # Create work-specific git config file
-    print_info "Creating work git configuration..."
     local work_config="$HOME/.gitconfig-work"
 
     if [[ ! -f "$work_config" ]] || ! grep -q "$GIT_WORK_EMAIL" "$work_config" 2>/dev/null; then
+        print_info "Creating work git configuration..."
         cat > "$work_config" << EOF
 [user]
     name = $GIT_NAME
     email = $GIT_WORK_EMAIL
 EOF
-        print_info "Created $work_config"
+        print_info "Work git config created."
     else
         print_info "Work git config already exists."
     fi
 
     # Add conditional include for work repositories
-    print_info "Configuring conditional includes..."
-
-    # Check if conditional include already exists
     if ! git config --global --get-regexp "includeIf\.gitdir:$GIT_WORK_PATH/\.path" &> /dev/null; then
+        print_info "Adding conditional include for work repositories..."
         git config --global "includeIf.gitdir:$GIT_WORK_PATH/.path" "$work_config"
-        print_info "Added conditional include for $GIT_WORK_PATH/"
+        print_info "Conditional include added."
     else
         print_info "Conditional include already configured."
     fi
@@ -62,10 +61,11 @@ configure_git_credential_manager() {
         # Set credential store to secretservice for Linux desktop environment
         local current_store=$(git config --global credential.credentialStore 2>/dev/null || echo "")
         if [[ "$current_store" != "secretservice" ]]; then
-            print_info "Setting credential store to secretservice (GNOME Keyring)..."
+            print_info "Setting credential store to secretservice..."
             git config --global credential.credentialStore secretservice
+            print_info "Credential store set to secretservice."
         else
-            print_info "Credential store already configured to secretservice."
+            print_info "Credential store already set to secretservice."
         fi
     else
         print_info "Git Credential Manager not found, skipping configuration."

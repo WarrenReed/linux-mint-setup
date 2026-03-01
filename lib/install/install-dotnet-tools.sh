@@ -12,7 +12,7 @@ install_dotnet_tool() {
     local display_name=$2
 
     print_section "Installing $display_name"
-    print_info "Installing/updating $display_name as .NET global tool..."
+    print_info "Installing/updating $display_name..."
     dotnet tool update -g "$tool_id"
 }
 
