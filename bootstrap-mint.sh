@@ -105,7 +105,7 @@ main() {
     install_dotnet_tools
     install_flatpak_apps
     install_standalone_packages
-    install_npm_packages
+    install_pnpm_packages
     install_docker_containers
 
     # Postinstall Phase

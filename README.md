@@ -134,7 +134,7 @@ The script follows a **modular architecture** with phase-based organization:
   - **`install/`** - Installation phase (package installation)
     - `install-apt-packages.sh` - APT package installation
     - `install-flatpak-apps.sh` - Flatpak application installation
-    - `install-npm-packages.sh` - npm global packages (Copilot CLI with awesome-copilot plugin)
+    - `install-pnpm-packages.sh` - pnpm global packages (Copilot CLI with awesome-copilot plugin)
     - `install-standalone-packages.sh` - Standalone package installers (fnm, Node.js, Aspire, oh-my-posh, PIA)
     - `install-dotnet-tools.sh` - .NET global tools (NSwag, Azure Artifacts CP, Git Credential Manager)
     - `install-docker-containers.sh` - Docker containers (Portainer)
