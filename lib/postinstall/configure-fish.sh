@@ -18,7 +18,7 @@ add_aspire_to_fish_path() {
     else
         print_info "Adding Aspire CLI to Fish PATH..."
         echo "$path_line" > "$aspire_config"
-        print_info "Aspire CLI path configured in Fish."
+        print_info "Aspire CLI added to Fish PATH."
     fi
 }
 
@@ -32,7 +32,7 @@ add_fnm_to_fish_path() {
     else
         print_info "Adding fnm to Fish PATH..."
         printf 'set -gx PATH "$HOME/.local/share/fnm" $PATH\nfnm env --use-on-cd --shell fish | source\n' > "$fnm_config"
-        print_info "fnm configured in Fish."
+        print_info "fnm added to Fish PATH."
     fi
 }
 
@@ -59,6 +59,7 @@ set_fish_as_default_shell() {
     else
         print_info "Adding fish to list of valid shells..."
         echo "$fish_path" | sudo tee -a /etc/shells > /dev/null
+        print_info "Fish added to list of valid shells."
     fi
 
     # Set fish as default shell if not already
@@ -67,7 +68,7 @@ set_fish_as_default_shell() {
     else
         print_info "Setting fish as default shell..."
         chsh -s "$fish_path"
-        print_info "Fish is now your default shell. Reboot for the change to take effect."
+        print_info "Fish set as default shell. Log out and log back in for the change to take effect."
     fi
 }
 
@@ -93,4 +94,6 @@ configure_fish() {
     configure_fish_prompt
     set_fish_as_default_shell
     set_fish_ssl_cert_dir
+
+    print_info "Fish shell configuration completed."
 }

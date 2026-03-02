@@ -41,4 +41,6 @@ configure_bash() {
 
     configure_bash_prompt
     set_bash_ssl_cert_dir
+
+    print_info "Bash configuration completed."
 }

@@ -16,6 +16,7 @@ install_flatpak_app() {
     else
         print_info "Installing $display_name..."
         flatpak install -y flathub "$app_id"
+        print_info "$display_name installed."
     fi
 }
 
@@ -25,4 +26,6 @@ install_flatpak_apps() {
     install_flatpak_app "com.microsoft.AzureStorageExplorer" "Azure Storage Explorer"
     install_flatpak_app "com.discordapp.Discord" "Discord"
     install_flatpak_app "com.slack.Slack" "Slack"
+
+    print_info "Flatpak application installation completed."
 }

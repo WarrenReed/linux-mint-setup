@@ -16,11 +16,15 @@ add_ppa_repositories() {
     else
         print_info "Adding Fish Shell PPA repository..."
         sudo add-apt-repository -y ppa:fish-shell/release-4
+        print_info "Fish Shell PPA repository added."
     fi
+
+    print_info "PPA repository configuration completed."
 }
 
 add_repository_keys() {
     print_section "Adding Repository GPG Keys"
+
     declare -A installed_keys
 
     while IFS= read -r key_name; do
@@ -33,10 +37,13 @@ add_repository_keys() {
                 local key_url=$(jq -r ".keys[] | select(.name == \"$key_name\") | .url" "${SCRIPT_DIR}/config/repositories.json")
                 print_info "Adding $key_name GPG key..."
                 curl -fsSL "$key_url" | gpg --dearmor | sudo tee "$key_file" > /dev/null
+                print_info "$key_name GPG key added."
             fi
             installed_keys[$key_name]=1
         fi
     done < <(jq -r '.repositories[].key' "${SCRIPT_DIR}/config/repositories.json" | sort -u)
+
+    print_info "Repository GPG keys configured."
 }
 
 add_third_party_repositories() {
@@ -70,8 +77,11 @@ add_third_party_repositories() {
                 echo "Signed-by: \${KEYRING_DIR}/${key}.gpg"
                 echo "Enabled: yes"
             } | envsubst | sudo tee "$sources_file" > /dev/null
+            print_info "$name repository added."
         fi
     done
+
+    print_info "Third-party repositories configured."
 }
 
 configure_apt_preferences() {
@@ -90,11 +100,15 @@ configure_apt_preferences() {
         else
             print_info "Installing APT preferences file ${filename}..."
             sudo cp "$pref_file" "$dest_file"
+            print_info "APT preferences file ${filename} installed."
         fi
     done
+
+    print_info "APT preferences configured."
 }
 
 update_apt_cache() {
     print_section "Updating Package Lists"
     sudo apt update
+    print_info "Package lists updated."
 }

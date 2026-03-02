@@ -38,4 +38,6 @@ configure_terminal() {
     fi
 
     set_terminal_font
+
+    print_info "Terminal configuration completed."
 }

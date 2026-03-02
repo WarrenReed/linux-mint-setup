@@ -26,4 +26,6 @@ configure_environment() {
     print_section "Configuring Environment"
 
     set_profile_ssl_cert_dir
+
+    print_info "Environment configuration completed."
 }

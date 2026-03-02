@@ -25,4 +25,6 @@ install_docker_containers() {
     print_section "Installing Docker Containers"
 
     install_portainer
+
+    print_info "Docker container installation completed."
 }

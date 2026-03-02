@@ -24,4 +24,6 @@ uninstall_apt_packages() {
     print_section "Uninstalling APT Packages"
 
     uninstall_firefox
+
+    print_info "APT package uninstallation completed."
 }

@@ -27,4 +27,6 @@ configure_hosts() {
     print_section "Configuring Hosts File"
 
     add_sql_server_to_hosts
+
+    print_info "Hosts file configuration completed."
 }

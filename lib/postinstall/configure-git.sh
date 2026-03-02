@@ -57,6 +57,7 @@ configure_git_credential_manager() {
     if command -v git-credential-manager &> /dev/null; then
         print_info "Configuring Git Credential Manager..."
         git-credential-manager configure
+        print_info "Git Credential Manager configured."
 
         # Set credential store to secretservice for Linux desktop environment
         local current_store=$(git config --global credential.credentialStore 2>/dev/null || echo "")
@@ -77,4 +78,6 @@ configure_git() {
 
     configure_git_identity
     configure_git_credential_manager
+
+    print_info "Git configuration completed."
 }

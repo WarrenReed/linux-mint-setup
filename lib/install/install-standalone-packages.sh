@@ -8,41 +8,36 @@
 # ============================================================================
 
 install_aspire() {
-    print_section "Installing Aspire CLI"
-
     if [[ -f ~/.aspire/bin/aspire ]]; then
         print_info "Aspire CLI is already installed."
     else
-        print_info "Downloading and installing Aspire CLI..."
+        print_info "Installing Aspire CLI..."
         curl -fsSL https://aspire.dev/install.sh | bash
+        print_info "Aspire CLI installed."
     fi
 }
 
 install_fnm() {
-    print_section "Installing fnm (Fast Node Manager)"
-
     if [[ -f ~/.local/share/fnm/fnm ]]; then
         print_info "fnm is already installed."
     else
         print_info "Installing fnm..."
         curl -fsSL https://fnm.vercel.app/install | bash
+        print_info "fnm installed."
     fi
 }
 
 install_meslo_font() {
-    print_section "Installing Meslo Nerd Font"
-
     if [[ -d ~/.local/share/fonts/meslolgm-nerd-font ]] || [[ -d ~/.local/share/fonts/meslolgm-nerd-font-mono ]]; then
         print_info "Meslo Nerd Font is already installed."
     else
         print_info "Installing Meslo Nerd Font..."
         oh-my-posh font install meslo
+        print_info "Meslo Nerd Font installed."
     fi
 }
 
 install_nodejs() {
-    print_section "Installing Node.js 22"
-
     # Load fnm in current shell session for both check and install
     export PATH="$HOME/.local/share/fnm:$PATH"
     eval "$(fnm env --shell bash)"
@@ -53,29 +48,27 @@ install_nodejs() {
         print_info "Installing Node.js 22 via fnm..."
         fnm install 22
         fnm default 22
+        print_info "Node.js 22 installed."
     fi
 }
 
 install_oh_my_posh() {
-    print_section "Installing oh-my-posh"
-
     if command -v oh-my-posh &> /dev/null; then
         print_info "oh-my-posh is already installed."
     else
-        print_info "Downloading and installing oh-my-posh..."
+        print_info "Installing oh-my-posh..."
         # Add oh-my-posh to PATH for current session
         export PATH="$HOME/.local/bin:$PATH"
         curl -fsSL https://ohmyposh.dev/install.sh | bash
+        print_info "oh-my-posh installed."
     fi
 }
 
 install_pia() {
-    print_section "Installing Private Internet Access VPN"
-
     if command -v piactl &> /dev/null; then
         print_info "Private Internet Access is already installed."
     else
-        print_info "Fetching latest version information..."
+        print_info "Fetching latest Private Internet Access version information..."
         local pia_version=$(curl -fsSL "https://www.privateinternetaccess.com/download/linux-vpn" | \
             grep -oP 'pia-linux-\K[0-9.]+-[0-9]+(?=\.run)' | \
             head -n 1)
@@ -87,20 +80,25 @@ install_pia() {
             print_info "Latest version detected: $pia_version"
         fi
 
-        print_info "Downloading and installing Private Internet Access..."
+        print_info "Installing Private Internet Access..."
         local temp_installer=$(mktemp)
         curl -fsSL -o "$temp_installer" "https://installers.privateinternetaccess.com/download/pia-linux-${pia_version}.run"
         chmod +x "$temp_installer"
         "$temp_installer" --accept --noprogress
         rm -f "$temp_installer"
+        print_info "Private Internet Access installed."
     fi
 }
 
 install_standalone_packages() {
+    print_section "Installing Standalone Packages"
+
     install_aspire
     install_fnm
     install_nodejs
     install_oh_my_posh
     install_meslo_font
     install_pia
+
+    print_info "Standalone package installation completed."
 }

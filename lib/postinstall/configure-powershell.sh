@@ -25,4 +25,6 @@ configure_powershell() {
     print_section "Configuring PowerShell"
 
     configure_powershell_prompt
+
+    print_info "PowerShell configuration completed."
 }

@@ -15,6 +15,7 @@ add_user_to_virtualization_groups() {
     else
         print_info "Adding current user to libvirt group..."
         sudo usermod -aG libvirt $USER
+        print_info "User added to libvirt group."
         groups_added=true
     fi
 
@@ -23,6 +24,7 @@ add_user_to_virtualization_groups() {
     else
         print_info "Adding current user to kvm group..."
         sudo usermod -aG kvm $USER
+        print_info "User added to kvm group."
         groups_added=true
     fi
 
@@ -35,4 +37,6 @@ configure_virtualization() {
     print_section "Configuring Virtualization"
 
     add_user_to_virtualization_groups
+
+    print_info "Virtualization configuration completed."
 }

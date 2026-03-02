@@ -15,11 +15,12 @@ install_deb_package() {
     if dpkg-query -s "$package_name" &> /dev/null; then
         print_info "$display_name is already installed."
     else
-        print_info "Downloading and installing $display_name..."
+        print_info "Installing $display_name..."
         local temp_deb=$(mktemp --suffix=.deb)
         curl -fsSL -o "$temp_deb" "$download_url"
         sudo apt install -y "$temp_deb"
         rm -f "$temp_deb"
+        print_info "$display_name installed."
     fi
 }
 
@@ -29,6 +30,7 @@ install_applications() {
         pavucontrol \
         remotedesktopmanager \
         steam-installer
+    print_info "Applications installed."
 }
 
 install_azure_tools() {
@@ -36,6 +38,7 @@ install_azure_tools() {
     sudo apt install -y \
         azure-cli \
         microsoft-azurevpnclient
+    print_info "Azure tools installed."
 }
 
 install_development_tools() {
@@ -49,6 +52,7 @@ install_development_tools() {
         fish \
         git \
         powershell
+    print_info "Development tools installed."
 }
 
 install_docker_packages() {
@@ -59,6 +63,7 @@ install_docker_packages() {
         docker-ce \
         docker-ce-cli \
         docker-compose-plugin
+    print_info "Docker packages installed."
 }
 
 install_dotnet_packages() {
@@ -66,10 +71,10 @@ install_dotnet_packages() {
     sudo apt install -y \
         aspnetcore-runtime-8.0 \
         dotnet-sdk-10.0
+    print_info ".NET packages installed."
 }
 
 install_google_chrome() {
-    print_info "Installing Google Chrome..."
     install_deb_package "google-chrome-stable" "Google Chrome" \
         "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
 }
@@ -82,6 +87,7 @@ install_virtualization_packages() {
         libvirt-daemon-system \
         qemu-kvm \
         virt-manager
+    print_info "Virtualization packages installed."
 }
 
 install_apt_packages() {
@@ -94,4 +100,6 @@ install_apt_packages() {
     install_dotnet_packages
     install_google_chrome
     install_virtualization_packages
+
+    print_info "APT package installation completed."
 }

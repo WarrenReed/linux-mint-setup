@@ -24,4 +24,6 @@ configure_dotnet() {
     print_section "Configuring .NET"
 
     trust_dotnet_dev_certificate
+
+    print_info ".NET configuration completed."
 }

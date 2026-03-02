@@ -24,6 +24,7 @@ center_panel_applets() {
 
         # Apply the updated configuration
         gsettings set org.cinnamon enabled-applets "$updated_applets"
+        print_info "Panel applets centered."
     fi
 }
 
@@ -37,12 +38,14 @@ configure_background_slideshow() {
     if [[ "$slideshow_enabled" != "true" ]]; then
         print_info "Enabling background slideshow..."
         gsettings set org.cinnamon.desktop.background.slideshow slideshow-enabled true
+        print_info "Background slideshow enabled."
     fi
 
     # Set collection (slideshow will automatically pick an image from the collection)
     if [[ "$current_source" != "'$wallpapers_collection'" ]]; then
         print_info "Setting background to use Wallpapers collection..."
         gsettings set org.cinnamon.desktop.background.slideshow image-source "$wallpapers_collection"
+        print_info "Background collection set to Wallpapers."
     fi
 }
 
@@ -54,6 +57,7 @@ disable_desktop_volumes() {
     else
         print_info "Hiding mounted drives from desktop..."
         gsettings set org.nemo.desktop volumes-visible false
+        print_info "Desktop volumes hidden."
     fi
 }
 
@@ -65,6 +69,7 @@ configure_nemo() {
     else
         print_info "Setting Nemo to use list view..."
         gsettings set org.nemo.preferences default-folder-viewer 'list-view'
+        print_info "Nemo list view configured."
     fi
 
     # Show hidden files
@@ -74,6 +79,7 @@ configure_nemo() {
     else
         print_info "Setting Nemo to show hidden files..."
         gsettings set org.nemo.preferences show-hidden-files true
+        print_info "Nemo configured to show hidden files."
     fi
 }
 
@@ -85,6 +91,7 @@ set_dark_theme() {
     else
         print_info "Setting GTK theme to Mint-Y-Dark-Aqua..."
         gsettings set org.cinnamon.desktop.interface gtk-theme "Mint-Y-Dark-Aqua"
+        print_info "GTK theme set to Mint-Y-Dark-Aqua."
     fi
 
     # Set Cinnamon theme (Desktop)
@@ -94,6 +101,7 @@ set_dark_theme() {
     else
         print_info "Setting Cinnamon theme to Mint-Y-Dark-Aqua..."
         gsettings set org.cinnamon.theme name "Mint-Y-Dark-Aqua"
+        print_info "Cinnamon theme set to Mint-Y-Dark-Aqua."
     fi
 
     # Set color scheme preference to prefer dark mode
@@ -103,6 +111,7 @@ set_dark_theme() {
     else
         print_info "Setting color scheme to prefer dark mode..."
         gsettings set org.x.apps.portal color-scheme "prefer-dark"
+        print_info "Color scheme set to prefer dark mode."
     fi
 }
 
