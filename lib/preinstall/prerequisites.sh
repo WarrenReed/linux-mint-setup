@@ -28,6 +28,6 @@ check_prerequisites() {
 install_required_utilities() {
     print_section "Installing Required Utilities"
     sudo apt update
-    sudo apt install -y curl gettext-base jq libnss3-tools
+    sudo apt install -y curl gettext-base jq
     print_info "Required utilities installed."
 }

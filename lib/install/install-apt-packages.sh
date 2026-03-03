@@ -70,7 +70,8 @@ install_dotnet_packages() {
     print_info "Installing .NET packages..."
     sudo apt install -y \
         aspnetcore-runtime-8.0 \
-        dotnet-sdk-10.0
+        dotnet-sdk-10.0 \
+        libnss3-tools  # Required for certutil (used to trust .NET dev certificates)
     print_info ".NET packages installed."
 }
 
