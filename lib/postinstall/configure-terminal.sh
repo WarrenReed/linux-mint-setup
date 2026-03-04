@@ -18,6 +18,7 @@ set_terminal_font() {
         gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$PROFILE/ use-system-font false
         gsettings set org.gnome.Terminal.Legacy.Profile:/org/gnome/terminal/legacy/profiles:/:$PROFILE/ font 'MesloLGM Nerd Font 10'
         print_info "Meslo Nerd Font set for GNOME Terminal."
+        print_info "Note: Current terminal may display text incorrectly until you open a new terminal window."
     fi
 }
 

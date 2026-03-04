@@ -7,6 +7,16 @@
 # Sourced by bootstrap-mint.sh
 # ============================================================================
 
+install_angular_cli() {
+    if command -v ng &> /dev/null; then
+        print_info "Angular CLI is already installed."
+    else
+        print_info "Installing Angular CLI..."
+        pnpm add -g @angular/cli
+        print_info "Angular CLI installed."
+    fi
+}
+
 install_awesome_copilot_plugin() {
     if copilot plugin list 2>/dev/null | grep -q "awesome-copilot"; then
         print_info "awesome-copilot plugin is already installed."
@@ -53,6 +63,7 @@ install_pnpm_packages() {
     export PNPM_HOME="$HOME/.local/share/pnpm"
     export PATH="$PNPM_HOME:$PATH"
 
+    install_angular_cli
     install_copilot_cli
     install_awesome_copilot_plugin
 

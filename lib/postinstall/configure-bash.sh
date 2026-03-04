@@ -3,9 +3,24 @@
 # ============================================================================
 # Bash Configuration
 # ============================================================================
-# Configures Bash shell with oh-my-posh prompt theme and SSL_CERT_DIR.
+# Configures Bash shell with PATH, oh-my-posh prompt theme, and SSL_CERT_DIR.
 # Sourced by bootstrap-mint.sh
 # ============================================================================
+
+add_local_bin_to_bash_path() {
+    local bashrc=~/.bashrc
+    local path_check='$HOME/.local/bin'
+
+    if grep -qF "$path_check" "$bashrc"; then
+        print_info "~/.local/bin already in Bash PATH."
+    else
+        print_info "Adding ~/.local/bin to Bash PATH..."
+        echo "" >> "$bashrc"
+        echo "# Add ~/.local/bin to PATH for user-installed tools" >> "$bashrc"
+        echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$bashrc"
+        print_info "~/.local/bin added to Bash PATH."
+    fi
+}
 
 configure_bash_prompt() {
     local bashrc=~/.bashrc
@@ -39,6 +54,7 @@ set_bash_ssl_cert_dir() {
 configure_bash() {
     print_section "Configuring Bash"
 
+    add_local_bin_to_bash_path
     configure_bash_prompt
     set_bash_ssl_cert_dir
 

@@ -9,12 +9,11 @@
 # ============================================================================
 
 add_aspire_to_fish_path() {
-    mkdir -p ~/.config/fish/conf.d
     local aspire_config=~/.config/fish/conf.d/aspire.fish
     local path_line="fish_add_path \$HOME/.aspire/bin"
 
     if [[ -f "$aspire_config" ]] && grep -qF "$path_line" "$aspire_config"; then
-        print_info "Aspire CLI path already configured in Fish."
+        print_info "Aspire CLI already added to Fish PATH."
     else
         print_info "Adding Aspire CLI to Fish PATH..."
         echo "$path_line" > "$aspire_config"
@@ -23,12 +22,11 @@ add_aspire_to_fish_path() {
 }
 
 add_fnm_to_fish_path() {
-    mkdir -p ~/.config/fish/conf.d
     local fnm_config=~/.config/fish/conf.d/fnm.fish
     local fnm_line='fnm env --use-on-cd --shell fish | source'
 
     if [[ -f "$fnm_config" ]] && grep -qF "$fnm_line" "$fnm_config"; then
-        print_info "fnm already configured in Fish."
+        print_info "fnm already added to Fish PATH."
     else
         print_info "Adding fnm to Fish PATH..."
         printf 'set -gx PATH "$HOME/.local/share/fnm" $PATH\nfnm env --use-on-cd --shell fish | source\n' > "$fnm_config"
@@ -36,8 +34,21 @@ add_fnm_to_fish_path() {
     fi
 }
 
+add_pnpm_to_fish_path() {
+    local pnpm_config=~/.config/fish/conf.d/pnpm.fish
+    local path_line='set -gx PNPM_HOME "$HOME/.local/share/pnpm"'
+    local pnpm_path_line='fish_add_path $PNPM_HOME'
+
+    if [[ -f "$pnpm_config" ]] && grep -qF "$path_line" "$pnpm_config"; then
+        print_info "pnpm already added to Fish PATH."
+    else
+        print_info "Adding pnpm to Fish PATH..."
+        printf '%s\n%s\n' "$path_line" "$pnpm_path_line" > "$pnpm_config"
+        print_info "pnpm added to Fish PATH."
+    fi
+}
+
 configure_fish_prompt() {
-    mkdir -p ~/.config/fish/conf.d
     local omp_config=~/.config/fish/conf.d/oh-my-posh.fish
     local omp_line="oh-my-posh init fish --config ${OMP_THEME_PATH} | source"
 
@@ -73,7 +84,6 @@ set_fish_as_default_shell() {
 }
 
 set_fish_ssl_cert_dir() {
-    mkdir -p ~/.config/fish/conf.d
     local ssl_config=~/.config/fish/conf.d/ssl_cert_dir.fish
     local ssl_line='set -gx SSL_CERT_DIR /etc/ssl/certs:$HOME/.aspnet/dev-certs/trust'
 
@@ -89,8 +99,11 @@ set_fish_ssl_cert_dir() {
 configure_fish() {
     print_section "Configuring Fish Shell"
 
+    mkdir -p ~/.config/fish/conf.d
+
     add_aspire_to_fish_path
     add_fnm_to_fish_path
+    add_pnpm_to_fish_path
     configure_fish_prompt
     set_fish_as_default_shell
     set_fish_ssl_cert_dir

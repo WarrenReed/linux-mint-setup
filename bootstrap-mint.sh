@@ -37,13 +37,13 @@
 # Usage: bash bootstrap-mint.sh
 # Prerequisites: Fresh Linux Mint installation with internet connection
 # Note: Script will request sudo privileges when needed
-# Post-install: Bash is configured with oh-my-posh
-#               Fish shell is configured with oh-my-posh, fnm, and SSL_CERT_DIR
-#               PowerShell is configured with oh-my-posh
+# Post-install: Bash is configured with oh-my-posh and pnpm
+#               Fish shell is configured with oh-my-posh, fnm, pnpm, and SSL_CERT_DIR
+#               PowerShell is configured with oh-my-posh and pnpm
 #               GNOME Terminal is configured to use Meslo Nerd Font
 #               oh-my-posh theme: configurable via OMP_THEME_PATH variable
 #               Hosts file configured with: 127.0.0.1 sql-server
-#               Desktop environment configured (dark theme, centered panel, slideshow, centered login) with Cinnamon restart
+#               Desktop environment configured (dark theme, centered panel, slideshow)
 #               .NET development certificates trusted
 ################################################################################
 
@@ -118,9 +118,9 @@ main() {
     configure_grub
     configure_hosts
     configure_powershell
-    configure_terminal
     configure_virtualization
     configure_desktop
+    configure_terminal
 
     # Completion
     print_section "Installation Complete!"

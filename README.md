@@ -11,6 +11,7 @@ Automated bootstrap script for setting up a fresh Linux Mint 22 installation wit
 ### Development Tools
 
 - **.NET SDK 10.0** - Latest .NET development kit
+- **Angular CLI** - Command-line interface for Angular framework
 - **ASP.NET Core Runtime 8.0** - Runtime for ASP.NET Core applications
 - **Aspire CLI** - .NET Aspire command-line tools
 - **Azure Artifacts Credential Provider** - Authentication provider for Azure Artifacts feeds
@@ -104,6 +105,9 @@ For local overrides without modifying tracked files, create `.env.local` (gitign
   - `etc/default/grub.d/` - GRUB bootloader configuration files
 - **`tests/`** - Testing utilities
   - `reset-test-vm.sh` - VM testing helper for resetting baseline VM
+  - `test-cli-tools-bash.sh` - Verify CLI tools in Bash environment
+  - `test-cli-tools-fish.fish` - Verify CLI tools in Fish environment
+  - `test-cli-tools-powershell.ps1` - Verify CLI tools in PowerShell environment
 - **`lib/`** - Modular library functions (sourced by bootstrap-mint.sh)
   - `output.sh` - Shared output formatting utilities
 
@@ -134,18 +138,18 @@ The script follows a **modular architecture** with phase-based organization:
   - **`install/`** - Installation phase (package installation)
     - `install-apt-packages.sh` - APT package installation
     - `install-flatpak-apps.sh` - Flatpak application installation
-    - `install-pnpm-packages.sh` - pnpm global packages (Copilot CLI with awesome-copilot plugin)
+    - `install-pnpm-packages.sh` - pnpm global packages (Angular CLI, GitHub Copilot CLI with awesome-copilot plugin)
     - `install-standalone-packages.sh` - Standalone package installers (fnm, Node.js, Aspire, oh-my-posh, PIA)
     - `install-dotnet-tools.sh` - .NET global tools (NSwag, Azure Artifacts CP, Git Credential Manager)
     - `install-docker-containers.sh` - Docker containers (Portainer)
   - **`postinstall/`** - Post-installation phase (configuration after installation)
     - `configure-docker.sh` - Docker group configuration
     - `configure-virtualization.sh` - KVM/libvirt group configuration
-    - `configure-bash.sh` - Bash shell configuration with oh-my-posh
-    - `configure-fish.sh` - Fish shell configuration with oh-my-posh, fnm, SSL certs
+    - `configure-bash.sh` - Bash shell configuration with oh-my-posh and pnpm
+    - `configure-fish.sh` - Fish shell configuration with oh-my-posh, fnm, pnpm, SSL certs
     - `configure-git.sh` - Git configuration with conditional includes for personal/work identities and Git Credential Manager
     - `configure-grub.sh` - GRUB bootloader configuration (timeout, remember last choice)
-    - `configure-powershell.sh` - PowerShell profile configuration
+    - `configure-powershell.sh` - PowerShell profile configuration with oh-my-posh and pnpm
     - `configure-terminal.sh` - GNOME Terminal font configuration
     - `configure-desktop.sh` - Desktop environment configuration (Cinnamon and Nemo)
     - `configure-hosts.sh` - Hosts file configuration
@@ -177,6 +181,23 @@ This script:
 - Starts the baseline VM
 
 Requires virsh (KVM/libvirt) to be installed.
+
+### Verifying CLI Tools
+
+After running the bootstrap script, verify that all CLI tools are available in each shell:
+
+```bash
+# Test in Bash
+bash tests/test-cli-tools-bash.sh
+
+# Test in Fish
+fish tests/test-cli-tools-fish.fish
+
+# Test in PowerShell
+pwsh tests/test-cli-tools-powershell.ps1
+```
+
+Tests verify: aspire, az, code, copilot, docker, dotnet, fnm, git, ng, node, npm, nswag, oh-my-posh, pnpm
 
 ## Troubleshooting
 

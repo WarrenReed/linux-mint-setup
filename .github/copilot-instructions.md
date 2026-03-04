@@ -20,6 +20,9 @@ This is a Linux Mint 22 bootstrap script repository for initial system setup and
   - **`etc/default/grub.d/`** - GRUB bootloader configuration files
 - **`tests/`** - Testing utilities
   - **`reset-test-vm.sh`** - VM testing helper to reset baseline VM for testing bootstrap script
+  - **`test-cli-tools-bash.sh`** - Verify CLI tools in Bash environment
+  - **`test-cli-tools-fish.fish`** - Verify CLI tools in Fish environment
+  - **`test-cli-tools-powershell.ps1`** - Verify CLI tools in PowerShell environment
 - **`lib/`** - Modular library functions (sourced by bootstrap-mint.sh)
   - **`output.sh`** - Shared output formatting utilities (colors and print functions)
   - **`preinstall/`** - Pre-installation phase (runs before package installation)
@@ -29,20 +32,20 @@ This is a Linux Mint 22 bootstrap script repository for initial system setup and
   - **`install/`** - Installation phase (package installation)
     - **`install-apt-packages.sh`** - APT package installation
     - **`install-flatpak-apps.sh`** - Flatpak application installation
-    - **`install-pnpm-packages.sh`** - pnpm global packages (Copilot CLI with awesome-copilot plugin)
+    - **`install-pnpm-packages.sh`** - pnpm global packages (Angular CLI, GitHub Copilot CLI with awesome-copilot plugin)
     - **`install-standalone-packages.sh`** - Standalone package installers (fnm, Node.js, Aspire, oh-my-posh, PIA)
     - **`install-dotnet-tools.sh`** - .NET global tools (NSwag, Azure Artifacts CP, Git Credential Manager)
     - **`install-docker-containers.sh`** - Docker containers (Portainer)
   - **`postinstall/`** - Post-installation phase (configuration after installation)
     - **`configure-environment.sh`** - Session environment configuration (.profile for desktop-launched apps)
-    - **`configure-bash.sh`** - Bash shell configuration with oh-my-posh and SSL_CERT_DIR
+    - **`configure-bash.sh`** - Bash shell configuration with oh-my-posh, pnpm, and SSL_CERT_DIR
     - **`configure-docker.sh`** - Docker group configuration
-    - **`configure-fish.sh`** - Fish shell configuration with oh-my-posh, fnm, SSL_CERT_DIR
+    - **`configure-fish.sh`** - Fish shell configuration with oh-my-posh, fnm, pnpm, SSL_CERT_DIR
     - **`configure-dotnet.sh`** - .NET development certificate trust
     - **`configure-git.sh`** - Git configuration with conditional includes for personal/work identities and Git Credential Manager
     - **`configure-grub.sh`** - GRUB bootloader configuration (timeout, remember last choice)
     - **`configure-hosts.sh`** - Hosts file configuration
-    - **`configure-powershell.sh`** - PowerShell profile configuration
+    - **`configure-powershell.sh`** - PowerShell profile configuration with oh-my-posh and pnpm
     - **`configure-terminal.sh`** - GNOME Terminal font configuration
     - **`configure-virtualization.sh`** - KVM/libvirt group configuration
     - **`configure-desktop.sh`** - Desktop environment configuration (Cinnamon and Nemo)
@@ -107,7 +110,7 @@ The `.env` file is tracked in git with sensible defaults. Create `.env.local` (g
   - `uninstall_apt_packages()` in [lib/preinstall/uninstall-apt-packages.sh](../lib/preinstall/uninstall-apt-packages.sh) - Remove unwanted pre-installed packages (Firefox)
   - `install_apt_packages()` in [lib/install/install-apt-packages.sh](../lib/install/install-apt-packages.sh) - APT repository packages (grouped by category: .NET, Docker, Virtualization, Azure, Development, Applications, Libraries)
   - `install_flatpak_apps()` in [lib/install/install-flatpak-apps.sh](../lib/install/install-flatpak-apps.sh) - Flatpak applications
-  - `install_pnpm_packages()` in [lib/install/install-pnpm-packages.sh](../lib/install/install-pnpm-packages.sh) - pnpm global packages (Copilot CLI with awesome-copilot plugin)
+  - `install_pnpm_packages()` in [lib/install/install-pnpm-packages.sh](../lib/install/install-pnpm-packages.sh) - pnpm global packages (Angular CLI, GitHub Copilot CLI with awesome-copilot plugin)
   - `install_standalone_packages()` in [lib/install/install-standalone-packages.sh](../lib/install/install-standalone-packages.sh) - Direct download installers (fnm, Node.js, Aspire, oh-my-posh, PIA)
   - `install_dotnet_tools()` in [lib/install/install-dotnet-tools.sh](../lib/install/install-dotnet-tools.sh) - .NET global tools
   - `install_docker_containers()` in [lib/install/install-docker-containers.sh](../lib/install/install-docker-containers.sh) - Docker containers (Portainer)
