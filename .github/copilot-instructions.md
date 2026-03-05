@@ -252,7 +252,7 @@ The `.env` file is tracked in git with sensible defaults. Create `.env.local` (g
    - **For PPA repos:** Add function call to `add_ppa_repositories()` in [lib/preinstall/add-repositories.sh](../lib/preinstall/add-repositories.sh) with idempotency check
 5. If APT package:
    - Add to the appropriate grouped `apt install` command in alphabetical order in `install_apt_packages()` in [lib/install/install-apt-packages.sh](../lib/install/install-apt-packages.sh)
-   - Groups: .NET, Docker, Virtualization, Azure, Development, Applications, Libraries
+   - Groups: .NET, Docker, Virtualization, Development, Applications
    - If package attempts to manage its own repository, add debconf setting before installation to prevent conflicts
 6. If Flatpak app: Add to `install_flatpak_apps()` in [lib/install/install-flatpak-apps.sh](../lib/install/install-flatpak-apps.sh) with idempotency check
 7. If pnpm package or Copilot plugin: Add to `install_pnpm_packages()` in [lib/install/install-pnpm-packages.sh](../lib/install/install-pnpm-packages.sh) with idempotency check

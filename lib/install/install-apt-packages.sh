@@ -27,18 +27,15 @@ install_deb_package() {
 install_applications() {
     print_info "Installing applications..."
     sudo apt install -y \
+        microsoft-azurevpnclient \
         pavucontrol \
         remotedesktopmanager \
         steam-installer
-    print_info "Applications installed."
-}
 
-install_azure_tools() {
-    print_info "Installing Azure tools..."
-    sudo apt install -y \
-        azure-cli \
-        microsoft-azurevpnclient
-    print_info "Azure tools installed."
+    install_deb_package "google-chrome-stable" "Google Chrome" \
+        "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
+
+    print_info "Applications installed."
 }
 
 install_development_tools() {
@@ -48,10 +45,12 @@ install_development_tools() {
     echo "code code/add-microsoft-repo boolean false" | sudo debconf-set-selections
 
     sudo apt install -y \
+        azure-cli \
         code \
         fish \
         git \
-        powershell
+        powershell \
+        sourcegit
     print_info "Development tools installed."
 }
 
@@ -75,11 +74,6 @@ install_dotnet_packages() {
     print_info ".NET packages installed."
 }
 
-install_google_chrome() {
-    install_deb_package "google-chrome-stable" "Google Chrome" \
-        "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
-}
-
 install_virtualization_packages() {
     print_info "Installing virtualization packages..."
     sudo apt install -y \
@@ -95,11 +89,9 @@ install_apt_packages() {
     print_section "Installing APT Packages"
 
     install_applications
-    install_azure_tools
     install_development_tools
     install_docker_packages
     install_dotnet_packages
-    install_google_chrome
     install_virtualization_packages
 
     print_info "APT package installation completed."

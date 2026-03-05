@@ -17,7 +17,6 @@ Automated bootstrap script for setting up a fresh Linux Mint 22 installation wit
 - **Azure Artifacts Credential Provider** - Authentication provider for Azure Artifacts feeds
 - **Azure CLI** - Azure command-line interface
 - **Azure Storage Explorer** - Azure cloud storage management desktop application
-- **Azure VPN Client** - Microsoft Azure VPN client
 - **Docker Engine** - Container platform (including docker-compose, buildx)
 - **Git** - Version control system
 - **Git Credential Manager** - Secure Git credential helper for multi-factor authentication
@@ -26,10 +25,12 @@ Automated bootstrap script for setting up a fresh Linux Mint 22 installation wit
 - **Node.js 22** - JavaScript runtime (installed via fnm - Fast Node Manager)
 - **NSwag CLI** - OpenAPI/Swagger toolchain for .NET (command-line interface)
 - **Portainer** - Docker management UI (web-based interface at localhost:9000)
+- **SourceGit** - Opensource Git GUI client
 - **Visual Studio Code** - Code editor
 
 ### Applications
 
+- **Azure VPN Client** - Microsoft Azure VPN client
 - **Discord** - Communication platform (installed via Flatpak for automatic updates)
 - **Google Chrome** - Web browser
 - **Private Internet Access** - VPN client for privacy and security

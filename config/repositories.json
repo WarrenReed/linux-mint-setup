@@ -11,6 +11,10 @@
     {
       "name": "microsoft",
       "url": "https://packages.microsoft.com/keys/microsoft.asc"
+    },
+    {
+      "name": "sourcegit",
+      "url": "https://codeberg.org/api/packages/yataro/debian/repository.key"
     }
   ],
   "repositories": [
@@ -72,6 +76,16 @@
       "suites": "stable",
       "components": "main",
       "architectures": "amd64 arm64 armhf"
+    },
+    {
+      "name": "SourceGit",
+      "key": "sourcegit",
+      "filename": "sourcegit.sources",
+      "types": "deb",
+      "uris": "https://codeberg.org/api/packages/yataro/debian",
+      "suites": "generic",
+      "components": "main",
+      "architectures": "amd64 arm64"
     }
   ]
 }
