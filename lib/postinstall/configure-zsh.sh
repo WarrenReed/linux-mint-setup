@@ -161,6 +161,25 @@ set_zsh_ssl_cert_dir() {
     fi
 }
 
+configure_zsh_syntax_highlighting() {
+    local zshrc=~/.zshrc
+    local highlight_script='/usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh'
+    local source_line="source ${highlight_script}"
+
+    # zsh-syntax-highlighting MUST be sourced last in .zshrc
+    if [[ -f "$zshrc" ]] && grep -qF "$source_line" "$zshrc"; then
+        print_info "zsh-syntax-highlighting already configured."
+    elif [[ -f "$highlight_script" ]]; then
+        print_info "Configuring zsh-syntax-highlighting..."
+        echo "" >> "$zshrc"
+        echo "# Syntax highlighting (must be sourced last)" >> "$zshrc"
+        echo "$source_line" >> "$zshrc"
+        print_info "zsh-syntax-highlighting configured."
+    else
+        print_info "zsh-syntax-highlighting script not found, skipping."
+    fi
+}
+
 configure_zsh() {
     print_section "Configuring Zsh"
 
@@ -176,6 +195,7 @@ configure_zsh() {
     configure_zsh_prompt
     set_zsh_as_default_shell
     set_zsh_ssl_cert_dir
+    configure_zsh_syntax_highlighting
 
     print_info "Zsh configuration completed."
 }

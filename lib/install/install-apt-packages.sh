@@ -51,7 +51,8 @@ install_development_tools() {
         git \
         powershell \
         sourcegit \
-        zsh
+        zsh \
+        zsh-syntax-highlighting
     print_info "Development tools installed."
 }
 
