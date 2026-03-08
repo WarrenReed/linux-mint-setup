@@ -42,7 +42,6 @@ Automated bootstrap script for setting up a fresh Linux Mint 22 installation wit
 ### Shell & Terminal
 
 - **Bash** - Pre-installed shell (configured with oh-my-posh)
-- **Fish Shell** - Modern, user-friendly shell
 - **PowerShell** - Cross-platform automation and configuration tool
 - **Zsh** - Default shell (configured with Oh My Zsh, oh-my-posh, fnm, pnpm, and SSL_CERT_DIR)
 - **Oh My Zsh** - Community-driven Zsh configuration framework with plugins
@@ -81,7 +80,6 @@ After the script completes:
    - Zsh prompt with oh-my-posh theme will appear
    - Meslo Nerd Font will render icons and glyphs (in GNOME Terminal)
    - Run `bash` to see Bash prompt with oh-my-posh theme
-   - Run `fish` to see Fish prompt with oh-my-posh theme
    - Run `pwsh` to see PowerShell prompt with oh-my-posh theme
 
 ## Configuration
@@ -110,7 +108,6 @@ For local overrides without modifying tracked files, create `.env.local` (gitign
 - **`tests/`** - Testing utilities
   - `reset-test-vm.sh` - VM testing helper for resetting baseline VM
   - `test-cli-tools-bash.sh` - Verify CLI tools in Bash environment
-  - `test-cli-tools-fish.fish` - Verify CLI tools in Fish environment
   - `test-cli-tools-powershell.ps1` - Verify CLI tools in PowerShell environment
   - `test-cli-tools-zsh.sh` - Verify CLI tools in Zsh environment
 - **`lib/`** - Modular library functions (sourced by bootstrap-mint.sh)
@@ -151,7 +148,6 @@ The script follows a **modular architecture** with phase-based organization:
     - `configure-docker.sh` - Docker group configuration
     - `configure-virtualization.sh` - KVM/libvirt group configuration
     - `configure-bash.sh` - Bash shell configuration with oh-my-posh and pnpm
-    - `configure-fish.sh` - Fish shell configuration with oh-my-posh, fnm, pnpm, SSL certs
     - `configure-git.sh` - Git configuration with conditional includes for personal/work identities and Git Credential Manager
     - `configure-zsh.sh` - Zsh shell configuration with Oh My Zsh, oh-my-posh, fnm, pnpm, SSL certs (default shell)
     - `configure-grub.sh` - GRUB bootloader configuration (timeout, remember last choice)
@@ -195,9 +191,6 @@ After running the bootstrap script, verify that all CLI tools are available in e
 ```bash
 # Test in Bash
 bash tests/test-cli-tools-bash.sh
-
-# Test in Fish
-fish tests/test-cli-tools-fish.fish
 
 # Test in PowerShell
 pwsh tests/test-cli-tools-powershell.ps1
@@ -251,7 +244,6 @@ Edit `.env` or create `.env.local` to customize:
 - APT preferences configured to prefer Ubuntu packages over Microsoft .NET packages where conflicts exist
 - Configuration files:
   - Bash: `~/.bashrc`
-  - Fish: `~/.config/fish/config.fish`
   - PowerShell: `~/.config/powershell/Microsoft.PowerShell_profile.ps1`
   - Zsh: `~/.zshrc`
   - oh-my-posh themes: `~/.cache/oh-my-posh/themes/`

@@ -47,7 +47,6 @@ install_development_tools() {
     sudo apt install -y \
         azure-cli \
         code \
-        fish \
         git \
         powershell \
         sourcegit \

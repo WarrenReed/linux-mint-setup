@@ -21,7 +21,6 @@ This is a Linux Mint 22 bootstrap script repository for initial system setup and
 - **`tests/`** - Testing utilities
   - **`reset-test-vm.sh`** - VM testing helper to reset baseline VM for testing bootstrap script
   - **`test-cli-tools-bash.sh`** - Verify CLI tools in Bash environment
-  - **`test-cli-tools-fish.fish`** - Verify CLI tools in Fish environment
   - **`test-cli-tools-powershell.ps1`** - Verify CLI tools in PowerShell environment
   - **`test-cli-tools-zsh.sh`** - Verify CLI tools in Zsh environment
 - **`lib/`** - Modular library functions (sourced by bootstrap-mint.sh)
@@ -41,7 +40,6 @@ This is a Linux Mint 22 bootstrap script repository for initial system setup and
     - **`configure-environment.sh`** - Session environment configuration (.profile for desktop-launched apps)
     - **`configure-bash.sh`** - Bash shell configuration with oh-my-posh, pnpm, and SSL_CERT_DIR
     - **`configure-docker.sh`** - Docker group configuration
-    - **`configure-fish.sh`** - Fish shell configuration with oh-my-posh, fnm, pnpm, SSL_CERT_DIR
     - **`configure-dotnet.sh`** - .NET development certificate trust
     - **`configure-git.sh`** - Git configuration with conditional includes for personal/work identities and Git Credential Manager
     - **`configure-grub.sh`** - GRUB bootloader configuration (timeout, remember last choice)
@@ -142,7 +140,7 @@ The `.env` file is tracked in git with sensible defaults. Create `.env.local` (g
   - PPA repositories: Check if already added before running add-apt-repository
   - User groups: Check group membership before adding user
   - Shell configuration: Check if shell is in /etc/shells and is default before changing
-  - Fish/Zsh config: Check if oh-my-posh line exists before appending
+  - Zsh config: Check if oh-my-posh line exists before appending
   - Standalone tools: Use `command -v` to check if already installed
   - Fonts: Use `fc-list` to check if font already installed
 - Use proper bash conditional syntax for safe checks with `set -u`
@@ -197,7 +195,7 @@ The `.env` file is tracked in git with sensible defaults. Create `.env.local` (g
 - PPAs automatically handle GPG keys
 - Add PPA repositories in alphabetical order with other repos
 - Check if PPA is already added before running add-apt-repository for idempotency
-- Example: `grep -qr "^deb .*ppa.launchpad.net/fish-shell/release-4" /etc/apt/sources.list.d/`
+- Example: `grep -qr "^deb .*ppa.launchpad.net/git-core" /etc/apt/sources.list.d/`
 
 ### Debconf Configuration
 
@@ -217,17 +215,17 @@ The `.env` file is tracked in git with sensible defaults. Create `.env.local` (g
 - Install to user home directory when possible (e.g., `~/.aspire/bin/`, `~/.local/share/fnm`)
 - Always check if tool is already installed before running installation script
 - Use `command -v` or similar checks for idempotency
-- For fnm: Must add to PATH in Fish and Zsh config before initializing
+- For fnm: Must add to PATH in Zsh config before initializing
 
 ### Post-Installation Configuration
 
 - Configure installed applications after package installation
-- Common configurations: user groups (docker, virtualization), shell setup and integrations (fish, zsh)
+- Common configurations: user groups (docker, virtualization), shell setup and integrations (zsh)
 - Group changes require reboot to take effect
 - Inform users of required reboot steps
 - Always implement idempotency checks (verify existing state before making changes)
 - **Desktop configuration uses only gsettings** for reliability and idempotency
-- Configuration functions (in execution order): `configure_environment()`, `configure_bash()`, `configure_docker()`, `configure_fish()`, `configure_zsh()`, `configure_dotnet()`, `configure_git()`, `configure_grub()`, `configure_hosts()`, `configure_powershell()`, `configure_terminal()`, `configure_virtualization()`, `configure_desktop()`
+- Configuration functions (in execution order): `configure_environment()`, `configure_bash()`, `configure_docker()`, `configure_zsh()`, `configure_dotnet()`, `configure_git()`, `configure_grub()`, `configure_hosts()`, `configure_powershell()`, `configure_terminal()`, `configure_virtualization()`, `configure_desktop()`
 
 ## When Adding New Applications
 
