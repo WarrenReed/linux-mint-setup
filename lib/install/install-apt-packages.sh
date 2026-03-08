@@ -50,7 +50,8 @@ install_development_tools() {
         fish \
         git \
         powershell \
-        sourcegit
+        sourcegit \
+        zsh
     print_info "Development tools installed."
 }
 

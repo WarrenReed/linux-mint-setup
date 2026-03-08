@@ -17,6 +17,7 @@
 #   - Discord
 #   - Docker Engine
 #   - Fish Shell
+#   - Zsh Shell
 #   - Git Credential Manager
 #   - Git and development tools
 #   - GitHub Copilot CLI
@@ -39,6 +40,7 @@
 # Note: Script will request sudo privileges when needed
 # Post-install: Bash is configured with oh-my-posh and pnpm
 #               Fish shell is configured with oh-my-posh, fnm, pnpm, and SSL_CERT_DIR
+#               Zsh shell is configured with oh-my-posh, fnm, pnpm, and SSL_CERT_DIR (default shell)
 #               PowerShell is configured with oh-my-posh and pnpm
 #               GNOME Terminal is configured to use Meslo Nerd Font
 #               oh-my-posh theme: configurable via OMP_THEME_PATH variable
@@ -113,6 +115,7 @@ main() {
     configure_bash
     configure_docker
     configure_fish
+    configure_zsh
     configure_dotnet
     configure_git
     configure_grub

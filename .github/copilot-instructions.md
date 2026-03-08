@@ -23,6 +23,7 @@ This is a Linux Mint 22 bootstrap script repository for initial system setup and
   - **`test-cli-tools-bash.sh`** - Verify CLI tools in Bash environment
   - **`test-cli-tools-fish.fish`** - Verify CLI tools in Fish environment
   - **`test-cli-tools-powershell.ps1`** - Verify CLI tools in PowerShell environment
+  - **`test-cli-tools-zsh.sh`** - Verify CLI tools in Zsh environment
 - **`lib/`** - Modular library functions (sourced by bootstrap-mint.sh)
   - **`output.sh`** - Shared output formatting utilities (colors and print functions)
   - **`preinstall/`** - Pre-installation phase (runs before package installation)
@@ -48,6 +49,7 @@ This is a Linux Mint 22 bootstrap script repository for initial system setup and
     - **`configure-powershell.sh`** - PowerShell profile configuration with oh-my-posh and pnpm
     - **`configure-terminal.sh`** - GNOME Terminal font configuration
     - **`configure-virtualization.sh`** - KVM/libvirt group configuration
+    - **`configure-zsh.sh`** - Zsh shell configuration with oh-my-posh, fnm, pnpm, SSL_CERT_DIR (default shell)
     - **`configure-desktop.sh`** - Desktop environment configuration (Cinnamon and Nemo)
 
 ## Configuration
@@ -140,7 +142,7 @@ The `.env` file is tracked in git with sensible defaults. Create `.env.local` (g
   - PPA repositories: Check if already added before running add-apt-repository
   - User groups: Check group membership before adding user
   - Shell configuration: Check if shell is in /etc/shells and is default before changing
-  - Fish config: Check if oh-my-posh line exists before appending
+  - Fish/Zsh config: Check if oh-my-posh line exists before appending
   - Standalone tools: Use `command -v` to check if already installed
   - Fonts: Use `fc-list` to check if font already installed
 - Use proper bash conditional syntax for safe checks with `set -u`
@@ -215,17 +217,17 @@ The `.env` file is tracked in git with sensible defaults. Create `.env.local` (g
 - Install to user home directory when possible (e.g., `~/.aspire/bin/`, `~/.local/share/fnm`)
 - Always check if tool is already installed before running installation script
 - Use `command -v` or similar checks for idempotency
-- For fnm: Must add to PATH in Fish config before initializing
+- For fnm: Must add to PATH in Fish and Zsh config before initializing
 
 ### Post-Installation Configuration
 
 - Configure installed applications after package installation
-- Common configurations: user groups (docker, virtualization), shell setup and integrations (fish)
+- Common configurations: user groups (docker, virtualization), shell setup and integrations (fish, zsh)
 - Group changes require reboot to take effect
 - Inform users of required reboot steps
 - Always implement idempotency checks (verify existing state before making changes)
 - **Desktop configuration uses only gsettings** for reliability and idempotency
-- Configuration functions (in execution order): `configure_environment()`, `configure_bash()`, `configure_docker()`, `configure_fish()`, `configure_dotnet()`, `configure_git()`, `configure_grub()`, `configure_hosts()`, `configure_powershell()`, `configure_terminal()`, `configure_virtualization()`, `configure_desktop()`
+- Configuration functions (in execution order): `configure_environment()`, `configure_bash()`, `configure_docker()`, `configure_fish()`, `configure_zsh()`, `configure_dotnet()`, `configure_git()`, `configure_grub()`, `configure_hosts()`, `configure_powershell()`, `configure_terminal()`, `configure_virtualization()`, `configure_desktop()`
 
 ## When Adding New Applications
 

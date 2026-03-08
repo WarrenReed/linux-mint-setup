@@ -4,7 +4,6 @@
 # Fish Shell Configuration
 # ============================================================================
 # Configures Fish shell with oh-my-posh, fnm, Aspire path, and SSL_CERT_DIR.
-# Sets Fish as the default shell.
 # Sourced by bootstrap-mint.sh
 # ============================================================================
 
@@ -61,28 +60,6 @@ configure_fish_prompt() {
     fi
 }
 
-set_fish_as_default_shell() {
-    local fish_path=$(command -v fish)
-
-    # Add fish to /etc/shells if not already present
-    if grep -qF "$fish_path" /etc/shells; then
-        print_info "Fish is already in /etc/shells."
-    else
-        print_info "Adding fish to list of valid shells..."
-        echo "$fish_path" | sudo tee -a /etc/shells > /dev/null
-        print_info "Fish added to list of valid shells."
-    fi
-
-    # Set fish as default shell if not already
-    if [[ "$SHELL" == "$fish_path" ]]; then
-        print_info "Fish is already your default shell."
-    else
-        print_info "Setting fish as default shell..."
-        chsh -s "$fish_path"
-        print_info "Fish set as default shell. Log out and log back in for the change to take effect."
-    fi
-}
-
 set_fish_ssl_cert_dir() {
     local ssl_config=~/.config/fish/conf.d/ssl_cert_dir.fish
     local ssl_line='set -gx SSL_CERT_DIR /etc/ssl/certs:$HOME/.aspnet/dev-certs/trust'
@@ -105,7 +82,6 @@ configure_fish() {
     add_fnm_to_fish_path
     add_pnpm_to_fish_path
     configure_fish_prompt
-    set_fish_as_default_shell
     set_fish_ssl_cert_dir
 
     print_info "Fish shell configuration completed."

@@ -42,8 +42,9 @@ Automated bootstrap script for setting up a fresh Linux Mint 22 installation wit
 ### Shell & Terminal
 
 - **Bash** - Pre-installed shell (configured with oh-my-posh)
-- **Fish Shell** - Modern, user-friendly shell (set as default)
+- **Fish Shell** - Modern, user-friendly shell
 - **PowerShell** - Cross-platform automation and configuration tool
+- **Zsh** - Default shell (configured with oh-my-posh, fnm, pnpm, and SSL_CERT_DIR)
 - **oh-my-posh** - Cross-platform prompt theme engine
 - **Meslo Nerd Font** - Patched font for terminal icons and glyphs
 
@@ -73,12 +74,13 @@ After the script completes:
 1. **Reboot** for the following changes to take effect:
    - Docker group membership (required to run docker without sudo)
    - Virtualization group membership (libvirt and kvm - required to run VMs without sudo)
-   - Fish as your default shell
+   - Zsh as your default shell
 
 2. Open a new terminal:
-   - Fish shell prompt with oh-my-posh theme will appear (now the default shell)
+   - Zsh prompt with oh-my-posh theme will appear
    - Meslo Nerd Font will render icons and glyphs (in GNOME Terminal)
    - Run `bash` to see Bash prompt with oh-my-posh theme
+   - Run `fish` to see Fish prompt with oh-my-posh theme
    - Run `pwsh` to see PowerShell prompt with oh-my-posh theme
 
 ## Configuration
@@ -109,6 +111,7 @@ For local overrides without modifying tracked files, create `.env.local` (gitign
   - `test-cli-tools-bash.sh` - Verify CLI tools in Bash environment
   - `test-cli-tools-fish.fish` - Verify CLI tools in Fish environment
   - `test-cli-tools-powershell.ps1` - Verify CLI tools in PowerShell environment
+  - `test-cli-tools-zsh.sh` - Verify CLI tools in Zsh environment
 - **`lib/`** - Modular library functions (sourced by bootstrap-mint.sh)
   - `output.sh` - Shared output formatting utilities
 
@@ -149,6 +152,7 @@ The script follows a **modular architecture** with phase-based organization:
     - `configure-bash.sh` - Bash shell configuration with oh-my-posh and pnpm
     - `configure-fish.sh` - Fish shell configuration with oh-my-posh, fnm, pnpm, SSL certs
     - `configure-git.sh` - Git configuration with conditional includes for personal/work identities and Git Credential Manager
+    - `configure-zsh.sh` - Zsh shell configuration with oh-my-posh, fnm, pnpm, SSL certs (default shell)
     - `configure-grub.sh` - GRUB bootloader configuration (timeout, remember last choice)
     - `configure-powershell.sh` - PowerShell profile configuration with oh-my-posh and pnpm
     - `configure-terminal.sh` - GNOME Terminal font configuration
@@ -196,6 +200,9 @@ fish tests/test-cli-tools-fish.fish
 
 # Test in PowerShell
 pwsh tests/test-cli-tools-powershell.ps1
+
+# Test in Zsh
+zsh tests/test-cli-tools-zsh.sh
 ```
 
 Tests verify: aspire, az, code, copilot, docker, dotnet, fnm, git, ng, node, npm, nswag, oh-my-posh, pnpm
@@ -245,6 +252,7 @@ Edit `.env` or create `.env.local` to customize:
   - Bash: `~/.bashrc`
   - Fish: `~/.config/fish/config.fish`
   - PowerShell: `~/.config/powershell/Microsoft.PowerShell_profile.ps1`
+  - Zsh: `~/.zshrc`
   - oh-my-posh themes: `~/.cache/oh-my-posh/themes/`
 - .NET HTTPS development certificates trusted via `dotnet dev-certs https --trust`
 - Hosts file configured with entry: `127.0.0.1 sql-server` (for SQL Server container orchestrated by Aspire)
