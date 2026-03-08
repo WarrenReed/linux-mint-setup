@@ -75,19 +75,24 @@ configure_oh_my_zsh_plugins() {
     local zshrc=~/.zshrc
     # Plugins relevant to installed tools:
     #   azure   - Azure CLI completions
+    #   colored-man-pages - adds color syntax to man pages
+    #   command-not-found - suggests apt package to install for unknown commands
     #   debian  - apt/apt-get aliases (Linux Mint is Debian/Ubuntu based)
     #   docker  - docker completions
+    #   docker-compose - aliases for docker compose (dco, dcup, dcdn, etc.)
     #   dotnet  - .NET SDK completions
     #   fnm     - fnm tab completions (PATH/shell init handled by add_fnm_to_zsh)
     #   git     - git aliases and completions
+    #   history-substring-search - Fish-like up/down arrow searches history by prefix
     #   ng      - Angular CLI completions
     #   node    - open Node.js docs from CLI
     #   npm     - npm completions
+    #   sudo    - press ESC twice to prepend sudo to the current command
     #   systemd - systemctl aliases
     #   vscode  - VS Code aliases (vsc, vsca, vscr)
-    local plugins_line='plugins=(azure debian docker dotnet fnm git ng node npm systemd vscode)'
+    local plugins_line='plugins=(azure colored-man-pages command-not-found debian docker docker-compose dotnet fnm git history-substring-search ng node npm sudo systemd vscode)'
 
-    if [[ -f "$zshrc" ]] && grep -q 'plugins=(azure debian' "$zshrc"; then
+    if [[ -f "$zshrc" ]] && grep -qF "$plugins_line" "$zshrc"; then
         print_info "Oh My Zsh plugins already configured."
     else
         print_info "Configuring Oh My Zsh plugins..."
