@@ -34,7 +34,7 @@ This is a Linux Mint 22 bootstrap script repository for initial system setup and
     - **`install-apt-packages.sh`** - APT package installation
     - **`install-flatpak-apps.sh`** - Flatpak application installation
     - **`install-pnpm-packages.sh`** - pnpm global packages (Angular CLI, GitHub Copilot CLI with awesome-copilot plugin)
-    - **`install-standalone-packages.sh`** - Standalone package installers (fnm, Node.js, Aspire, oh-my-posh, PIA)
+    - **`install-standalone-packages.sh`** - Standalone package installers (fnm, Node.js, Aspire, Oh My Zsh, oh-my-posh, PIA)
     - **`install-dotnet-tools.sh`** - .NET global tools (NSwag, Azure Artifacts CP, Git Credential Manager)
     - **`install-docker-containers.sh`** - Docker containers (Portainer)
   - **`postinstall/`** - Post-installation phase (configuration after installation)
@@ -49,7 +49,7 @@ This is a Linux Mint 22 bootstrap script repository for initial system setup and
     - **`configure-powershell.sh`** - PowerShell profile configuration with oh-my-posh and pnpm
     - **`configure-terminal.sh`** - GNOME Terminal font configuration
     - **`configure-virtualization.sh`** - KVM/libvirt group configuration
-    - **`configure-zsh.sh`** - Zsh shell configuration with oh-my-posh, fnm, pnpm, SSL_CERT_DIR (default shell)
+    - **`configure-zsh.sh`** - Zsh shell configuration with Oh My Zsh, oh-my-posh, fnm, pnpm, SSL_CERT_DIR (default shell)
     - **`configure-desktop.sh`** - Desktop environment configuration (Cinnamon and Nemo)
 
 ## Configuration
@@ -113,7 +113,7 @@ The `.env` file is tracked in git with sensible defaults. Create `.env.local` (g
   - `install_apt_packages()` in [lib/install/install-apt-packages.sh](../lib/install/install-apt-packages.sh) - APT repository packages (grouped by category: .NET, Docker, Virtualization, Azure, Development, Applications, Libraries)
   - `install_flatpak_apps()` in [lib/install/install-flatpak-apps.sh](../lib/install/install-flatpak-apps.sh) - Flatpak applications
   - `install_pnpm_packages()` in [lib/install/install-pnpm-packages.sh](../lib/install/install-pnpm-packages.sh) - pnpm global packages (Angular CLI, GitHub Copilot CLI with awesome-copilot plugin)
-  - `install_standalone_packages()` in [lib/install/install-standalone-packages.sh](../lib/install/install-standalone-packages.sh) - Direct download installers (fnm, Node.js, Aspire, oh-my-posh, PIA)
+  - `install_standalone_packages()` in [lib/install/install-standalone-packages.sh](../lib/install/install-standalone-packages.sh) - Direct download installers (fnm, Node.js, Aspire, Oh My Zsh, oh-my-posh, PIA)
   - `install_dotnet_tools()` in [lib/install/install-dotnet-tools.sh](../lib/install/install-dotnet-tools.sh) - .NET global tools
   - `install_docker_containers()` in [lib/install/install-docker-containers.sh](../lib/install/install-docker-containers.sh) - Docker containers (Portainer)
 
@@ -211,7 +211,7 @@ The `.env` file is tracked in git with sensible defaults. Create `.env.local` (g
 
 ### Standalone Installations
 
-- Some tools install via download scripts (e.g., fnm, Aspire CLI, oh-my-posh)
+  - Some tools install via download scripts (e.g., fnm, Aspire CLI, Oh My Zsh, oh-my-posh)
 - Install standalone tools after all APT packages
 - Use official installation scripts from vendor documentation
 - Install to user home directory when possible (e.g., `~/.aspire/bin/`, `~/.local/share/fnm`)

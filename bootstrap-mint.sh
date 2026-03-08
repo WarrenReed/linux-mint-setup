@@ -27,6 +27,7 @@
 #   - .NET SDK 10.0
 #   - Node.js 22
 #   - NSwag CLI
+#   - Oh My Zsh
 #   - oh-my-posh
 #   - Portainer
 #   - PowerShell
@@ -40,7 +41,7 @@
 # Note: Script will request sudo privileges when needed
 # Post-install: Bash is configured with oh-my-posh and pnpm
 #               Fish shell is configured with oh-my-posh, fnm, pnpm, and SSL_CERT_DIR
-#               Zsh shell is configured with oh-my-posh, fnm, pnpm, and SSL_CERT_DIR (default shell)
+#               Zsh shell is configured with Oh My Zsh, oh-my-posh, fnm, pnpm, and SSL_CERT_DIR (default shell)
 #               PowerShell is configured with oh-my-posh and pnpm
 #               GNOME Terminal is configured to use Meslo Nerd Font
 #               oh-my-posh theme: configurable via OMP_THEME_PATH variable

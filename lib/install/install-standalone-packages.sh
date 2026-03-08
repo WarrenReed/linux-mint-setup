@@ -64,6 +64,17 @@ install_oh_my_posh() {
     fi
 }
 
+install_oh_my_zsh() {
+    if [[ -d "$HOME/.oh-my-zsh" ]]; then
+        print_info "Oh My Zsh is already installed."
+    else
+        print_info "Installing Oh My Zsh..."
+        # --unattended: skips chsh, skips running zsh, overwrites existing .zshrc without prompting
+        sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+        print_info "Oh My Zsh installed."
+    fi
+}
+
 install_pia() {
     if command -v piactl &> /dev/null; then
         print_info "Private Internet Access is already installed."
@@ -97,6 +108,7 @@ install_standalone_packages() {
     install_fnm
     install_nodejs
     install_oh_my_posh
+    install_oh_my_zsh
     install_meslo_font
     install_pia
 

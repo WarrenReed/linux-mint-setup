@@ -71,6 +71,44 @@ add_pnpm_to_zsh_path() {
     fi
 }
 
+configure_oh_my_zsh_plugins() {
+    local zshrc=~/.zshrc
+    # Plugins relevant to installed tools:
+    #   azure   - Azure CLI completions
+    #   debian  - apt/apt-get aliases (Linux Mint is Debian/Ubuntu based)
+    #   docker  - docker completions
+    #   dotnet  - .NET SDK completions
+    #   fnm     - fnm tab completions (PATH/shell init handled by add_fnm_to_zsh)
+    #   git     - git aliases and completions
+    #   ng      - Angular CLI completions
+    #   node    - open Node.js docs from CLI
+    #   npm     - npm completions
+    #   systemd - systemctl aliases
+    #   vscode  - VS Code aliases (vsc, vsca, vscr)
+    local plugins_line='plugins=(azure debian docker dotnet fnm git ng node npm systemd vscode)'
+
+    if [[ -f "$zshrc" ]] && grep -q 'plugins=(azure debian' "$zshrc"; then
+        print_info "Oh My Zsh plugins already configured."
+    else
+        print_info "Configuring Oh My Zsh plugins..."
+        sed -i 's/^plugins=(.*/'"$plugins_line"'/' "$zshrc"
+        print_info "Oh My Zsh plugins configured."
+    fi
+}
+
+disable_oh_my_zsh_default_theme() {
+    local zshrc=~/.zshrc
+
+    # Oh My Zsh sets ZSH_THEME in .zshrc; disable it since oh-my-posh manages the prompt
+    if [[ -f "$zshrc" ]] && grep -q 'ZSH_THEME=""' "$zshrc"; then
+        print_info "Oh My Zsh default theme already disabled."
+    else
+        print_info "Disabling Oh My Zsh default theme (oh-my-posh manages the prompt)..."
+        sed -i 's/^ZSH_THEME=.*/ZSH_THEME=""/' "$zshrc"
+        print_info "Oh My Zsh default theme disabled."
+    fi
+}
+
 configure_zsh_prompt() {
     local zshrc=~/.zshrc
     local omp_line="eval \"\$(oh-my-posh init zsh --config ${OMP_THEME_PATH})\""
@@ -126,9 +164,11 @@ set_zsh_ssl_cert_dir() {
 configure_zsh() {
     print_section "Configuring Zsh"
 
-    # Create .zshrc if it doesn't exist
+    # Create .zshrc if it doesn't exist (Oh My Zsh installer may have already created it)
     touch ~/.zshrc
 
+    disable_oh_my_zsh_default_theme
+    configure_oh_my_zsh_plugins
     add_aspire_to_zsh_path
     add_fnm_to_zsh
     add_local_bin_to_zsh_path

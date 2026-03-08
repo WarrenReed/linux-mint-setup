@@ -44,7 +44,8 @@ Automated bootstrap script for setting up a fresh Linux Mint 22 installation wit
 - **Bash** - Pre-installed shell (configured with oh-my-posh)
 - **Fish Shell** - Modern, user-friendly shell
 - **PowerShell** - Cross-platform automation and configuration tool
-- **Zsh** - Default shell (configured with oh-my-posh, fnm, pnpm, and SSL_CERT_DIR)
+- **Zsh** - Default shell (configured with Oh My Zsh, oh-my-posh, fnm, pnpm, and SSL_CERT_DIR)
+- **Oh My Zsh** - Community-driven Zsh configuration framework with plugins
 - **oh-my-posh** - Cross-platform prompt theme engine
 - **Meslo Nerd Font** - Patched font for terminal icons and glyphs
 
@@ -143,7 +144,7 @@ The script follows a **modular architecture** with phase-based organization:
     - `install-apt-packages.sh` - APT package installation
     - `install-flatpak-apps.sh` - Flatpak application installation
     - `install-pnpm-packages.sh` - pnpm global packages (Angular CLI, GitHub Copilot CLI with awesome-copilot plugin)
-    - `install-standalone-packages.sh` - Standalone package installers (fnm, Node.js, Aspire, oh-my-posh, PIA)
+    - `install-standalone-packages.sh` - Standalone package installers (fnm, Node.js, Aspire, Oh My Zsh, oh-my-posh, PIA)
     - `install-dotnet-tools.sh` - .NET global tools (NSwag, Azure Artifacts CP, Git Credential Manager)
     - `install-docker-containers.sh` - Docker containers (Portainer)
   - **`postinstall/`** - Post-installation phase (configuration after installation)
@@ -152,7 +153,7 @@ The script follows a **modular architecture** with phase-based organization:
     - `configure-bash.sh` - Bash shell configuration with oh-my-posh and pnpm
     - `configure-fish.sh` - Fish shell configuration with oh-my-posh, fnm, pnpm, SSL certs
     - `configure-git.sh` - Git configuration with conditional includes for personal/work identities and Git Credential Manager
-    - `configure-zsh.sh` - Zsh shell configuration with oh-my-posh, fnm, pnpm, SSL certs (default shell)
+    - `configure-zsh.sh` - Zsh shell configuration with Oh My Zsh, oh-my-posh, fnm, pnpm, SSL certs (default shell)
     - `configure-grub.sh` - GRUB bootloader configuration (timeout, remember last choice)
     - `configure-powershell.sh` - PowerShell profile configuration with oh-my-posh and pnpm
     - `configure-terminal.sh` - GNOME Terminal font configuration
