@@ -209,7 +209,7 @@ The `.env` file is tracked in git with sensible defaults. Create `.env.local` (g
 
 ### Standalone Installations
 
-  - Some tools install via download scripts (e.g., fnm, Aspire CLI, Oh My Zsh, oh-my-posh)
+- Some tools install via download scripts (e.g., fnm, Aspire CLI, Oh My Zsh, oh-my-posh)
 - Install standalone tools after all APT packages
 - Use official installation scripts from vendor documentation
 - Install to user home directory when possible (e.g., `~/.aspire/bin/`, `~/.local/share/fnm`)
