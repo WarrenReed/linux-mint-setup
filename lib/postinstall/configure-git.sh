@@ -68,6 +68,17 @@ configure_git_credential_manager() {
         else
             print_info "Credential store already set to secretservice."
         fi
+
+        # Disable Bitbucket credential validation to prevent re-authentication prompts
+        # GCM validation fails due to Email/Username mismatch between API and Git operations
+        local bitbucket_validate=$(git config --global credential.bitbucketValidateStoredCredentials 2>/dev/null || echo "")
+        if [[ "$bitbucket_validate" != "false" ]]; then
+            print_info "Disabling Bitbucket credential validation..."
+            git config --global credential.bitbucketValidateStoredCredentials false
+            print_info "Bitbucket credential validation disabled."
+        else
+            print_info "Bitbucket credential validation already disabled."
+        fi
     else
         print_info "Git Credential Manager not found, skipping configuration."
     fi
