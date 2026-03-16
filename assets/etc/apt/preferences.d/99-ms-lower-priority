@@ -1,4 +1,6 @@
-# Prefer Ubuntu over Microsoft for overlapping packages (e.g., dotnet, aspnetcore)
-Package: *
+# Prefer Ubuntu over Microsoft for overlapping .NET packages
+# Only affects dotnet-* and aspnetcore-* packages to avoid conflicts
+# Other Microsoft packages (e.g., code, powershell) are not affected
+Package: dotnet-* aspnetcore-*
 Pin: origin "packages.microsoft.com"
 Pin-Priority: 1
