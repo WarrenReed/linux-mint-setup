@@ -48,6 +48,7 @@ install_development_tools() {
         azure-cli \
         code \
         git \
+        git-flow \
         powershell \
         sourcegit \
         zsh \

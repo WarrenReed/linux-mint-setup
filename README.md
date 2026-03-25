@@ -20,6 +20,7 @@ Automated bootstrap script for setting up a fresh Linux Mint 22 installation wit
 - **Docker Engine** - Container platform (including docker-compose, buildx)
 - **Git** - Version control system
 - **Git Credential Manager** - Secure Git credential helper for multi-factor authentication
+- **Git-flow** - Git extensions for Vincent Driessen's branching model
 - **GitHub Copilot CLI** - AI-powered command-line assistant (with awesome-copilot plugin)
 - **KVM/QEMU with virt-manager** - Hardware virtualization for running virtual machines
 - **Node.js 22** - JavaScript runtime (installed via fnm - Fast Node Manager)

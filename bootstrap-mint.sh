@@ -18,6 +18,7 @@
 #   - Zsh Shell
 #   - Git Credential Manager
 #   - Git and development tools
+#   - Git-flow
 #   - GitHub Copilot CLI
 #   - Google Chrome
 #   - KVM/QEMU with virt-manager
