@@ -14,7 +14,6 @@
 #   - Azure Storage Explorer
 #   - Azure VPN Client
 #   - Devolutions Remote Desktop Manager
-#   - Discord
 #   - Docker Engine
 #   - Zsh Shell
 #   - Git Credential Manager

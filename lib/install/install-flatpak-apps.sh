@@ -24,7 +24,6 @@ install_flatpak_apps() {
     print_section "Installing Flatpak Applications"
 
     install_flatpak_app "com.microsoft.AzureStorageExplorer" "Azure Storage Explorer"
-    install_flatpak_app "com.discordapp.Discord" "Discord"
     install_flatpak_app "com.slack.Slack" "Slack"
 
     print_info "Flatpak application installation completed."

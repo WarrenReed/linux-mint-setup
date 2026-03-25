@@ -31,7 +31,6 @@ Automated bootstrap script for setting up a fresh Linux Mint 22 installation wit
 ### Applications
 
 - **Azure VPN Client** - Microsoft Azure VPN client
-- **Discord** - Communication platform (installed via Flatpak for automatic updates)
 - **Google Chrome** - Web browser
 - **Private Internet Access** - VPN client for privacy and security
 - **PulseAudio Volume Control** - Graphical volume control
