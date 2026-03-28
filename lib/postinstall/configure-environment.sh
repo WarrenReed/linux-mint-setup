@@ -22,10 +22,29 @@ set_profile_ssl_cert_dir() {
     fi
 }
 
+set_profile_nuget_packages() {
+    local profile=~/.profile
+
+    if [[ -z "${NUGET_PACKAGES:-}" ]]; then
+        return
+    fi
+
+    if [[ -f "$profile" ]] && grep -qF 'NUGET_PACKAGES' "$profile"; then
+        print_info "NUGET_PACKAGES already set in .profile."
+    else
+        print_info "Setting NUGET_PACKAGES in .profile for desktop session..."
+        echo "" >> "$profile"
+        echo "# NuGet package cache location" >> "$profile"
+        echo "export NUGET_PACKAGES=\"$NUGET_PACKAGES\"" >> "$profile"
+        print_info "NUGET_PACKAGES set for desktop-launched applications."
+    fi
+}
+
 configure_environment() {
     print_section "Configuring Environment"
 
     set_profile_ssl_cert_dir
+    set_profile_nuget_packages
 
     print_info "Environment configuration completed."
 }

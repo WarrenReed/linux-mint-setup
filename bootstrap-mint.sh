@@ -7,6 +7,7 @@
 #
 # This script removes unwanted packages (Firefox) and installs essential
 # applications and packages including:
+#   - Angular CLI
 #   - ASP.NET Core Runtime 8.0
 #   - Aspire CLI
 #   - Azure Artifacts Credential Provider
@@ -15,7 +16,7 @@
 #   - Azure VPN Client
 #   - Devolutions Remote Desktop Manager
 #   - Docker Engine
-#   - Zsh Shell
+#   - fnm (Fast Node Manager)
 #   - Git Credential Manager
 #   - Git and development tools
 #   - Git-flow
@@ -28,19 +29,22 @@
 #   - NSwag CLI
 #   - Oh My Zsh
 #   - oh-my-posh
+#   - pnpm
 #   - Portainer
 #   - PowerShell
 #   - Private Internet Access VPN
 #   - Slack
+#   - SourceGit
 #   - Steam
 #   - VS Code
+#   - Zsh
 #
 # Usage: bash bootstrap-mint.sh
 # Prerequisites: Fresh Linux Mint installation with internet connection
 # Note: Script will request sudo privileges when needed
-# Post-install: Bash is configured with oh-my-posh and pnpm
-#               Zsh shell is configured with Oh My Zsh, oh-my-posh, fnm, pnpm, and SSL_CERT_DIR (default shell)
-#               PowerShell is configured with oh-my-posh and pnpm
+# Post-install: Bash is configured with oh-my-posh, SSL_CERT_DIR, optionally NODE_OPTIONS, and optionally NUGET_PACKAGES
+#               Zsh shell is configured with Oh My Zsh, oh-my-posh, fnm, pnpm, SSL_CERT_DIR, optionally NODE_OPTIONS, optionally NUGET_PACKAGES, and zsh-syntax-highlighting (default shell)
+#               PowerShell is configured with oh-my-posh, SSL_CERT_DIR, optionally NODE_OPTIONS, and optionally NUGET_PACKAGES
 #               GNOME Terminal is configured to use Meslo Nerd Font
 #               oh-my-posh theme: configurable via OMP_THEME_PATH variable
 #               Hosts file configured with: 127.0.0.1 sql-server
@@ -71,6 +75,15 @@ source "$SCRIPT_DIR/.env"
 # Load local overrides if they exist (gitignored)
 if [[ -f "$SCRIPT_DIR/.env.local" ]]; then
     source "$SCRIPT_DIR/.env.local"
+fi
+
+# Derived variables
+if [[ -n "$PACKAGE_CACHE_DIR" ]]; then
+    readonly NUGET_PACKAGES="$PACKAGE_CACHE_DIR/nuget"
+    # Create NuGet cache directory structure
+    mkdir -p "$NUGET_PACKAGES"
+    # Export for current session (dotnet tools will use it)
+    export NUGET_PACKAGES
 fi
 
 ################################################################################

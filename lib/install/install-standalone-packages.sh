@@ -4,6 +4,7 @@
 # Standalone Package Installation
 # ============================================================================
 # Installs packages via direct download or custom installers.
+# Configures npm cache inline after Node.js installation.
 # Sourced by bootstrap-mint.sh
 # ============================================================================
 
@@ -49,6 +50,15 @@ install_nodejs() {
         fnm install 22
         fnm default 22
         print_info "Node.js 22 installed."
+    fi
+
+    # Configure npm cache if PACKAGE_CACHE_DIR is set
+    if [[ -n "$PACKAGE_CACHE_DIR" ]]; then
+        local npm_cache_dir="$PACKAGE_CACHE_DIR/npm"
+        print_info "Configuring npm cache location: $npm_cache_dir"
+        mkdir -p "$npm_cache_dir"
+        npm config set cache "$npm_cache_dir" --global
+        print_info "npm cache configured."
     fi
 }
 

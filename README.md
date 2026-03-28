@@ -92,6 +92,12 @@ Customize the bootstrap script by editing `.env`:
 - **`UBUNTU_DISTRO`** - Ubuntu distribution codename (default: `noble` for 24.04)
 - **`OMP_THEME_PATH`** - oh-my-posh theme path (default: `~/.cache/oh-my-posh/themes/atomic.omp.json`)
 - **`PIA_FALLBACK_VERSION`** - PIA VPN fallback version (default: `3.7-08412`)
+- **`PACKAGE_CACHE_DIR`** - Directory for npm, pnpm, and NuGet caches (default: empty). If set, configures package managers to use it (directory auto-created, reduces backup image size). If empty, uses default home directory locations.
+- **`NODE_MAX_OLD_SPACE_SIZE`** - Node.js maximum heap size in MB (default: empty). If set, configures NODE_OPTIONS for all shells. Useful for memory-intensive builds on systems with limited RAM. Recommended: `4096` for 8GB+ systems.
+- **`GIT_NAME`** - Git user name (default: `Your Name`)
+- **`GIT_PERSONAL_EMAIL`** - Personal git email (default: `personal@example.com`)
+- **`GIT_WORK_EMAIL`** - Work git email (default: `work@example.com`)
+- **`GIT_WORK_PATH`** - Work repositories directory path (default: `~/work`)
 
 For local overrides without modifying tracked files, create `.env.local` (gitignored).
 
@@ -140,21 +146,23 @@ The script follows a **modular architecture** with phase-based organization:
   - **`install/`** - Installation phase (package installation)
     - `install-apt-packages.sh` - APT package installation
     - `install-flatpak-apps.sh` - Flatpak application installation
-    - `install-pnpm-packages.sh` - pnpm global packages (Angular CLI, GitHub Copilot CLI with awesome-copilot plugin)
-    - `install-standalone-packages.sh` - Standalone package installers (fnm, Node.js, Aspire, Oh My Zsh, oh-my-posh, PIA)
+    - `install-pnpm-packages.sh` - pnpm global packages (Angular CLI, GitHub Copilot CLI with awesome-copilot plugin); configures pnpm cache inline
+    - `install-standalone-packages.sh` - Standalone package installers (fnm, Node.js, Aspire, Oh My Zsh, oh-my-posh, PIA); configures npm cache inline
     - `install-dotnet-tools.sh` - .NET global tools (NSwag, Azure Artifacts CP, Git Credential Manager)
     - `install-docker-containers.sh` - Docker containers (Portainer)
   - **`postinstall/`** - Post-installation phase (configuration after installation)
+    - `configure-environment.sh` - Session environment configuration (.profile for desktop-launched apps)
+    - `configure-bash.sh` - Bash shell configuration with oh-my-posh, SSL_CERT_DIR, optionally NODE_OPTIONS, and optionally NUGET_PACKAGES
     - `configure-docker.sh` - Docker group configuration
-    - `configure-virtualization.sh` - KVM/libvirt group configuration
-    - `configure-bash.sh` - Bash shell configuration with oh-my-posh and pnpm
+    - `configure-zsh.sh` - Zsh shell configuration with Oh My Zsh, oh-my-posh, fnm, pnpm, SSL_CERT_DIR, optionally NODE_OPTIONS, optionally NUGET_PACKAGES, and zsh-syntax-highlighting (default shell)
+    - `configure-dotnet.sh` - .NET development certificate trust
     - `configure-git.sh` - Git configuration with conditional includes for personal/work identities and Git Credential Manager
-    - `configure-zsh.sh` - Zsh shell configuration with Oh My Zsh, oh-my-posh, fnm, pnpm, SSL certs (default shell)
     - `configure-grub.sh` - GRUB bootloader configuration (timeout, remember last choice)
-    - `configure-powershell.sh` - PowerShell profile configuration with oh-my-posh and pnpm
-    - `configure-terminal.sh` - GNOME Terminal font configuration
-    - `configure-desktop.sh` - Desktop environment configuration (Cinnamon and Nemo)
     - `configure-hosts.sh` - Hosts file configuration
+    - `configure-powershell.sh` - PowerShell profile configuration with oh-my-posh, SSL_CERT_DIR, optionally NODE_OPTIONS, and optionally NUGET_PACKAGES
+    - `configure-virtualization.sh` - KVM/libvirt group configuration
+    - `configure-desktop.sh` - Desktop environment configuration (Cinnamon and Nemo)
+    - `configure-terminal.sh` - GNOME Terminal font configuration
 
 **Design Principles**:
 

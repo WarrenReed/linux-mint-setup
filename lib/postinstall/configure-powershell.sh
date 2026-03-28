@@ -3,7 +3,8 @@
 # ============================================================================
 # PowerShell Configuration
 # ============================================================================
-# Configures PowerShell profile with oh-my-posh, fnm, pnpm, Aspire, and SSL_CERT_DIR.
+# Configures PowerShell profile with oh-my-posh, fnm, pnpm, Aspire,
+# SSL_CERT_DIR, optionally NODE_OPTIONS, and optionally NUGET_PACKAGES.
 # Sourced by bootstrap-mint.sh
 # ============================================================================
 
@@ -84,6 +85,45 @@ set_powershell_ssl_cert_dir() {
     fi
 }
 
+set_powershell_node_options() {
+    local pwsh_profile=~/.config/powershell/Microsoft.PowerShell_profile.ps1
+    local node_check='$env:NODE_OPTIONS'
+
+    if [[ -z "$NODE_MAX_OLD_SPACE_SIZE" ]]; then
+        return
+    fi
+
+    if [[ -f "$pwsh_profile" ]] && grep -qF "$node_check" "$pwsh_profile"; then
+        print_info "NODE_OPTIONS already set in PowerShell."
+    else
+        print_info "Setting NODE_OPTIONS in PowerShell..."
+        echo "" >> "$pwsh_profile"
+        echo "# Node.js memory limit for memory-intensive builds" >> "$pwsh_profile"
+        echo "\$env:NODE_OPTIONS = \"--max-old-space-size=$NODE_MAX_OLD_SPACE_SIZE\"" >> "$pwsh_profile"
+        print_info "NODE_OPTIONS set in PowerShell."
+    fi
+}
+
+set_powershell_nuget_packages() {
+    local pwsh_profile=~/.config/powershell/Microsoft.PowerShell_profile.ps1
+
+    if [[ -z "${NUGET_PACKAGES:-}" ]]; then
+        return
+    fi
+
+    local nuget_check='$env:NUGET_PACKAGES'
+
+    if [[ -f "$pwsh_profile" ]] && grep -qF "$nuget_check" "$pwsh_profile"; then
+        print_info "NUGET_PACKAGES already set in PowerShell."
+    else
+        print_info "Setting NUGET_PACKAGES in PowerShell..."
+        echo "" >> "$pwsh_profile"
+        echo "# NuGet package cache location" >> "$pwsh_profile"
+        echo "\$env:NUGET_PACKAGES = \"$NUGET_PACKAGES\"" >> "$pwsh_profile"
+        print_info "NUGET_PACKAGES set in PowerShell."
+    fi
+}
+
 configure_powershell() {
     print_section "Configuring PowerShell"
 
@@ -94,6 +134,8 @@ configure_powershell() {
     add_pnpm_to_powershell_path
     configure_powershell_prompt
     set_powershell_ssl_cert_dir
+    set_powershell_node_options
+    set_powershell_nuget_packages
 
     print_info "PowerShell configuration completed."
 }

@@ -3,8 +3,9 @@
 # ============================================================================
 # Zsh Configuration
 # ============================================================================
-# Configures Zsh shell with PATH, oh-my-posh prompt theme, fnm, pnpm,
-# Aspire path, and SSL_CERT_DIR.
+# Configures Zsh shell with Oh My Zsh, PATH, oh-my-posh prompt theme, fnm,
+# pnpm, Aspire path, SSL_CERT_DIR, optionally NODE_OPTIONS, optionally
+# NUGET_PACKAGES, and zsh-syntax-highlighting.
 # Sets Zsh as the default shell.
 # Sourced by bootstrap-mint.sh
 # ============================================================================
@@ -165,6 +166,40 @@ set_zsh_ssl_cert_dir() {
         print_info "SSL_CERT_DIR set in Zsh."
     fi
 }
+set_zsh_node_options() {
+    local zshrc=~/.zshrc
+
+    if [[ -z "$NODE_MAX_OLD_SPACE_SIZE" ]]; then
+        return
+    fi
+
+    if grep -qF 'NODE_OPTIONS' "$zshrc"; then
+        print_info "NODE_OPTIONS already set in Zsh."
+    else
+        print_info "Setting NODE_OPTIONS in Zsh..."
+        echo "" >> "$zshrc"
+        echo "# Node.js memory limit for memory-intensive builds" >> "$zshrc"
+        echo "export NODE_OPTIONS=\"--max-old-space-size=$NODE_MAX_OLD_SPACE_SIZE\"" >> "$zshrc"
+        print_info "NODE_OPTIONS set in Zsh."
+    fi
+}
+set_zsh_nuget_packages() {
+    local zshrc=~/.zshrc
+
+    if [[ -z "${NUGET_PACKAGES:-}" ]]; then
+        return
+    fi
+
+    if [[ -f "$zshrc" ]] && grep -qF 'NUGET_PACKAGES' "$zshrc"; then
+        print_info "NUGET_PACKAGES already set in Zsh."
+    else
+        print_info "Setting NUGET_PACKAGES in Zsh..."
+        echo "" >> "$zshrc"
+        echo "# NuGet package cache location" >> "$zshrc"
+        echo "export NUGET_PACKAGES=\"$NUGET_PACKAGES\"" >> "$zshrc"
+        print_info "NUGET_PACKAGES set in Zsh."
+    fi
+}
 
 configure_zsh_syntax_highlighting() {
     local zshrc=~/.zshrc
@@ -200,6 +235,8 @@ configure_zsh() {
     configure_zsh_prompt
     set_zsh_as_default_shell
     set_zsh_ssl_cert_dir
+    set_zsh_node_options
+    set_zsh_nuget_packages
     configure_zsh_syntax_highlighting
 
     print_info "Zsh configuration completed."

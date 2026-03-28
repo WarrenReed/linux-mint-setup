@@ -32,23 +32,23 @@ This is a Linux Mint 22 bootstrap script repository for initial system setup and
   - **`install/`** - Installation phase (package installation)
     - **`install-apt-packages.sh`** - APT package installation
     - **`install-flatpak-apps.sh`** - Flatpak application installation
-    - **`install-pnpm-packages.sh`** - pnpm global packages (Angular CLI, GitHub Copilot CLI with awesome-copilot plugin)
-    - **`install-standalone-packages.sh`** - Standalone package installers (fnm, Node.js, Aspire, Oh My Zsh, oh-my-posh, PIA)
+    - **`install-pnpm-packages.sh`** - pnpm global packages (Angular CLI, GitHub Copilot CLI with awesome-copilot plugin); configures pnpm cache inline
+    - **`install-standalone-packages.sh`** - Standalone package installers (fnm, Node.js, Aspire, Oh My Zsh, oh-my-posh, PIA); configures npm cache inline
     - **`install-dotnet-tools.sh`** - .NET global tools (NSwag, Azure Artifacts CP, Git Credential Manager)
     - **`install-docker-containers.sh`** - Docker containers (Portainer)
   - **`postinstall/`** - Post-installation phase (configuration after installation)
     - **`configure-environment.sh`** - Session environment configuration (.profile for desktop-launched apps)
-    - **`configure-bash.sh`** - Bash shell configuration with oh-my-posh, pnpm, and SSL_CERT_DIR
+    - **`configure-bash.sh`** - Bash shell configuration with oh-my-posh, SSL_CERT_DIR, optionally NODE_OPTIONS, and optionally NUGET_PACKAGES
     - **`configure-docker.sh`** - Docker group configuration
+    - **`configure-zsh.sh`** - Zsh shell configuration with Oh My Zsh, oh-my-posh, fnm, pnpm, SSL_CERT_DIR, optionally NODE_OPTIONS, optionally NUGET_PACKAGES, and zsh-syntax-highlighting (default shell)
     - **`configure-dotnet.sh`** - .NET development certificate trust
     - **`configure-git.sh`** - Git configuration with conditional includes for personal/work identities and Git Credential Manager
     - **`configure-grub.sh`** - GRUB bootloader configuration (timeout, remember last choice)
     - **`configure-hosts.sh`** - Hosts file configuration
-    - **`configure-powershell.sh`** - PowerShell profile configuration with oh-my-posh and pnpm
-    - **`configure-terminal.sh`** - GNOME Terminal font configuration
+    - **`configure-powershell.sh`** - PowerShell profile configuration with oh-my-posh, SSL_CERT_DIR, optionally NODE_OPTIONS, and optionally NUGET_PACKAGES
     - **`configure-virtualization.sh`** - KVM/libvirt group configuration
-    - **`configure-zsh.sh`** - Zsh shell configuration with Oh My Zsh, oh-my-posh, fnm, pnpm, SSL_CERT_DIR (default shell)
     - **`configure-desktop.sh`** - Desktop environment configuration (Cinnamon and Nemo)
+    - **`configure-terminal.sh`** - GNOME Terminal font configuration
 
 ## Configuration
 
@@ -60,6 +60,8 @@ Configuration is managed via `.env` and `.env.local` files:
 - **UBUNTU_DISTRO** - Ubuntu distribution codename (default: `noble` for 24.04)
 - **OMP_THEME_PATH** - oh-my-posh theme path (default: `~/.cache/oh-my-posh/themes/atomic.omp.json`)
 - **PIA_FALLBACK_VERSION** - PIA VPN fallback version (default: `3.7-08412`)
+- **PACKAGE_CACHE_DIR** - Directory for npm, pnpm, and NuGet caches (default: empty). If set, configures package managers to use it (directory auto-created, reduces backup image size). If empty, uses default home directory locations.
+- **NODE_MAX_OLD_SPACE_SIZE** - Node.js maximum heap size in MB (default: empty). If set, configures NODE_OPTIONS for all shells. Useful for memory-intensive builds on systems with limited RAM. Recommended: `4096` for 8GB+ systems.
 - **GIT_NAME** - Git user name (default: `Your Name`)
 - **GIT_PERSONAL_EMAIL** - Personal git email (default: `personal@example.com`)
 - **GIT_WORK_EMAIL** - Work git email (default: `work@example.com`)
@@ -110,10 +112,14 @@ The `.env` file is tracked in git with sensible defaults. Create `.env.local` (g
   - `uninstall_apt_packages()` in [lib/preinstall/uninstall-apt-packages.sh](../lib/preinstall/uninstall-apt-packages.sh) - Remove unwanted pre-installed packages (Firefox)
   - `install_apt_packages()` in [lib/install/install-apt-packages.sh](../lib/install/install-apt-packages.sh) - APT repository packages (grouped by category: .NET, Docker, Virtualization, Azure, Development, Applications, Libraries)
   - `install_flatpak_apps()` in [lib/install/install-flatpak-apps.sh](../lib/install/install-flatpak-apps.sh) - Flatpak applications
-  - `install_pnpm_packages()` in [lib/install/install-pnpm-packages.sh](../lib/install/install-pnpm-packages.sh) - pnpm global packages (Angular CLI, GitHub Copilot CLI with awesome-copilot plugin)
-  - `install_standalone_packages()` in [lib/install/install-standalone-packages.sh](../lib/install/install-standalone-packages.sh) - Direct download installers (fnm, Node.js, Aspire, Oh My Zsh, oh-my-posh, PIA)
+  - `install_pnpm_packages()` in [lib/install/install-pnpm-packages.sh](../lib/install/install-pnpm-packages.sh) - pnpm global packages (Angular CLI, GitHub Copilot CLI with awesome-copilot plugin); configures pnpm cache immediately after enabling pnpm
+  - `install_standalone_packages()` in [lib/install/install-standalone-packages.sh](../lib/install/install-standalone-packages.sh) - Direct download installers (fnm, Node.js, Aspire, Oh My Zsh, oh-my-posh, PIA); configures npm cache immediately after Node.js installation
   - `install_dotnet_tools()` in [lib/install/install-dotnet-tools.sh](../lib/install/install-dotnet-tools.sh) - .NET global tools
   - `install_docker_containers()` in [lib/install/install-docker-containers.sh](../lib/install/install-docker-containers.sh) - Docker containers (Portainer)
+- Package cache configuration:
+  - **npm cache** - configured inline in `install_nodejs()` immediately after Node.js installation
+  - **pnpm cache** - configured inline in `install_pnpm_packages()` immediately after enabling pnpm via corepack
+  - **NuGet cache** - configured via `$NUGET_PACKAGES` derived variable in bootstrap-mint.sh (exported for current session and set in shell configs)
 
 ### Output & Logging
 
@@ -225,7 +231,7 @@ The `.env` file is tracked in git with sensible defaults. Create `.env.local` (g
 - Inform users of required reboot steps
 - Always implement idempotency checks (verify existing state before making changes)
 - **Desktop configuration uses only gsettings** for reliability and idempotency
-- Configuration functions (in execution order): `configure_environment()`, `configure_bash()`, `configure_docker()`, `configure_zsh()`, `configure_dotnet()`, `configure_git()`, `configure_grub()`, `configure_hosts()`, `configure_powershell()`, `configure_terminal()`, `configure_virtualization()`, `configure_desktop()`
+- Configuration functions (in execution order): `configure_environment()`, `configure_bash()`, `configure_docker()`, `configure_zsh()`, `configure_dotnet()`, `configure_git()`, `configure_grub()`, `configure_hosts()`, `configure_powershell()`, `configure_virtualization()`, `configure_desktop()`, `configure_terminal()`
 
 ## When Adding New Applications
 

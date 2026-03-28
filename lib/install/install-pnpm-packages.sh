@@ -3,7 +3,7 @@
 # ============================================================================
 # pnpm Package Installation
 # ============================================================================
-# Installs pnpm packages globally via pnpm.
+# Enables pnpm via corepack, configures pnpm store, and installs pnpm packages.
 # Sourced by bootstrap-mint.sh
 # ============================================================================
 
@@ -50,6 +50,15 @@ install_pnpm_packages() {
         corepack enable
         corepack prepare pnpm@latest --activate
         print_info "pnpm enabled."
+    fi
+
+    # Configure pnpm store if PACKAGE_CACHE_DIR is set
+    if [[ -n "$PACKAGE_CACHE_DIR" ]]; then
+        local pnpm_store_dir="$PACKAGE_CACHE_DIR/pnpm"
+        print_info "Configuring pnpm store location: $pnpm_store_dir"
+        mkdir -p "$pnpm_store_dir"
+        pnpm config set store-dir "$pnpm_store_dir" --global
+        print_info "pnpm store configured."
     fi
 
     # Set up pnpm global bin directory if not already configured
