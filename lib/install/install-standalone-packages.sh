@@ -14,6 +14,20 @@ install_aspire() {
     else
         print_info "Installing Aspire CLI..."
         curl -fsSL https://aspire.dev/install.sh | bash
+
+        # The Aspire installer runs .NET tooling which creates a deviceid file with a
+        # UTF-8 BOM (EF BB BF) prefix. This breaks VS Code Copilot which reads the file
+        # as a device identifier. Strip the BOM if present.
+        local device_id_file="$HOME/.cache/Microsoft/DeveloperTools/deviceid"
+        if [[ -f "$device_id_file" ]] && xxd -l 3 "$device_id_file" | grep -q "efbb bf"; then
+            print_info "Stripping BOM from deviceid file..."
+            local tmp
+            tmp=$(mktemp)
+            tail -c +4 "$device_id_file" > "$tmp"
+            mv "$tmp" "$device_id_file"
+            print_info "BOM stripped from deviceid file."
+        fi
+
         print_info "Aspire CLI installed."
     fi
 }
