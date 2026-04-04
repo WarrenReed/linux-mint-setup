@@ -1,6 +1,6 @@
 # Linux Mint Setup Script
 
-Automated setup script for a fresh Linux Mint 22 installation with essential development tools, applications, and configurations.
+Personal automated setup script for a fresh Linux Mint 22 installation with essential development tools, applications, and configurations.
 
 ## What Gets Removed
 
