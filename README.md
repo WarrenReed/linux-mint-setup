@@ -1,6 +1,6 @@
-# Linux Mint Bootstrap Script
+# Linux Mint Setup Script
 
-Automated bootstrap script for setting up a fresh Linux Mint 22 installation with essential development tools, applications, and configurations.
+Automated setup script for a fresh Linux Mint 22 installation with essential development tools, applications, and configurations.
 
 ## What Gets Removed
 
@@ -60,9 +60,9 @@ Automated bootstrap script for setting up a fresh Linux Mint 22 installation wit
 Clone the repository and run the script:
 
 ```bash
-git clone https://github.com/WarrenReed/bootstrap-linux-mint.git
-cd bootstrap-linux-mint
-bash bootstrap-mint.sh
+git clone https://github.com/WarrenReed/linux-mint-setup.git
+cd linux-mint-setup
+bash setup-linux-mint.sh
 ```
 
 The script is **idempotent** - safe to run multiple times. It checks existing installations and configurations before making changes.
@@ -86,7 +86,7 @@ After the script completes:
 
 ### Environment Variables
 
-Customize the bootstrap script by editing `.env`:
+Customize the setup script by editing `.env`:
 
 - **`KEYRING_DIR`** - APT keyring directory (default: `/etc/apt/trusted.gpg.d`)
 - **`UBUNTU_DISTRO`** - Ubuntu distribution codename (default: `noble` for 24.04)
@@ -103,7 +103,7 @@ For local overrides without modifying tracked files, create `.env.local` (gitign
 
 ### Files & Directories
 
-- **`bootstrap-mint.sh`** - Main orchestration script
+- **`setup-linux-mint.sh`** - Main orchestration script
 - **`.env`** - Default configuration variables (tracked in git)
 - **`.env.local`** - Optional local overrides (gitignored, user-specific)
 - **`config/`** - Configuration data
@@ -116,7 +116,7 @@ For local overrides without modifying tracked files, create `.env.local` (gitign
   - `test-cli-tools-bash.sh` - Verify CLI tools in Bash environment
   - `test-cli-tools-powershell.ps1` - Verify CLI tools in PowerShell environment
   - `test-cli-tools-zsh.sh` - Verify CLI tools in Zsh environment
-- **`lib/`** - Modular library functions (sourced by bootstrap-mint.sh)
+- **`lib/`** - Modular library functions (sourced by setup-linux-mint.sh)
   - `output.sh` - Shared output formatting utilities
 
 ### Repository Management
@@ -132,7 +132,7 @@ This script uses a **JSON-based repository configuration** system:
 
 The script follows a **modular architecture** with phase-based organization:
 
-- **Main Script** (`bootstrap-mint.sh`) - Orchestrates the installation:
+- **Main Script** (`setup-linux-mint.sh`) - Orchestrates the installation:
   - Sources `.env` for configuration (and `.env.local` if present)
   - Sources all lib modules via globstar pattern (`lib/**/*.sh`)
   - Executes `main()` function calling all phases in sequence
@@ -194,7 +194,7 @@ Requires virsh (KVM/libvirt) to be installed.
 
 ### Verifying CLI Tools
 
-After running the bootstrap script, verify that all CLI tools are available in each shell:
+After running the setup script, verify that all CLI tools are available in each shell:
 
 ```bash
 # Test in Bash
@@ -213,7 +213,7 @@ Tests verify: aspire, az, code, copilot, docker, dotnet, fnm, git, ng, node, npm
 
 **"Please do not run this script as root"**
 
-- Run as your normal user: `bash bootstrap-mint.sh`
+- Run as your normal user: `bash setup-linux-mint.sh`
 - The script will request sudo when needed
 
 **"repositories.json not found"**

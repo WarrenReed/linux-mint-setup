@@ -4,7 +4,7 @@
 # pnpm Package Installation
 # ============================================================================
 # Enables pnpm via corepack, configures pnpm store, and installs pnpm packages.
-# Sourced by bootstrap-mint.sh
+# Sourced by setup-linux-mint.sh
 # ============================================================================
 
 install_angular_cli() {

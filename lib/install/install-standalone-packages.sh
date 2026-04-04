@@ -5,7 +5,7 @@
 # ============================================================================
 # Installs packages via direct download or custom installers.
 # Configures npm cache inline after Node.js installation.
-# Sourced by bootstrap-mint.sh
+# Sourced by setup-linux-mint.sh
 # ============================================================================
 
 install_aspire() {

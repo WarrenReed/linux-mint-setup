@@ -4,7 +4,7 @@
 # .NET Configuration
 # ============================================================================
 # Configures .NET development certificate.
-# Sourced by bootstrap-mint.sh
+# Sourced by setup-linux-mint.sh
 # ============================================================================
 
 trust_dotnet_dev_certificate() {

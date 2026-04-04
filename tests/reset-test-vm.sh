@@ -91,7 +91,7 @@ main() {
     start_vm
 
     print_section "Test environment ready"
-    print_info "You can now run bootstrap-mint.sh in the VM"
+    print_info "You can now run setup-linux-mint.sh in the VM"
 }
 
 # Execute main function

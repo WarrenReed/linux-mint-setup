@@ -4,7 +4,7 @@
 # GNOME Terminal Configuration
 # ============================================================================
 # Configures GNOME Terminal to use Meslo Nerd Font.
-# Sourced by bootstrap-mint.sh
+# Sourced by setup-linux-mint.sh
 # ============================================================================
 
 set_terminal_font() {

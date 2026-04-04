@@ -5,7 +5,7 @@
 # ============================================================================
 # Configures PowerShell profile with oh-my-posh, fnm, pnpm, Aspire,
 # SSL_CERT_DIR, optionally NODE_OPTIONS, and optionally NUGET_PACKAGES.
-# Sourced by bootstrap-mint.sh
+# Sourced by setup-linux-mint.sh
 # ============================================================================
 
 add_aspire_to_powershell_path() {

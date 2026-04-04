@@ -4,7 +4,7 @@
 # Virtualization Configuration
 # ============================================================================
 # Configures KVM/libvirt by adding user to required groups.
-# Sourced by bootstrap-mint.sh
+# Sourced by setup-linux-mint.sh
 # ============================================================================
 
 add_user_to_virtualization_groups() {

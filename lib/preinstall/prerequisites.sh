@@ -4,7 +4,7 @@
 # Prerequisites
 # ============================================================================
 # Checks prerequisites and installs required utilities.
-# Sourced by bootstrap-mint.sh
+# Sourced by setup-linux-mint.sh
 # ============================================================================
 
 check_prerequisites() {

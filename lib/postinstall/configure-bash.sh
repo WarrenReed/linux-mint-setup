@@ -5,7 +5,7 @@
 # ============================================================================
 # Configures Bash shell with PATH, oh-my-posh prompt theme, SSL_CERT_DIR,
 # optionally NODE_OPTIONS, and optionally NUGET_PACKAGES.
-# Sourced by bootstrap-mint.sh
+# Sourced by setup-linux-mint.sh
 # ============================================================================
 
 add_local_bin_to_bash_path() {

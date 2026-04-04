@@ -4,7 +4,7 @@
 # Docker Configuration
 # ============================================================================
 # Configures Docker by adding user to docker group.
-# Sourced by bootstrap-mint.sh
+# Sourced by setup-linux-mint.sh
 # ============================================================================
 
 add_user_to_docker_group() {

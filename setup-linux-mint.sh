@@ -1,9 +1,9 @@
 #!/bin/bash
 
 ################################################################################
-# Linux Mint Bootstrap Script
+# Linux Mint Setup Script
 #
-# Purpose: Initial setup script for bootstrapping a fresh Linux Mint installation
+# Purpose: Initial setup script for a fresh Linux Mint installation
 #
 # This script removes unwanted packages (Firefox) and installs essential
 # applications and packages including:
@@ -39,7 +39,7 @@
 #   - VS Code
 #   - Zsh
 #
-# Usage: bash bootstrap-mint.sh
+# Usage: bash setup-linux-mint.sh
 # Prerequisites: Fresh Linux Mint installation with internet connection
 # Note: Script will request sudo privileges when needed
 # Post-install: Bash is configured with oh-my-posh, SSL_CERT_DIR, optionally NODE_OPTIONS, and optionally NUGET_PACKAGES

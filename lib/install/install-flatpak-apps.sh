@@ -4,7 +4,7 @@
 # Flatpak Application Installation
 # ============================================================================
 # Installs Flatpak applications from Flathub.
-# Sourced by bootstrap-mint.sh
+# Sourced by setup-linux-mint.sh
 # ============================================================================
 
 install_flatpak_app() {

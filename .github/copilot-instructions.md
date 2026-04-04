@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-This is a Linux Mint 22 bootstrap script repository for initial system setup and application installation.
+This is a Linux Mint 22 setup script repository for initial system setup and application installation.
 
 **Note:** Linux Mint 22 is based on Ubuntu 24.04 LTS (noble).
 
@@ -10,7 +10,7 @@ This is a Linux Mint 22 bootstrap script repository for initial system setup and
 
 ## Project Files
 
-- **`bootstrap-mint.sh`** - Main orchestration script (sources and calls lib functions)
+- **`setup-linux-mint.sh`** - Main orchestration script (sources and calls lib functions)
 - **`.env`** - Default configuration variables (tracked in git)
 - **`.env.local`** - Optional local overrides (gitignored, user-specific)
 - **`config/`** - Configuration data
@@ -19,11 +19,11 @@ This is a Linux Mint 22 bootstrap script repository for initial system setup and
   - **`preferences.d/`** - APT preference files for package priority management
   - **`etc/default/grub.d/`** - GRUB bootloader configuration files
 - **`tests/`** - Testing utilities
-  - **`reset-test-vm.sh`** - VM testing helper to reset baseline VM for testing bootstrap script
+  - **`reset-test-vm.sh`** - VM testing helper to reset baseline VM for testing setup script
   - **`test-cli-tools-bash.sh`** - Verify CLI tools in Bash environment
   - **`test-cli-tools-powershell.ps1`** - Verify CLI tools in PowerShell environment
   - **`test-cli-tools-zsh.sh`** - Verify CLI tools in Zsh environment
-- **`lib/`** - Modular library functions (sourced by bootstrap-mint.sh)
+- **`lib/`** - Modular library functions (sourced by setup-linux-mint.sh)
   - **`output.sh`** - Shared output formatting utilities (colors and print functions)
   - **`preinstall/`** - Pre-installation phase (runs before package installation)
     - **`prerequisites.sh`** - Prerequisite checks and required utilities
@@ -94,12 +94,12 @@ The `.env` file is tracked in git with sensible defaults. Create `.env.local` (g
 ### Organization
 
 - **Modular Architecture:** All installation and configuration logic extracted to `lib/` files
-- **Sourceable Modules:** Lib files contain only function definitions, sourced by [bootstrap-mint.sh](../bootstrap-mint.sh)
+- **Sourceable Modules:** Lib files contain only function definitions, sourced by [setup-linux-mint.sh](../setup-linux-mint.sh)
   - Functions become available when sourced by main script
   - No standalone execution capability (removed to prevent readonly variable conflicts)
   - Shared utilities from [lib/output.sh](../lib/output.sh) sourced once by main script
 - Script organized into functions with clear separation of concerns
-- Main execution flow controlled by `main()` function in [bootstrap-mint.sh](../bootstrap-mint.sh)
+- Main execution flow controlled by `main()` function in [setup-linux-mint.sh](../setup-linux-mint.sh)
 - **Function order MUST match main() execution sequence** - this improves readability and maintainability
 - Logical sections: prerequisites, uninstalling unwanted packages, repository setup, package installation, standalone tools, configuration
 - Keep applications sorted alphabetically in both documentation and code
@@ -119,7 +119,7 @@ The `.env` file is tracked in git with sensible defaults. Create `.env.local` (g
 - Package cache configuration:
   - **npm cache** - configured inline in `install_nodejs()` immediately after Node.js installation
   - **pnpm cache** - configured inline in `install_pnpm_packages()` immediately after enabling pnpm via corepack
-  - **NuGet cache** - configured via `$NUGET_PACKAGES` derived variable in bootstrap-mint.sh (exported for current session and set in shell configs)
+  - **NuGet cache** - configured via `$NUGET_PACKAGES` derived variable in setup-linux-mint.sh (exported for current session and set in shell configs)
 
 ### Output & Logging
 
@@ -275,9 +275,9 @@ The `.env` file is tracked in git with sensible defaults. Create `.env.local` (g
 
 - Add function to appropriate lib file in `lib/postinstall/` (e.g., `configure_docker()` in [lib/postinstall/configure-docker.sh](../lib/postinstall/configure-docker.sh))
 - Or create new lib file for new configuration type (follow hybrid pattern with BASH_SOURCE guard)
-- Place function in execution order matching `main()` function calls in [bootstrap-mint.sh](../bootstrap-mint.sh)
+- Place function in execution order matching `main()` function calls in [setup-linux-mint.sh](../setup-linux-mint.sh)
 - Implement idempotency checks
-- Source the new lib file in [bootstrap-mint.sh](../bootstrap-mint.sh) if creating new file
+- Source the new lib file in [setup-linux-mint.sh](../setup-linux-mint.sh) if creating new file
 
 12. If adding new functions:
 

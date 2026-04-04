@@ -7,7 +7,7 @@
 # Copies pre-configured file to /etc/default/grub.d/98_mintsysadm.cfg which is used by:
 #   - Linux Mint System Settings UI
 #   - GRUB bootloader (overrides main /etc/default/grub)
-# Sourced by bootstrap-mint.sh
+# Sourced by setup-linux-mint.sh
 # ============================================================================
 
 configure_grub() {

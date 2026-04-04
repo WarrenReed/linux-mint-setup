@@ -5,7 +5,7 @@
 # ============================================================================
 # Configures system-wide environment variables for desktop session.
 # Sets up .profile for variables needed by desktop-launched applications.
-# Sourced by bootstrap-mint.sh
+# Sourced by setup-linux-mint.sh
 # ============================================================================
 
 set_profile_ssl_cert_dir() {

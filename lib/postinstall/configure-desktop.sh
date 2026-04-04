@@ -4,7 +4,7 @@
 # Desktop Environment Configuration
 # ============================================================================
 # Configures desktop environment settings for Cinnamon and Nemo via gsettings.
-# Sourced by bootstrap-mint.sh
+# Sourced by setup-linux-mint.sh
 # ============================================================================
 
 center_panel_applets() {

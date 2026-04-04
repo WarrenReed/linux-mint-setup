@@ -4,7 +4,7 @@
 # Hosts File Configuration
 # ============================================================================
 # Adds sql-server entry to /etc/hosts for Aspire development.
-# Sourced by bootstrap-mint.sh
+# Sourced by setup-linux-mint.sh
 # ============================================================================
 
 add_sql_server_to_hosts() {

@@ -4,7 +4,7 @@
 # Repository Management
 # ============================================================================
 # Handles GPG keys, third-party repositories, PPAs, and APT preferences.
-# Sourced by bootstrap-mint.sh
+# Sourced by setup-linux-mint.sh
 # ============================================================================
 
 add_ppa_repositories() {

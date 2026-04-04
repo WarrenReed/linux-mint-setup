@@ -4,7 +4,7 @@
 # APT Package Installation
 # ============================================================================
 # Installs packages from APT repositories.
-# Sourced by bootstrap-mint.sh
+# Sourced by setup-linux-mint.sh
 # ============================================================================
 
 install_deb_package() {

@@ -4,7 +4,7 @@
 # APT Package Uninstallation
 # ============================================================================
 # Removes unwanted pre-installed APT packages from Linux Mint.
-# Sourced by bootstrap-mint.sh
+# Sourced by setup-linux-mint.sh
 # ============================================================================
 
 uninstall_firefox() {

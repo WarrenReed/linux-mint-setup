@@ -7,7 +7,7 @@
 # pnpm, Aspire path, SSL_CERT_DIR, optionally NODE_OPTIONS, optionally
 # NUGET_PACKAGES, and zsh-syntax-highlighting.
 # Sets Zsh as the default shell.
-# Sourced by bootstrap-mint.sh
+# Sourced by setup-linux-mint.sh
 # ============================================================================
 
 add_aspire_to_zsh_path() {

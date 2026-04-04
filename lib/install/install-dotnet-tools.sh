@@ -4,7 +4,7 @@
 # .NET Global Tools Installation
 # ============================================================================
 # Installs .NET global tools via dotnet CLI.
-# Sourced by bootstrap-mint.sh
+# Sourced by setup-linux-mint.sh
 # ============================================================================
 
 install_dotnet_tool() {

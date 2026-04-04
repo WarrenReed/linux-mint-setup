@@ -4,7 +4,7 @@
 # Docker Container Installation
 # ============================================================================
 # Installs Docker containers for development tools.
-# Sourced by bootstrap-mint.sh
+# Sourced by setup-linux-mint.sh
 # ============================================================================
 
 install_portainer() {

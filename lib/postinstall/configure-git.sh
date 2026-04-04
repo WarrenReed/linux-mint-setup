@@ -4,7 +4,7 @@
 # Git Configuration
 # ============================================================================
 # Configures Git and Git Credential Manager.
-# Sourced by bootstrap-mint.sh
+# Sourced by setup-linux-mint.sh
 # ============================================================================
 
 configure_git_identity() {

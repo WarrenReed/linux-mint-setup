@@ -4,7 +4,7 @@
 # Output Utilities
 # ============================================================================
 # Shared output formatting functions and color constants.
-# Sourced by bootstrap-mint.sh
+# Sourced by setup-linux-mint.sh
 # ============================================================================
 
 # Colors for output
