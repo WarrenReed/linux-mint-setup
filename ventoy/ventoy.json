@@ -1,0 +1,15 @@
+{
+  "injection": [
+    {
+      "image": "/isos/linux/linuxmint-22.3-cinnamon-64bit.iso",
+      "archive": "/repos/linux-mint-setup/ventoy/preseed.tar.gz"
+    }
+  ],
+  "conf_replace": [
+    {
+      "iso": "/isos/linux/linuxmint-22.3-cinnamon-64bit.iso",
+      "org": "/boot/grub/grub.cfg",
+      "new": "/repos/linux-mint-setup/ventoy/grub.cfg"
+    }
+  ]
+}

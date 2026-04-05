@@ -23,6 +23,14 @@ This is a Linux Mint 22 setup script repository for initial system setup and app
   - **`test-cli-tools-bash.sh`** - Verify CLI tools in Bash environment
   - **`test-cli-tools-powershell.ps1`** - Verify CLI tools in PowerShell environment
   - **`test-cli-tools-zsh.sh`** - Verify CLI tools in Zsh environment
+- **`ventoy/`** - Ventoy plugin files for automated Linux Mint installation
+  - **`preseed.cfg`** - Ubiquity preseed template (`${PRESEED_*}` variables substituted at build time)
+  - **`preseed.env`** - Default preseed configuration variables (tracked in git)
+  - **`preseed.env.local`** - Optional personal overrides (gitignored, user-specific)
+  - **`grub.cfg`** - Modified ISO grub.cfg with `automatic-ubiquity` kernel parameter
+  - **`ventoy.json`** - Example Ventoy plugin configuration (`injection` + `conf_replace`)
+  - **`build-preseed-archive.sh`** - Sources env files, substitutes variables via `envsubst`, packages into `preseed.tar.gz`
+  - **`preseed.tar.gz`** - Build output (gitignored; rebuild with `build-preseed-archive.sh` after any preseed change)
 - **`lib/`** - Modular library functions (sourced by setup-linux-mint.sh)
   - **`output.sh`** - Shared output formatting utilities (colors and print functions)
   - **`preinstall/`** - Pre-installation phase (runs before package installation)
@@ -222,6 +230,58 @@ The `.env` file is tracked in git with sensible defaults. Create `.env.local` (g
 - Always check if tool is already installed before running installation script
 - Use `command -v` or similar checks for idempotency
 - For fnm: Must add to PATH in Zsh config before initializing
+
+### Ventoy & Preseed Configuration
+
+The `ventoy/` folder automates Linux Mint installer selections via a Ubiquity preseed file injected through Ventoy plugins.
+
+**How it works:**
+
+- **`conf_replace`** plugin replaces `/boot/grub/grub.cfg` inside the ISO at boot time, adding `automatic-ubiquity preseed/file=/preseed.cfg` to the kernel parameters. Without `automatic-ubiquity`, Ubiquity ignores the preseed entirely.
+- **`injection`** plugin extracts `preseed.tar.gz` into the initramfs root at `/`, making `preseed.cfg` available to Ubiquity.
+
+**Key conventions:**
+
+- All preseed keys MUST be verified against the Ubiquity source code before adding (extract squashfs from ISO and inspect `usr/lib/ubiquity/plugins/`)
+- Never add keys that are not confirmed in the Ubiquity source — they will be silently ignored
+- `preseed.cfg` is a template — never put literal personal values in it; use `${PRESEED_*}` placeholders
+- `preseed.env` holds tracked defaults (safe placeholder values); `preseed.env.local` holds personal overrides (gitignored)
+- `preseed.tar.gz` is a build output (gitignored); run `bash ventoy/build-preseed-archive.sh` after any change to `preseed.cfg` or env files
+- `build-preseed-archive.sh` derives the variable list dynamically from `preseed.env` and passes it to `envsubst` to avoid substituting unrelated environment variables
+- Disk partitioning is intentionally NOT preseeded — disk selection must remain manual
+- `ventoy.json` is an example only; the actual `ventoy.json` lives on the root of the Ventoy USB stick
+
+**Verified preseed keys and their source files:**
+| Key | Source File |
+|---|---|
+| `debian-installer/locale` | `ubi-console-setup.py` |
+| `keyboard-configuration/layoutcode` | `ubi-console-setup.py` |
+| `clock-setup/utc` | `clock-setup/finish-install` |
+| `time/zone` | `ubi-timezone.py` |
+| `ubiquity/use_nonfree` | `ubi-prepare.py` |
+| `passwd/user-fullname` | `ubi-usersetup.py` |
+| `passwd/username` | `ubi-usersetup.py` |
+| `passwd/auto-login` | `ubi-usersetup.py` |
+| `netcfg/get_hostname` | `ubi-usersetup.py` |
+| `ubiquity/reboot` | `ubiquity` |
+
+**Preseed variables:**
+| Variable | Default | Description |
+|---|---|---|
+| `PRESEED_LOCALE` | `en_US.UTF-8` | System locale |
+| `PRESEED_KEYBOARD_LAYOUT` | `us` | Keyboard layout code |
+| `PRESEED_TIMEZONE` | `UTC` | Timezone |
+| `PRESEED_FULLNAME` | `Your Name` | User full name |
+| `PRESEED_USERNAME` | `username` | Login username |
+| `PRESEED_HOSTNAME` | `linux-mint` | Machine hostname |
+
+**When modifying `preseed.cfg`:**
+
+1. Verify any new key exists in the Ubiquity source (squashfs inspection)
+2. Edit `ventoy/preseed.cfg` (use `${PRESEED_*}` placeholders for personal values)
+3. If adding a new personal variable, add it to `preseed.env` with a safe default (the build script picks it up automatically)
+4. Run `bash ventoy/build-preseed-archive.sh` to rebuild `preseed.tar.gz`
+5. Update the verified keys table above and in `README.md`
 
 ### Post-Installation Configuration
 

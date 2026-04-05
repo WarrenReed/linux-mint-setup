@@ -55,6 +55,92 @@ Personal automated setup script for a fresh Linux Mint 22 installation with esse
 - User account with sudo privileges
 - **Do not run as root** - script will request sudo when needed
 
+## Automated Installation (Preseed)
+
+The `ventoy/` folder contains files to automate installer selections when booting Linux Mint from a [Ventoy](https://ventoy.net) USB stick. This avoids manually stepping through the installer for locale, keyboard, timezone, user account, etc.
+
+### How It Works
+
+Two Ventoy plugins work together:
+
+- **`injection`** — Injects `preseed.tar.gz` into the initramfs root at `/`, making `preseed.cfg` available to Ubiquity at `/preseed.cfg`
+- **`conf_replace`** — Replaces `/boot/grub/grub.cfg` inside the ISO at boot time to add the `automatic-ubiquity preseed/file=/preseed.cfg` kernel parameter, which puts Ubiquity into automatic mode
+
+Without `automatic-ubiquity`, Ubiquity ignores the preseed entirely.
+
+### Configuration
+
+Personal settings are kept out of tracked files. Create `ventoy/preseed.env.local` (gitignored) to override any variable from `ventoy/preseed.env`:
+
+```bash
+# ventoy/preseed.env.local
+export PRESEED_LOCALE="en_ZA.UTF-8"
+export PRESEED_TIMEZONE="Africa/Johannesburg"
+export PRESEED_FULLNAME="Your Name"
+export PRESEED_USERNAME="yourusername"
+export PRESEED_HOSTNAME="your-hostname"
+```
+
+Available variables (with defaults from `preseed.env`):
+
+| Variable                  | Default       | Description                           |
+| ------------------------- | ------------- | ------------------------------------- |
+| `PRESEED_LOCALE`          | `en_US.UTF-8` | System locale                         |
+| `PRESEED_KEYBOARD_LAYOUT` | `us`          | Keyboard layout code                  |
+| `PRESEED_TIMEZONE`        | `UTC`         | Timezone (e.g. `Africa/Johannesburg`) |
+| `PRESEED_FULLNAME`        | `Your Name`   | User full name                        |
+| `PRESEED_USERNAME`        | `username`    | Login username                        |
+| `PRESEED_HOSTNAME`        | `linux-mint`  | Machine hostname                      |
+
+### Setup
+
+1. Create `ventoy/preseed.env.local` with your personal values (see above).
+
+2. Configure the Ventoy plugins in `ventoy.json` on the root of your Ventoy USB stick. See `ventoy/ventoy.json` for the required `injection` and `conf_replace` entries — adjust the ISO path and archive/config paths to match your USB layout.
+
+3. Build the preseed archive:
+
+   ```bash
+   bash ventoy/build-preseed-archive.sh
+   ```
+
+   This substitutes your variables into the template and creates `ventoy/preseed.tar.gz` (gitignored — rebuild whenever `preseed.cfg` or env files change).
+
+4. Ensure both `preseed.tar.gz` and `grub.cfg` are in the paths referenced by your `ventoy.json`.
+
+### What Gets Preseeded
+
+| Setting              | Source                    |
+| -------------------- | ------------------------- |
+| Locale               | `PRESEED_LOCALE`          |
+| Keyboard layout      | `PRESEED_KEYBOARD_LAYOUT` |
+| Timezone             | `PRESEED_TIMEZONE`        |
+| Multimedia codecs    | Hardcoded: enabled        |
+| Full name            | `PRESEED_FULLNAME`        |
+| Username             | `PRESEED_USERNAME`        |
+| Auto-login           | Hardcoded: disabled       |
+| Hostname             | `PRESEED_HOSTNAME`        |
+| Reboot after install | Hardcoded: yes            |
+
+Disk partitioning is **not** preseeded — the disk must be selected manually during installation.
+
+### Preseed Keys
+
+All keys in `preseed.cfg` have been verified against the Ubiquity source code from the Linux Mint 22.3 squashfs:
+
+| Key                                 | Ubiquity Source File         |
+| ----------------------------------- | ---------------------------- |
+| `debian-installer/locale`           | `ubi-console-setup.py`       |
+| `keyboard-configuration/layoutcode` | `ubi-console-setup.py`       |
+| `clock-setup/utc`                   | `clock-setup/finish-install` |
+| `time/zone`                         | `ubi-timezone.py`            |
+| `ubiquity/use_nonfree`              | `ubi-prepare.py`             |
+| `passwd/user-fullname`              | `ubi-usersetup.py`           |
+| `passwd/username`                   | `ubi-usersetup.py`           |
+| `passwd/auto-login`                 | `ubi-usersetup.py`           |
+| `netcfg/get_hostname`               | `ubi-usersetup.py`           |
+| `ubiquity/reboot`                   | `ubiquity`                   |
+
 ## Usage
 
 Clone the repository and run the script:
@@ -116,6 +202,13 @@ For local overrides without modifying tracked files, create `.env.local` (gitign
   - `test-cli-tools-bash.sh` - Verify CLI tools in Bash environment
   - `test-cli-tools-powershell.ps1` - Verify CLI tools in PowerShell environment
   - `test-cli-tools-zsh.sh` - Verify CLI tools in Zsh environment
+- **`ventoy/`** - Ventoy plugin files for automated Linux Mint installation
+  - `preseed.cfg` - Ubiquity preseed template (variables substituted at build time)
+  - `preseed.env` - Default preseed configuration variables (tracked in git)
+  - `preseed.env.local` - Optional personal overrides (gitignored)
+  - `grub.cfg` - Modified ISO grub.cfg with `automatic-ubiquity` kernel parameter
+  - `ventoy.json` - Example Ventoy plugin configuration (`injection` + `conf_replace`)
+  - `build-preseed-archive.sh` - Substitutes variables and packages into `preseed.tar.gz` for Ventoy injection
 - **`lib/`** - Modular library functions (sourced by setup-linux-mint.sh)
   - `output.sh` - Shared output formatting utilities
 

@@ -1,2 +1,6 @@
 # User-specific settings
 .env.local
+ventoy/preseed.env.local
+
+# Ventoy build output
+ventoy/preseed.tar.gz
