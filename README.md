@@ -135,6 +135,7 @@ All keys in `preseed.cfg` have been verified against the Ubiquity source code fr
 | `clock-setup/utc`                   | `clock-setup/finish-install` |
 | `time/zone`                         | `ubi-timezone.py`            |
 | `ubiquity/use_nonfree`              | `ubi-prepare.py`             |
+| `ubiquity/nonfree_package`          | `ubi-prepare.py`             |
 | `passwd/user-fullname`              | `ubi-usersetup.py`           |
 | `passwd/username`                   | `ubi-usersetup.py`           |
 | `passwd/auto-login`                 | `ubi-usersetup.py`           |
