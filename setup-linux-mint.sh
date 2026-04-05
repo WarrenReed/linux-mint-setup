@@ -79,6 +79,10 @@ fi
 
 # Derived variables
 if [[ -n "$PACKAGE_CACHE_DIR" ]]; then
+    if [[ "$PACKAGE_CACHE_DIR" != /* ]]; then
+        echo "Error: PACKAGE_CACHE_DIR must be an absolute path (got: '$PACKAGE_CACHE_DIR')" >&2
+        exit 1
+    fi
     readonly NUGET_PACKAGES="$PACKAGE_CACHE_DIR/nuget"
     # Create NuGet cache directory structure
     mkdir -p "$NUGET_PACKAGES"
