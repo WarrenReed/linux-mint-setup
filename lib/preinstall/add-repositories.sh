@@ -3,24 +3,9 @@
 # ============================================================================
 # Repository Management
 # ============================================================================
-# Handles GPG keys, third-party repositories, PPAs, and APT preferences.
+# Handles GPG keys, third-party repositories, and APT preferences.
 # Sourced by setup-linux-mint.sh
 # ============================================================================
-
-add_ppa_repositories() {
-    print_section "Adding PPA Repositories"
-
-    # Check if Fish Shell PPA is already added
-    if grep -qr "^deb .*ppa.launchpad.net/fish-shell/release-4" /etc/apt/sources.list.d/ 2>/dev/null; then
-        print_info "Fish Shell PPA repository already exists."
-    else
-        print_info "Adding Fish Shell PPA repository..."
-        sudo add-apt-repository -y ppa:fish-shell/release-4
-        print_info "Fish Shell PPA repository added."
-    fi
-
-    print_info "PPA repository configuration completed."
-}
 
 add_repository_keys() {
     print_section "Adding Repository GPG Keys"

@@ -114,7 +114,6 @@ main() {
     install_required_utilities
     add_repository_keys
     add_third_party_repositories
-    add_ppa_repositories
     configure_apt_preferences
     update_apt_cache
 
