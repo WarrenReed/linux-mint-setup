@@ -151,7 +151,6 @@ The `.env` file is tracked in git with sensible defaults. Create `.env.local` (g
   - GPG keys: Check if key file exists before downloading
   - Repositories: Check if .sources file exists before creating
   - APT preferences: Check if preferences file exists before copying
-  - PPA repositories: Check if already added before running add-apt-repository
   - User groups: Check group membership before adding user
   - Shell configuration: Check if shell is in /etc/shells and is default before changing
   - Zsh config: Check if oh-my-posh line exists before appending
@@ -202,14 +201,6 @@ The `.env` file is tracked in git with sensible defaults. Create `.env.local` (g
 - Example: Prefer Ubuntu .NET packages over Microsoft's to avoid conflicts
 - Store preference files in `assets/preferences.d/` directory in repository
 - Script copies preferences files to `/etc/apt/preferences.d/` during setup
-
-### PPA Repositories
-
-- Add PPA repositories using `sudo add-apt-repository -y ppa:name/repo`
-- PPAs automatically handle GPG keys
-- Add PPA repositories in alphabetical order with other repos
-- Check if PPA is already added before running add-apt-repository for idempotency
-- Example: `grep -qr "^deb .*ppa.launchpad.net/git-core" /etc/apt/sources.list.d/`
 
 ### Debconf Configuration
 
@@ -316,7 +307,6 @@ The `ventoy/` folder automates Linux Mint installer selections via a Ubiquity pr
      - Add repository to `repositories` array with all required fields
      - Reference existing key name if multiple repos share same key
      - Use `${UBUNTU_DISTRO}` variable in suites if distribution-specific
-   - **For PPA repos:** Add function call to `add_ppa_repositories()` in [lib/preinstall/add-repositories.sh](../lib/preinstall/add-repositories.sh) with idempotency check
 5. If APT package:
    - Add to the appropriate grouped `apt install` command in alphabetical order in `install_apt_packages()` in [lib/install/install-apt-packages.sh](../lib/install/install-apt-packages.sh)
    - Groups: .NET, Docker, Virtualization, Development, Applications
