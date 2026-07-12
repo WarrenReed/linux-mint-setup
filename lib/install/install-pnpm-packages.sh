@@ -70,7 +70,7 @@ install_pnpm_packages() {
 
     # Export PNPM_HOME for current session
     export PNPM_HOME="$HOME/.local/share/pnpm"
-    export PATH="$PNPM_HOME:$PATH"
+    export PATH="$PNPM_HOME/bin:$PATH"
 
     install_angular_cli
     install_copilot_cli

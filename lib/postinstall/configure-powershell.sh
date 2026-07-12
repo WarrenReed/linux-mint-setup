@@ -52,7 +52,7 @@ add_pnpm_to_powershell_path() {
         echo "" >> "$pwsh_profile"
         echo "# pnpm" >> "$pwsh_profile"
         echo '$env:PNPM_HOME = "$env:HOME/.local/share/pnpm"' >> "$pwsh_profile"
-        echo '$env:PATH = $env:PNPM_HOME + [System.IO.Path]::PathSeparator + $env:PATH' >> "$pwsh_profile"
+        echo '$env:PATH = $env:PNPM_HOME + "/bin" + [System.IO.Path]::PathSeparator + $env:PATH' >> "$pwsh_profile"
         print_info "pnpm added to PowerShell PATH."
     fi
 }

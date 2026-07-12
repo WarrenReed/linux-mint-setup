@@ -67,7 +67,7 @@ add_pnpm_to_zsh_path() {
         echo "" >> "$zshrc"
         echo "# pnpm" >> "$zshrc"
         echo 'export PNPM_HOME="$HOME/.local/share/pnpm"' >> "$zshrc"
-        echo 'export PATH="$PNPM_HOME:$PATH"' >> "$zshrc"
+        echo 'export PATH="$PNPM_HOME/bin:$PATH"' >> "$zshrc"
         print_info "pnpm added to Zsh PATH."
     fi
 }
