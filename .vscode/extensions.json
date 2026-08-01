@@ -1,0 +1,12 @@
+{
+  "recommendations": [
+    // EditorConfig
+    "editorconfig.editorconfig",
+    // Prettier - Code formatter
+    "esbenp.prettier-vscode",
+    // Codex - OpenAI's coding agent
+    "openai.chatgpt",
+    // Material Icon Theme
+    "pkief.material-icon-theme"
+  ]
+}

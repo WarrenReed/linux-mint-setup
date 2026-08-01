@@ -1,4 +1,4 @@
-# GitHub Copilot Instructions
+# Codex Repository Instructions
 
 ## Project Overview
 
@@ -94,6 +94,15 @@ The `.env` file is tracked in git with sensible defaults. Create `.env.local` (g
 
 - Always include shebang `#!/bin/bash`
 - Use error handling: `set -e`, `set -u`, `set -o pipefail`
+- Double-quote variable expansions and use `${variable}` when it improves clarity
+- Prefer Bash features such as `[[ ]]`, `local`, and arrays; use POSIX syntax only when portability is required
+- Avoid `eval` and ad-hoc parsing of structured data
+- Validate required arguments and configuration before use, with contextual errors written to stderr
+- Use `readonly` for values that must not be reassigned
+- Create temporary files and directories with `mktemp` and clean them up with `trap`
+- Parse JSON with `jq` and YAML with `yq`; validate required fields and treat parser failures as fatal
+- Document required command-line dependencies and fail early when they are unavailable
+- Run `shellcheck` when it is available
 - Use `apt` instead of `apt-get` for consistency
 - Always use `-y` flag for non-interactive installations
 - Use `-fsSL` flags for curl operations (fail, silent, show-error, follow-redirects)
@@ -102,12 +111,12 @@ The `.env` file is tracked in git with sensible defaults. Create `.env.local` (g
 ### Organization
 
 - **Modular Architecture:** All installation and configuration logic extracted to `lib/` files
-- **Sourceable Modules:** Lib files contain only function definitions, sourced by [setup-linux-mint.sh](../setup-linux-mint.sh)
+- **Sourceable Modules:** Lib files contain only function definitions, sourced by [setup-linux-mint.sh](setup-linux-mint.sh)
   - Functions become available when sourced by main script
   - No standalone execution capability (removed to prevent readonly variable conflicts)
-  - Shared utilities from [lib/output.sh](../lib/output.sh) sourced once by main script
+  - Shared utilities from [lib/output.sh](lib/output.sh) sourced once by main script
 - Script organized into functions with clear separation of concerns
-- Main execution flow controlled by `main()` function in [setup-linux-mint.sh](../setup-linux-mint.sh)
+- Main execution flow controlled by `main()` function in [setup-linux-mint.sh](setup-linux-mint.sh)
 - **Function order MUST match main() execution sequence** - this improves readability and maintainability
 - Logical sections: prerequisites, uninstalling unwanted packages, repository setup, package installation, standalone tools, configuration
 - Keep applications sorted alphabetically in both documentation and code
@@ -115,15 +124,15 @@ The `.env` file is tracked in git with sensible defaults. Create `.env.local` (g
 - Initial `apt update` runs in `install_required_utilities()` for fresh package lists
 - Group related packages in separate `apt install` commands with alphabetically sorted package names
 - Use helper functions for consistent output formatting (`print_section`, `print_info`, `print_error`)
-- Shared utilities defined in [lib/output.sh](../lib/output.sh) and sourced by main script
+- Shared utilities defined in [lib/output.sh](lib/output.sh) and sourced by main script
 - Package manager separation:
-  - `uninstall_apt_packages()` in [lib/preinstall/uninstall-apt-packages.sh](../lib/preinstall/uninstall-apt-packages.sh) - Remove unwanted pre-installed packages (Firefox)
-  - `install_apt_packages()` in [lib/install/install-apt-packages.sh](../lib/install/install-apt-packages.sh) - APT repository packages (grouped by category: .NET, Docker, Virtualization, Azure, Development, Applications, Libraries)
-  - `install_flatpak_apps()` in [lib/install/install-flatpak-apps.sh](../lib/install/install-flatpak-apps.sh) - Flatpak applications
-  - `install_pnpm_packages()` in [lib/install/install-pnpm-packages.sh](../lib/install/install-pnpm-packages.sh) - pnpm global packages (Angular CLI, GitHub Copilot CLI with awesome-copilot plugin); configures pnpm cache immediately after enabling pnpm
-  - `install_standalone_packages()` in [lib/install/install-standalone-packages.sh](../lib/install/install-standalone-packages.sh) - Direct download installers (fnm, Node.js, Aspire, Oh My Zsh, oh-my-posh, PIA); configures npm cache immediately after Node.js installation
-  - `install_dotnet_tools()` in [lib/install/install-dotnet-tools.sh](../lib/install/install-dotnet-tools.sh) - .NET global tools
-  - `install_docker_containers()` in [lib/install/install-docker-containers.sh](../lib/install/install-docker-containers.sh) - Docker containers (Portainer)
+  - `uninstall_apt_packages()` in [lib/preinstall/uninstall-apt-packages.sh](lib/preinstall/uninstall-apt-packages.sh) - Remove unwanted pre-installed packages (Firefox)
+  - `install_apt_packages()` in [lib/install/install-apt-packages.sh](lib/install/install-apt-packages.sh) - APT repository packages (grouped by category: .NET, Docker, Virtualization, Azure, Development, Applications, Libraries)
+  - `install_flatpak_apps()` in [lib/install/install-flatpak-apps.sh](lib/install/install-flatpak-apps.sh) - Flatpak applications
+  - `install_pnpm_packages()` in [lib/install/install-pnpm-packages.sh](lib/install/install-pnpm-packages.sh) - pnpm global packages (Angular CLI, GitHub Copilot CLI with awesome-copilot plugin); configures pnpm cache immediately after enabling pnpm
+  - `install_standalone_packages()` in [lib/install/install-standalone-packages.sh](lib/install/install-standalone-packages.sh) - Direct download installers (fnm, Node.js, Aspire, Oh My Zsh, oh-my-posh, PIA); configures npm cache immediately after Node.js installation
+  - `install_dotnet_tools()` in [lib/install/install-dotnet-tools.sh](lib/install/install-dotnet-tools.sh) - .NET global tools
+  - `install_docker_containers()` in [lib/install/install-docker-containers.sh](lib/install/install-docker-containers.sh) - Docker containers (Portainer)
 - Package cache configuration:
   - **npm cache** - configured inline in `install_nodejs()` immediately after Node.js installation
   - **pnpm cache** - configured inline in `install_pnpm_packages()` immediately after enabling pnpm via corepack
@@ -166,7 +175,7 @@ The `.env` file is tracked in git with sensible defaults. Create `.env.local` (g
 - Include usage instructions and prerequisites
 - **CRITICAL: When making changes that affect functionality, configuration, or file structure, you MUST update BOTH:**
   - **`README.md`** - User-facing documentation (especially Configuration section)
-  - **`.github/copilot-instructions.md`** - AI assistant instructions (especially Environment Variables and relevant sections)
+  - **`AGENTS.md`** - Codex repository instructions (especially Environment Variables and relevant sections)
 - Update documentation when adding new applications
 - Keep configuration variable lists synchronized across both files
 - Document new environment variables with their defaults in both locations
@@ -298,37 +307,37 @@ The `ventoy/` folder automates Linux Mint installer selections via a Ubiquity pr
 
 2. Add to alphabetically sorted list in header documentation
 3. If removing unwanted pre-installed package:
-   - Add removal to `uninstall_apt_packages()` in [lib/preinstall/uninstall-apt-packages.sh](../lib/preinstall/uninstall-apt-packages.sh)
+   - Add removal to `uninstall_apt_packages()` in [lib/preinstall/uninstall-apt-packages.sh](lib/preinstall/uninstall-apt-packages.sh)
    - Include idempotency check (verify package is installed before attempting removal)
    - Use `sudo apt purge -y` followed by `sudo apt autoremove -y`
 4. If repository needed:
-   - **For third-party repos with GPG keys:** Add to [config/repositories.json](../config/repositories.json):
+   - **For third-party repos with GPG keys:** Add to [config/repositories.json](config/repositories.json):
      - Add GPG key to `keys` array if not already present (name and url)
      - Add repository to `repositories` array with all required fields
      - Reference existing key name if multiple repos share same key
      - Use `${UBUNTU_DISTRO}` variable in suites if distribution-specific
 5. If APT package:
-   - Add to the appropriate grouped `apt install` command in alphabetical order in `install_apt_packages()` in [lib/install/install-apt-packages.sh](../lib/install/install-apt-packages.sh)
+   - Add to the appropriate grouped `apt install` command in alphabetical order in `install_apt_packages()` in [lib/install/install-apt-packages.sh](lib/install/install-apt-packages.sh)
    - Groups: .NET, Docker, Virtualization, Development, Applications
    - If package attempts to manage its own repository, add debconf setting before installation to prevent conflicts
-6. If Flatpak app: Add to `install_flatpak_apps()` in [lib/install/install-flatpak-apps.sh](../lib/install/install-flatpak-apps.sh) with idempotency check
-7. If pnpm package or Copilot plugin: Add to `install_pnpm_packages()` in [lib/install/install-pnpm-packages.sh](../lib/install/install-pnpm-packages.sh) with idempotency check
-8. If .NET global tool: Add to `install_dotnet_tools()` in [lib/install/install-dotnet-tools.sh](../lib/install/install-dotnet-tools.sh)
-9. If Docker container: Add to `install_docker_containers()` in [lib/install/install-docker-containers.sh](../lib/install/install-docker-containers.sh) with idempotency check (use sudo for docker commands)
+6. If Flatpak app: Add to `install_flatpak_apps()` in [lib/install/install-flatpak-apps.sh](lib/install/install-flatpak-apps.sh) with idempotency check
+7. If pnpm package or Copilot plugin: Add to `install_pnpm_packages()` in [lib/install/install-pnpm-packages.sh](lib/install/install-pnpm-packages.sh) with an idempotency check
+8. If .NET global tool: Add to `install_dotnet_tools()` in [lib/install/install-dotnet-tools.sh](lib/install/install-dotnet-tools.sh)
+9. If Docker container: Add to `install_docker_containers()` in [lib/install/install-docker-containers.sh](lib/install/install-docker-containers.sh) with idempotency check (use sudo for docker commands)
 10. If standalone script:
 
-- Add installation to `install_standalone_packages()` function in [lib/install/install-standalone-packages.sh](../lib/install/install-standalone-packages.sh)
+- Add installation to `install_standalone_packages()` function in [lib/install/install-standalone-packages.sh](lib/install/install-standalone-packages.sh)
 - Add idempotency check using `command -v` or similar before installing
 - Use official installation script from vendor documentation
 - Ensure curl uses `-fsSL` flags
 
 11. Add post-installation configuration if needed:
 
-- Add function to appropriate lib file in `lib/postinstall/` (e.g., `configure_docker()` in [lib/postinstall/configure-docker.sh](../lib/postinstall/configure-docker.sh))
+- Add function to appropriate lib file in `lib/postinstall/` (e.g., `configure_docker()` in [lib/postinstall/configure-docker.sh](lib/postinstall/configure-docker.sh))
 - Or create new lib file for new configuration type (follow hybrid pattern with BASH_SOURCE guard)
-- Place function in execution order matching `main()` function calls in [setup-linux-mint.sh](../setup-linux-mint.sh)
+- Place function in execution order matching `main()` function calls in [setup-linux-mint.sh](setup-linux-mint.sh)
 - Implement idempotency checks
-- Source the new lib file in [setup-linux-mint.sh](../setup-linux-mint.sh) if creating new file
+- Source the new lib file in [setup-linux-mint.sh](setup-linux-mint.sh) if creating new file
 
 12. If adding new functions:
 
