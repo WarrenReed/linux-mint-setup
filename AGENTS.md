@@ -50,7 +50,7 @@ This is a Linux Mint 22 setup script repository for initial system setup and app
     - **`configure-docker.sh`** - Docker group configuration
     - **`configure-zsh.sh`** - Zsh shell configuration with Oh My Zsh, oh-my-posh, fnm, pnpm, SSL_CERT_DIR, optionally NODE_OPTIONS, optionally NUGET_PACKAGES, and zsh-syntax-highlighting (default shell)
     - **`configure-dotnet.sh`** - .NET development certificate trust
-    - **`configure-git.sh`** - Git configuration with conditional includes for personal/work identities and Git Credential Manager
+    - **`configure-git.sh`** - Git configuration with conditional includes for personal/work identities, merge-based pulls for work repositories, and Git Credential Manager
     - **`configure-grub.sh`** - GRUB bootloader configuration (timeout, remember last choice)
     - **`configure-hosts.sh`** - Hosts file configuration
     - **`configure-powershell.sh`** - PowerShell profile configuration with oh-my-posh, SSL_CERT_DIR, optionally NODE_OPTIONS, and optionally NUGET_PACKAGES
@@ -287,7 +287,7 @@ The `ventoy/` folder automates Linux Mint installer selections via a Ubiquity pr
 ### Post-Installation Configuration
 
 - Configure installed applications after package installation
-- Common configurations: user groups (docker, virtualization), shell setup and integrations (zsh)
+- Common configurations: user groups (docker, virtualization), shell setup and integrations (zsh), and merge-based Git pulls for work repositories
 - Group changes require reboot to take effect
 - Inform users of required reboot steps
 - Always implement idempotency checks (verify existing state before making changes)

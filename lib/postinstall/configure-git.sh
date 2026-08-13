@@ -37,10 +37,23 @@ configure_git_identity() {
 [user]
     name = $GIT_NAME
     email = $GIT_WORK_EMAIL
+[pull]
+    rebase = false
 EOF
         print_info "Work git config created."
     else
         print_info "Work git config already exists."
+    fi
+
+    # Use merge-based pulls for work repositories
+    local current_work_pull_rebase
+    current_work_pull_rebase=$(git config --file "$work_config" --get pull.rebase 2>/dev/null || echo "")
+    if [[ "$current_work_pull_rebase" != "false" ]]; then
+        print_info "Configuring merge-based pulls for work repositories..."
+        git config --file "$work_config" pull.rebase false
+        print_info "Merge-based pulls configured for work repositories."
+    else
+        print_info "Merge-based pulls already configured for work repositories."
     fi
 
     # Add conditional include for work repositories
